@@ -1,16 +1,27 @@
 package sb.project;
 
-public class Items {
-    private final long id;
-    private final long articul;
-    private final String name;
-    private final long count;
-    private final float price;
-    private final String description;
-    private final long category;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-    public Items(long id, long articul, String name, long count,float price,String description,long category) {
-        this.id = id;
+@Entity
+public class Items {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private long articul;
+    private String name;
+    private long count;
+    private float price;
+    private String description;
+    private long category;
+
+    protected Items() {
+    }
+
+    public Items(long articul, String name, long count, float price, String description, long category) {
         this.articul = articul;
         this.name = name;
         this.count = count;
@@ -45,5 +56,12 @@ public class Items {
 
     public long getCategory() {
         return category;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Items[id=%d, articul='%s', name='%s', count='%d', price='%f', description='%s', category='%d']",
+                id, articul, name, count, price, description, category);
     }
 }

@@ -17,11 +17,13 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url "http://repo.spring.io/libs-release" }
+    maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
 }
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.3.1.RELEASE'
-
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.3.1.RELEASE'
+    compile("com.h2database:h2")
 }
 
 wrapper {
