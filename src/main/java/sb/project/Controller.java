@@ -12,13 +12,7 @@ public class Controller {
 
     @RequestMapping("/categories")
     public Categories categories(@RequestParam(value="name", required=false, defaultValue="Видеокарта") String name) {
-        if (name==null) {
-            return new Categories(counter.incrementAndGet(),
-                   "Видеокарта","");
-        }
-        else {
-            return new Categories(counter.incrementAndGet(),
+        return new Categories(counter.incrementAndGet(),
                     name,"");
-        }
     }
 }
