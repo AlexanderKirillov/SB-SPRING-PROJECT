@@ -35,8 +35,8 @@ public class CategoriesController {
     }
 
     @PostMapping("/categories")
-    public ResponseEntity<Object> createCategory(@RequestBody Categories categories) {
-        Categories savedCategory = categoriesRepository.save(categories);
+    public ResponseEntity<Object> createCategory(@RequestBody Categories category) {
+        Categories savedCategory = categoriesRepository.save(category);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{categoryId}")
                 .buildAndExpand(savedCategory.getId()).toUri();

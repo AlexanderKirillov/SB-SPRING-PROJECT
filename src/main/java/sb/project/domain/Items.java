@@ -78,10 +78,6 @@ public class Items {
         this.description = description;
     }
 
-    public void setDescription(Categories category) {
-        this.ctg = category;
-    }
-
     public Categories getCategory() {
         return ctg;
     }
@@ -93,7 +89,7 @@ public class Items {
     @Override
     public String toString() {
         return String.format(
-                "Items[id=%d, articul='%s', name='%s', count='%d', price='%f', description='%s', category='%d']",
-                item_id, articul, name, count, price, description, ctg);
+                "Items[id=%d, articul='%s', name='%s', count='%d', price='%f', description='%s']",
+                item_id, articul, name, count, price, description);
     }
 }

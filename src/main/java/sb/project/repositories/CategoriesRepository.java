@@ -13,8 +13,6 @@ public interface CategoriesRepository extends CrudRepository<Categories, Long> {
 
     List<Categories> findAll();
 
-    List<Categories> findAllProjectedBy();
-
     void deleteById(long category_id);
 
 }

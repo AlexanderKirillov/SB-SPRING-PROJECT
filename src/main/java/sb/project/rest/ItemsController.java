@@ -31,10 +31,16 @@ public class ItemsController {
     }
 
     @GetMapping(value = "/categories/{categoryId}/items/{itemId}")
-    public Items getItemByID(@PathVariable Long itemId) {
+    public Items getItemByID(@PathVariable Long itemId, @PathVariable Long categoryId) {
         Optional<Items> item = itemsRepository.findById(itemId);
 
-        return item.get();
+        Categories category = item.get().getCategory();
+        if (category.getId() == categoryId) {
+            return item.get();
+        } else {
+            ResponseEntity.notFound().build();
+            return null;
+        }
     }
 
     @DeleteMapping("/categories/{categoryId}/items/{itemId}")

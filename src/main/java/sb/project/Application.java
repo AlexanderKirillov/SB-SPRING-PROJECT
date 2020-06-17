@@ -18,7 +18,6 @@ public class Application {
         CategoriesRepository categoriesRepository = context.getBean(CategoriesRepository.class);
         ItemsRepository itemsRepository = context.getBean(ItemsRepository.class);
 
-
         Categories videokarts = new Categories("Видеокарты", "Раздел с различными видеокартами");
         Categories processors = new Categories("Процессоры", "Раздел с различными процессорами");
         Categories ram = new Categories("Оперативная память", "Раздел с различными вариантами оперативной памяти");
