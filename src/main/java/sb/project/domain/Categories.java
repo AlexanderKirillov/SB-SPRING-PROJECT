@@ -16,7 +16,7 @@ public class Categories {
 
     @JsonIgnore
     @OneToMany(mappedBy = "ctg", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, orphanRemoval = true)
+            fetch = FetchType.LAZY)
     private List<Items> items;
 
     public Categories() {

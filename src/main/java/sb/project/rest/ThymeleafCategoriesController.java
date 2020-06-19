@@ -58,4 +58,21 @@ public class ThymeleafCategoriesController {
         return "redirect:/admin-categories";
     }
 
+    @GetMapping(value = {"/categories/{categoryId}/edit"})
+    public String adminEditCategoryPage(Model model, @PathVariable long categoryId) {
+        Categories category = categoriesRepository.findById(categoryId);
+
+        model.addAttribute("category", category);
+
+        return "admin-categories-edit";
+    }
+
+    @PostMapping(value = {"/categories/{categoryId}/edit"})
+    public String adminEditCategory(Model model, @PathVariable long categoryId, @ModelAttribute("category") Categories category) {
+        category.setId(categoryId);
+        categoriesRepository.save(category);
+
+        return "redirect:/admin-categories";
+    }
+
 }

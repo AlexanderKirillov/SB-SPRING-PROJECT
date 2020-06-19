@@ -16,16 +16,16 @@
                     class="btn btn-primary" th:href="@{/admin-categories-add}">Создать категорию</a></div>
             <table class="table table-hover">
                 <tr>
-                    <th>Идентификатор</th>
+                    <th>Номер</th>
                     <th>Имя</th>
                     <th>Описание</th>
                     <th></th>
                 </tr>
-                <tr th:each="category : ${categories}">
-                    <td th:utext="${category.getId()}">...</td>
+                <tr th:each="category,index : ${categories}">
+                    <td th:utext="${index.count}">...</td>
                     <td th:utext="${category.getName()}">...</td>
                     <td th:utext="${category.getDescription()}">...</td>
-                    <td><a th:href="@{/admin-categories-edit}">Редактировать</a></td>
+                    <td><a th:href="@{/categories/{id}/edit(id=${category.getId()})}">Редактировать</a></td>
                     <td><a th:href="@{/categories/{id}/delete(id=${category.getId()})}">Удалить</a></td>
                 </tr>
             </table>
