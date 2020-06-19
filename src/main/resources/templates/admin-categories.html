@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 60rem;">
+        <div class="card-body">
+            <h3 class="card-title" style="margin-bottom:20px;">Редактирование категорий</h3>
+            <div align="left" style="margin-bottom:20px"><a th:href="@{/admin}" class="btn btn-primary">Назад</a> <a
+                    th:href="@{/admin-categories-add}" class="btn btn-primary">Создать категорию</a></div>
+            <table class="table table-hover">
+                <tr>
+                    <th>Идентификатор</th>
+                    <th>Имя</th>
+                    <th>Описание</th>
+                    <th></th>
+                </tr>
+                <tr th:each="category : ${categories}">
+                    <td th:utext="${category.getId()}">...</td>
+                    <td th:utext="${category.getName()}">...</td>
+                    <td th:utext="${category.getDescription()}">...</td>
+                    <td><a th:href="@{/admin-categories}">Редактировать</a></td>
+                    <td><a th:href="@{/categories/{id}/delete(id=${category.getId()})}">Удалить</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </div>
+</center>
+</body>
+</html>

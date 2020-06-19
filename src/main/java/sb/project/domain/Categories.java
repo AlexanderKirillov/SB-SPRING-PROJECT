@@ -19,7 +19,7 @@ public class Categories {
             fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Items> items;
 
-    protected Categories() {
+    public Categories() {
     }
 
     public Categories(String name, String description) {
