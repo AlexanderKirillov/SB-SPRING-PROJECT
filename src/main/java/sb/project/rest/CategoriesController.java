@@ -2,9 +2,7 @@ package sb.project.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sb.project.domain.Categories;
 import sb.project.repositories.CategoriesRepository;
@@ -48,14 +46,11 @@ public class CategoriesController {
 
     @PutMapping("/categories/{categoryId}")
     public ResponseEntity<Object> updateCategory(@RequestBody Categories category, @PathVariable Long categoryId) {
-
         Optional<Categories> categoriesOptional = categoriesRepository.findById(categoryId);
 
         if (!categoriesOptional.isPresent())
             return ResponseEntity.notFound().build();
-
         category.setId(categoryId);
-
         categoriesRepository.save(category);
 
         return ResponseEntity.noContent().build();

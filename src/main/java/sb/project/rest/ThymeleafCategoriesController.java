@@ -9,15 +9,19 @@ import sb.project.repositories.CategoriesRepository;
 
 import java.util.List;
 
-
 @Controller
-public class VSCategoriesController {
+public class ThymeleafCategoriesController {
 
     @Autowired
     private CategoriesRepository categoriesRepository;
 
+    @GetMapping(value = "/admin")
+    public String adminMainPage(Model model) {
+        return "admin";
+    }
+
     @GetMapping(value = "/admin-categories")
-    public String adminCategoriesGet(Model model) {
+    public String adminCategoriesPage(Model model) {
         List<Categories> categoriesList = categoriesRepository.findAll();
 
         model.addAttribute("categories", categoriesList);
@@ -25,44 +29,33 @@ public class VSCategoriesController {
         return "admin-categories";
     }
 
-    @GetMapping(value = "/admin")
-    public String adminPage(Model model) {
-
-        return "admin";
-    }
-
     @RequestMapping(value = "/categories/{categoryId}/delete")
-    public String deleteCategory(Model model, @PathVariable Long categoryId) {
+    public String adminDeleteCategory(Model model, @PathVariable Long categoryId) {
         categoriesRepository.deleteById(categoryId);
+
         return "redirect:/admin-categories";
     }
 
-    @RequestMapping(value = {"/admin-categories-add"}, method = RequestMethod.GET)
-    public String showAddPersonPage(Model model) {
-
+    @GetMapping(value = {"/admin-categories-add"})
+    public String adminAddCategoryPage(Model model) {
         Categories ctg = new Categories();
+
         model.addAttribute("category", ctg);
 
         return "admin-categories-add";
     }
 
-    @RequestMapping(value = {"/admin-categories-add"}, method = RequestMethod.POST)
-    public String savePerson(Model model,
-                             @ModelAttribute("category") Categories ctg) {
-
+    @PostMapping(value = {"/admin-categories-add"})
+    public String adminAddCategory(Model model, @ModelAttribute("category") Categories ctg) {
         String name = ctg.getName();
         String description = ctg.getDescription();
 
-        if (name != null && name.length() > 0
-                && description != null && description.length() > 0) {
-            Categories newPerson = new Categories(name, description);
-            categoriesRepository.save(newPerson);
-
-            return "redirect:/admin-categories";
+        if (name != null && name.length() > 0 && description != null && description.length() > 0) {
+            Categories newCategory = new Categories(name, description);
+            categoriesRepository.save(newCategory);
         }
 
-        model.addAttribute("errorMessage", "error");
-        return "admin-categories";
+        return "redirect:/admin-categories";
     }
 
 }

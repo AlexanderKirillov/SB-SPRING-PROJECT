@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>Admin Page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" rel="stylesheet">
 </head>
 <body>
 <br>
@@ -12,10 +12,10 @@
     <div class="card bg-light mb-3" style="width: 60rem;">
         <div class="card-body">
             <h3 class="card-title" style="margin-bottom:20px;">Панель администратора</h3>
-            <a th:href="@{/admin-categories}" class="btn btn-primary" style="margin-bottom:20px;">Редактировать
+            <a class="btn btn-primary" style="margin-bottom:20px;" th:href="@{/admin-categories}">Редактировать
                 категории</a>
             <br>
-            <a th:href="@{/admin_items}" class="btn btn-primary">Редактировать элементы категорий</a>
+            <a class="btn btn-primary" th:href="@{/admin-items}">Редактировать элементы категорий</a>
         </div>
     </div>
 </center>

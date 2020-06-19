@@ -25,6 +25,7 @@ public class ItemsController {
     @GetMapping(value = "/categories/{categoryId}/items")
     public List<Items> getAllItems(@PathVariable Long categoryId) {
         Optional<Categories> categoryOptional = categoriesRepository.findById(categoryId);
+
         Categories category = categoryOptional.get();
 
         return category.getItems();
@@ -60,14 +61,11 @@ public class ItemsController {
 
     @PutMapping("/categories/{categoryId}/items/{itemId}")
     public ResponseEntity<Object> updateItem(@RequestBody Items item, @PathVariable Long itemId) {
-
         Optional<Items> itemOptional = itemsRepository.findById(itemId);
 
         if (!itemOptional.isPresent())
             return ResponseEntity.notFound().build();
-
         item.setId(itemId);
-
         itemsRepository.save(item);
 
         return ResponseEntity.noContent().build();
