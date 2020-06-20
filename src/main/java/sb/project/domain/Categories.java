@@ -18,6 +18,10 @@ public class Categories {
     @OneToMany(mappedBy = "ctg", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<Items> items;
+    @Lob
+    private byte[] image;
+    @Transient
+    private String imageString;
 
     public Categories() {
     }
@@ -53,6 +57,22 @@ public class Categories {
 
     public List<Items> getItems() {
         return items;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageString() {
+        return imageString;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
     }
 
     @Override

@@ -12,8 +12,8 @@
     <div class="card bg-light mb-3" style="width: 60rem;">
         <div class="card-body">
             <h3 class="card-title" style="margin-bottom:20px;">Добавление категории</h3>
-            <form method="POST"
-                  th:action="@{/admin-categories-add}" th:object="${category}">
+            <form enctype="multipart/form-data"
+                  method="POST" th:action="@{/admin-categories-add}" th:object="${category}">
                 <div style="width: 40rem;">
                     <table class="table-no-bordered">
                         <tr style="margin-bottom:20px;">
@@ -27,6 +27,20 @@
                         <tr>
                             <td>Описание: &nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td><input class="form-control" size="50" th:field="*{description}" type="text"/></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>Изображение: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <div class="custom-file">
+                                    <input class="custom-file-input" id="validatedCustomFile" name="img"
+                                           required type="file">
+                                    <label class="custom-file-label" for="validatedCustomFile">Выберите файл...</label>
+                                </div>
+                            </td>
                         </tr>
                     </table>
                     <br>

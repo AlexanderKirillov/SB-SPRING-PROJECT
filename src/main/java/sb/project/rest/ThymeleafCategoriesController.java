@@ -1,12 +1,15 @@
 package sb.project.rest;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sb.project.domain.Categories;
 import sb.project.repositories.CategoriesRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -25,6 +28,11 @@ public class ThymeleafCategoriesController {
         List<Categories> categoriesList = categoriesRepository.findAll();
 
         model.addAttribute("categories", categoriesList);
+
+        for (Categories category : categoriesList) {
+            byte[] image = category.getImage();
+            category.setImageString(Base64.encodeBase64String(image));
+        }
 
         return "admin-categories";
     }
@@ -46,12 +54,14 @@ public class ThymeleafCategoriesController {
     }
 
     @PostMapping(value = {"/admin-categories-add"})
-    public String adminAddCategory(Model model, @ModelAttribute("category") Categories ctg) {
+    public String adminAddCategory(Model model, @ModelAttribute("category") Categories ctg,
+                                   @RequestParam("img") MultipartFile file) throws IOException {
         String name = ctg.getName();
         String description = ctg.getDescription();
 
         if (name != null && name.length() > 0 && description != null && description.length() > 0) {
             Categories newCategory = new Categories(name, description);
+            newCategory.setImage(file.getBytes());
             categoriesRepository.save(newCategory);
         }
 
@@ -68,11 +78,14 @@ public class ThymeleafCategoriesController {
     }
 
     @PostMapping(value = {"/categories/{categoryId}/edit"})
-    public String adminEditCategory(Model model, @PathVariable long categoryId, @ModelAttribute("category") Categories category) {
+    public String adminEditCategory(Model model, @PathVariable long categoryId,
+                                    @ModelAttribute("category") Categories category, @RequestParam("img") MultipartFile file) throws IOException {
         category.setId(categoryId);
+        category.setImage(file.getBytes());
         categoriesRepository.save(category);
 
         return "redirect:/admin-categories";
     }
+
 
 }
