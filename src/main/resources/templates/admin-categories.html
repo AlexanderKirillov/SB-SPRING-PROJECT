@@ -9,9 +9,9 @@
 <body>
 <br>
 <center>
-    <div class="card bg-light mb-3" style="width: 60rem;">
+    <div class="card bg-light mb-3" style="width: 100rem;">
         <div class="card-body">
-            <h3 class="card-title" style="margin-bottom:20px;">Редактирование категорий</h3>
+            <h4 class="display-4">Категории</h4>
             <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin}">Назад</a> <a
                     class="btn btn-primary" th:href="@{/admin-categories-add}">Создать категорию</a></div>
             <table class="table table-hover">
@@ -21,6 +21,7 @@
                     <th>Имя</th>
                     <th>Описание</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 <tr th:each="category,index : ${categories}">
                     <td th:utext="${index.count}">...</td>
@@ -28,8 +29,10 @@
                     </td>
                     <td th:utext="${category.getName()}">...</td>
                     <td th:utext="${category.getDescription()}">...</td>
-                    <td><a th:href="@{/categories/{id}/edit(id=${category.getId()})}">Редактировать</a></td>
-                    <td><a th:href="@{/categories/{id}/delete(id=${category.getId()})}">Удалить</a></td>
+                    <td><a class="btn btn-success" th:href="@{/categories/{id}/edit(id=${category.getId()})}">Редактировать</a>
+                    </td>
+                    <td><a class="btn btn-danger"
+                           th:href="@{/categories/{id}/delete(id=${category.getId()})}">Удалить</a></td>
                 </tr>
             </table>
         </div>

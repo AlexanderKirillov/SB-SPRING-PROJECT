@@ -9,24 +9,25 @@
 <body>
 <br>
 <center>
-    <div class="card bg-light mb-3" style="width: 60rem;">
+    <div class="card bg-light mb-3" style="width: 100rem;">
         <div class="card-body">
-            <h3 class="card-title" style="margin-bottom:20px;">Добавление категории</h3>
+            <h4 class="display-4">Добавление категории</h4>
             <form enctype="multipart/form-data"
                   method="POST" th:action="@{/admin-categories-add}" th:object="${category}">
                 <div style="width: 40rem;">
                     <table class="table-no-bordered">
                         <tr style="margin-bottom:20px;">
-                            <td>Название категории: &nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td><input class="form-control" th:field="*{name}" type="text"/></td>
+                            <td>Название <font color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><input class="form-control" required th:field="*{name}" type="text"/></td>
                         </tr>
                         <tr>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         </tr>
                         <tr>
-                            <td>Описание: &nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td><input class="form-control" size="50" th:field="*{description}" type="text"/></td>
+                            <td>Описание <font color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><input class="form-control" required size="50" th:field="*{description}" type="text"/>
+                            </td>
                         </tr>
                         <tr>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -37,7 +38,7 @@
                             <td>
                                 <div class="custom-file">
                                     <input class="custom-file-input" id="validatedCustomFile" name="img"
-                                           required type="file">
+                                           type="file">
                                     <label class="custom-file-label" for="validatedCustomFile">Выберите файл...</label>
                                 </div>
                             </td>
@@ -46,7 +47,7 @@
                     <br>
                     <div align="center" style="margin-bottom:20px"><a class="btn btn-primary"
                                                                       th:href="@{/admin-categories}">Назад</a>&nbsp;&nbsp;&nbsp;&nbsp;<input
-                            class="btn btn-primary" type="submit" value="Создать категорию"/></div>
+                            class="btn btn-success" type="submit" value="Создать категорию"/></div>
                 </div>
             </form>
         </div>

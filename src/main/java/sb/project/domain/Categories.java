@@ -16,8 +16,9 @@ public class Categories {
 
     @JsonIgnore
     @OneToMany(mappedBy = "ctg", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     private List<Items> items;
+
     @Lob
     private byte[] image;
     @Transient

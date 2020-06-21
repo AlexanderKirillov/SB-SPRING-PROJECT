@@ -18,7 +18,18 @@ public class Items {
     @JoinColumn(name = "CATEGORY_ID_F", nullable = false)
     private Categories ctg;
 
-    protected Items() {
+    @Transient
+    private String ctgName;
+
+    @Transient
+    private long ctgId;
+
+    @Lob
+    private byte[] image;
+    @Transient
+    private String imageString;
+
+    public Items() {
     }
 
     public Items(long articul, String name, long count, float price, String description, Categories category) {
@@ -84,6 +95,30 @@ public class Items {
 
     public void setCategory(Categories ctg) {
         this.ctg = ctg;
+    }
+
+    public String getCategoryName() {
+        return ctg.getName();
+    }
+
+    public long getCategoryId() {
+        return ctg.getId();
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageString() {
+        return imageString;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
     }
 
     @Override

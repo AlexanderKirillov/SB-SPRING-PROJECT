@@ -5,17 +5,62 @@
     <title>Admin Page</title>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" rel="stylesheet">
+    <style type="text/css">
+        @import 'https://fonts.googleapis.com/css?family=Merriweather';
+
+        .d7 h1 {
+            padding-bottom: 10px;
+        }
+
+        .d7 h1:before {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            margin-left: -25%;
+            width: 50%;
+            height: 2px;
+            background: #79F8D7;
+        }
+
+        .d7 h1:after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            margin-left: -15%;
+            width: 30%;
+            height: 2px;
+            background: #79F8D7;
+        }
+
+        .block {
+            float: left;
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
 <br>
 <center>
-    <div class="card bg-light mb-3" style="width: 60rem;">
+    <div class="card bg-light mb-3" style="width: 100rem;">
         <div class="card-body">
-            <h3 class="card-title" style="margin-bottom:20px;">Панель администратора</h3>
-            <a class="btn btn-primary" style="margin-bottom:20px;" th:href="@{/admin-categories}">Редактировать
-                категории</a>
-            <br>
-            <a class="btn btn-primary" th:href="@{/admin-items}">Редактировать элементы категорий</a>
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-right">
+                        <h4 class="display-4">Панель администратора&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+                    </div>
+                    <div class="col-md-left">
+                        <img height="80px" src="https://img.icons8.com/dusk/64/000000/admin-settings-male.png"
+                             width="80px"/>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div align="center" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin-categories}">Редактировать
+                категории</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"
+                                                                    th:href="@{/admin-items?selcat=0}">Редактировать
+                элементы категорий</a></div>
         </div>
     </div>
 </center>
