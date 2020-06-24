@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>Admin Page</title>
@@ -55,6 +55,11 @@
                              width="80px"/>
                     </div>
                 </div>
+            </div>
+            <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+                <span class="btn btn-outline-primary disabled"><span style="color: black">Вы вошли как: <b><span
+                        sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a class="btn btn-primary"
+                                                                                         th:href="@{/logout}">Выход</a></span></span>
             </div>
             <br/>
             <div align="center" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin-categories}">Редактировать

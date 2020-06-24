@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Регистрация</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <div class="container">
+                <h4 class="display-4" style="margin-bottom: 15px">Регистрация</h4>
+            </div>
+            <div style="width: 20rem;alignment: center">
+                <form method="POST" th:action="@{/registration}" th:object="${user}">
+                    <fieldset>
+                        <div class="alert alert-danger" th:errors="*{userName}"
+                             th:if="${#fields.hasErrors('userName')}">
+                        </div>
+                        <div class="alert alert-danger" th:errors="*{email}" th:if="${#fields.hasErrors('email')}">
+                        </div>
+                        <div class="alert alert-danger" th:errors="*{password}"
+                             th:if="${#fields.hasErrors('password')}">
+                        </div>
+                        <div class="form-group">
+                            <input autofocus="true" class="form-control input-lg" placeholder="Никнейм"
+                                   required="true" th:field="*{userName}" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <input autofocus="true" class="form-control input-lg" placeholder="E-Mail"
+                                   required="true" th:field="*{email}" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <input autofocus="true" class="form-control input-lg" placeholder="Имя"
+                                   required="true" th:field="*{name}" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <input autofocus="true" class="form-control input-lg" placeholder="Фамилия"
+                                   required="true" th:field="*{surname}" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <input autofocus="true" class="form-control input-lg" placeholder="Пароль"
+                                   required="true" th:field="*{password}" type="password"/>
+                        </div>
+                        <div class="form-group">
+                            <input autofocus="true" class="form-control input-lg" placeholder="Подтвердите пароль"
+                                   required="true" th:field="*{confirmPassword}" type="password"/>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control selectpicker" name="gendername" required>
+                                <option disabled selected value="">Выберите пол</option>
+                                <option value="мужской">Мужской</option>
+                                <option value="женский">Женский</option>
+                            </select>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Регистрация"/>
+
+                    </fieldset>
+                </form>
+                <br>
+                <span>У Вас уже есть аккаунт? <a th:href="@{/login}">Войти.</a></span>
+            </div>
+        </div>
+        <br/>
+    </div>
+    </div>
+</center>
+</body>
+</html>
