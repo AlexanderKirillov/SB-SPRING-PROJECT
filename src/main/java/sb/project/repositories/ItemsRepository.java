@@ -15,5 +15,4 @@ public interface ItemsRepository extends CrudRepository<Items, Long> {
 
     void deleteById(long item_id);
 
-
 }
