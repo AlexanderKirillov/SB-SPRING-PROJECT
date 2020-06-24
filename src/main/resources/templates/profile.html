@@ -2,7 +2,7 @@
 <html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Компьютерные комплетующие</title>
+    <title>Профиль</title>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -34,31 +34,56 @@
             </ul>
         </div>
     </div>
-    <div class="col-9"><br>
-        <span style="font-weight:bold; font-size:20px"
-              th:text="'Товары из категории: ' + ${currentCategory.toLowerCase()}"></span>
-        <div class="row">
-            <div class="card" style="width: 15rem; margin: 15px;" th:each="item: ${items}">
-                <img class="card-img-top" height="60%" th:src="@{'data:image/jpeg;base64,'+${item.getImageString()}}"
-                     width="100%">
-                <div class="card-body">
-                    <h5 class="card-title" th:utext="${item.getName()}"></h5>
-                    <div th:switch="${item.getCount()}">
-                        <p th:case="0">нет в наличии</p>
-                        <p class="card-text" style="font-weight:bold; font-size:18px" th:case="*"
-                           th:utext="${item.getPrice()+' ₽'}"></p>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <a class="card-link" th:href="@{/main/items/{id}(id=${item.getId()})}">Подробнее</a>
-                </div>
+    <div class="col-9">
+        <div class="card" style="margin: 15px;">
+            <div class="card-body">
+                <span style="font-weight:bold; font-size:30px">Профиль пользователя</span><br>
+                <table class="table-no-bordered">
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="margin-bottom:20px;">
+                        <td>Ваш никнейм: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span style="font-weight:bold; font-size:15px" th:utext="${user.getUserName()}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Ваш E-Mail: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span style="font-weight:bold; font-size:15px" th:utext="${user.getEmail()}"></span>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Ваше имя: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span style="font-weight:bold; font-size:15px" th:utext="${user.getName()}"></span>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Ваша фамилия: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span style="font-weight:bold; font-size:15px" th:utext="${user.getSurname()}"></span>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Ваш пол: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span style="font-weight:bold; font-size:15px" th:utext="${user.getGender()}"></span>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                </table>
+                <a class="btn btn-primary" th:href="@{/main}">На главную страницу</a>
             </div>
         </div>
-
     </div>
 </div>
-
-
 <script crossorigin="anonymous"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

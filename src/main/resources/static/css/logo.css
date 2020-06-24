@@ -1,0 +1,40 @@
+h1 {
+    --color1: #5cb885;
+    --color2: #e6c619;
+    font-family: 'Lato', sans-serif;
+    text-align: left;
+    font-size: 46px;
+    font-weight: 900;
+    margin-left: 20px;
+    margin-top: 20px;
+    text-transform: uppercase;
+    background: repeating-linear-gradient(
+            45deg,
+            var(--color1),
+            var(--color1) 30px,
+            var(--color2) 30px,
+            var(--color2) 60px
+    );
+
+    background-clip: text;
+    color: transparent;
+    -webkit-background-clip: text;
+    animation: 40s linear 0s infinite move;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+@keyframes move {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: 1000px;
+    }
+}

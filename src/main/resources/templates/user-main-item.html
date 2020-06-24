@@ -6,99 +6,11 @@
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <style>
-        .category-wrap {
-            padding: 15px;
-            background: white;
-            width: 450px;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, .1);
-        }
-
-        .category-wrap h3 {
-            font-size: 20px;
-            color: rgba(0, 0, 0, .6);
-            margin: 0 0 10px;
-            padding: 0 5px;
-            position: relative;
-        }
-
-        .category-wrap h3:after {
-            content: "";
-            width: 6px;
-            height: 6px;
-            background: #80C8A0;
-            position: absolute;
-            right: 5px;
-            bottom: 2px;
-            box-shadow: -8px -8px #80C8A0, 0 -8px #80C8A0, -8px 0 #80C8A0;
-        }
-
-        .category-wrap ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .category-wrap li {
-            text-decoration: none;
-            display: block;
-            font-size: 16px;
-            color: rgba(0, 0, 0, .6);
-            padding: 5px;
-            position: relative;
-            transition: .3s linear;
-        }
-
-        .category-wrap li:after {
-            content: "\f18e";
-            font-family: FontAwesome;
-            position: absolute;
-            right: 5px;
-            color: white;
-            transition: .2s linear;
-        }
-
-        .category-wrap li:hover {
-            background: #80C8A0;
-            color: white;
-        }
-    </style>
-    <style>h1 {
-        --color1: #5cb885;
-        --color2: #e6c619;
-        font-family: 'Lato', sans-serif;
-        text-align: left;
-        font-size: 46px;
-        font-weight: 900;
-        margin-left: 20px;
-        margin-top: 20px;
-        text-transform: uppercase;
-        background: repeating-linear-gradient(
-                45deg,
-                var(--color1),
-                var(--color1) 30px,
-                var(--color2) 30px,
-                var(--color2) 60px
-        );
-        background-clip: text;
-        color: transparent;
-        -webkit-background-clip: text;
-        animation: 40s linear 0s infinite move;
-    }
-
-    @keyframes move {
-        from {
-            background-position: 0px;
-        }
-        to {
-            background-position: 1000px;
-        }
-    }
-    </style>
-
+    <link href="" rel="stylesheet">
+    <link href="" rel="stylesheet">
 </head>
 <body>
-<h1>Компьютерные комплектующие</h1>
+<a href="@{/main}"><h1>Компьютерные комплектующие</h1></a>
 <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
     <span class="btn btn-outline-primary disabled"><span style="color: black">Вы вошли как: <b><span
             sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a class="btn btn-primary"
