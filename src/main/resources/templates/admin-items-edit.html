@@ -88,6 +88,21 @@
                         <tr>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <label class="form-check-label" th:if="${item.status}">
+                                    <input checked class="form-check-input" name="status"
+                                           th:checked="${item.status}" type="checkbox">Отображать товар на
+                                    главной странице
+                                </label><label class="form-check-label" th:if="${!item.status}">
+                                <input class="form-check-input" name="status" th:checked="${item.status}"
+                                       type="checkbox">Отображать товар на главной странице
+                            </label></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
                     </table>
                     <br>
                     <div align="center" style="margin-bottom:20px"><a class="btn btn-primary"

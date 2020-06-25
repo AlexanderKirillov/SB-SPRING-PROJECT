@@ -74,17 +74,12 @@ public class ThymeleafAdminItemsController {
     @PostMapping(value = {"/admin-items-add"})
     public String adminAddItem(Model model, @ModelAttribute("item") Items item,
                                @RequestParam("img") MultipartFile file, @RequestParam("categoryId") Long catId) throws IOException {
-        long articul = item.getArticul();
-        String name = item.getName();
-        String description = item.getDescription();
-        float price = item.getPrice();
-        long count = item.getCount();
         Categories ctg = categoriesRepository.findById(catId).get();
 
-        Items newItem = new Items(articul, name, count, price, description, ctg);
-        newItem.setImage(file.getBytes());
+        item.setCategory(ctg);
+        item.setImage(file.getBytes());
 
-        itemsRepository.save(newItem);
+        itemsRepository.save(item);
 
         return "redirect:/admin-items?selcat=0";
     }

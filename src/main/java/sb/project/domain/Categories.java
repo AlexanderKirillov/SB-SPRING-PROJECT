@@ -13,23 +13,25 @@ public class Categories {
     private long category_id;
     private String name;
     private String description;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "ctg", cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
-    private List<Items> items;
+    private boolean status;
 
     @Lob
     private byte[] image;
     @Transient
     private String imageString;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "ctg", cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
+    private List<Items> items;
+
     public Categories() {
     }
 
-    public Categories(String name, String description) {
+    public Categories(String name, String description, boolean status) {
         this.name = name;
         this.description = description;
+        this.status = status;
     }
 
     public long getId() {
@@ -54,6 +56,14 @@ public class Categories {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public List<Items> getItems() {

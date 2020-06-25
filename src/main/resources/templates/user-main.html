@@ -15,8 +15,10 @@
 <a th:href="@{/main}"><h1>Компьютерные комплектующие</h1></a>
 <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
     <span class="btn btn-outline-primary disabled"><span style="color: black">Вы вошли как: <b><span
-            sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a class="btn btn-primary"
-                                                                             th:href="@{/profile}">Мой профиль</a>&nbsp;&nbsp;</span><span><a
+            sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="btn btn-primary" th:href="@{/admin}">Панель администратора</a></span>&nbsp;&nbsp;<span><a
+            class="btn btn-primary"
+            th:href="@{/profile}">Мой профиль</a>&nbsp;&nbsp;</span><span><a
             class="btn btn-primary"
             th:href="@{/logout}">Выход</a></span></span>
 </div>

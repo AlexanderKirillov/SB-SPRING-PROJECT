@@ -48,6 +48,24 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <label class="form-check-label" th:if="${category.status}">
+                                    <input checked class="form-check-input" name="status"
+                                           th:checked="${category.status}" type="checkbox">Отображать категорию на
+                                    главной странице
+                                </label><label class="form-check-label" th:if="${!category.status}">
+                                <input class="form-check-input" name="status" th:checked="${category.status}"
+                                       type="checkbox">Отображать категорию на главной странице
+                            </label></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
                     </table>
                     <br>
                     <div align="center" style="margin-bottom:20px"><a class="btn btn-primary"

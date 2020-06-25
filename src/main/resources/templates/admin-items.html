@@ -49,6 +49,7 @@
                     <th>Количество</th>
                     <th>Цена</th>
                     <th>Категория</th>
+                    <th>Статус</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -62,6 +63,8 @@
                     <td th:utext="${item.getCount()}">...</td>
                     <td th:utext="${item.getPrice()}">...</td>
                     <td th:utext="${item.getCategoryName()}">...</td>
+                    <td><span th:if="${item.status}">Товар виден всем</span>
+                        <span th:if="${!item.status}">Товар не отображается</span></td>
                     <td><a class="btn btn-success" th:href="@{/items/{id}/edit(id=${item.getId()})}">Редактировать</a>
                     </td>
                     <td><a class="btn btn-danger"

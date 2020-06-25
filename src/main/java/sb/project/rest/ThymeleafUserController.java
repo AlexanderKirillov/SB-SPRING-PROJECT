@@ -13,6 +13,7 @@ import sb.project.domain.Items;
 import sb.project.repositories.CategoriesRepository;
 import sb.project.repositories.ItemsRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,27 +28,45 @@ public class ThymeleafUserController {
     @GetMapping(value = "/main")
     public String userMainPage(Model model, @RequestParam(value = "selcat", required = false) Long selcat, @ModelAttribute("ctgSel") Categories ctgSel) {
         List<Categories> categoriesList = categoriesRepository.findAll();
+        List<Categories> activeCategories = new ArrayList<Categories>();
+        List<Items> activeItems = new ArrayList<Items>();
+
+        for (Categories ctg : categoriesList) {
+            if (ctg.getStatus()) {
+                activeCategories.add(ctg);
+            }
+        }
         List<Items> itemsList;
 
         if (selcat == null) {
             itemsList = itemsRepository.findAll();
-            model.addAttribute("items", itemsList);
+            for (Items item : itemsList) {
+                if (item.getCategory().getStatus() && item.getStatus()) {
+                    activeItems.add(item);
+                }
+            }
             model.addAttribute("currentCategory", "-");
         } else {
             itemsList = categoriesRepository.findById(selcat).get().getItems();
-            model.addAttribute("items", itemsList);
+            for (Items item : itemsList) {
+                if (item.getStatus()) {
+                    activeItems.add(item);
+                }
+            }
             model.addAttribute("currentCategory", categoriesRepository.findById(selcat).get().getName());
         }
-        model.addAttribute("categories", categoriesList);
+
+        model.addAttribute("items", activeItems);
+        model.addAttribute("categories", activeCategories);
 
         for (Items item : itemsList) {
             byte[] image = item.getImage();
             item.setImageString(Base64.encodeBase64String(image));
         }
 
-        for (Categories ctg : categoriesList) {
-            byte[] image = ctg.getImage();
-            ctg.setImageString(Base64.encodeBase64String(image));
+        for (Categories activeCtg : activeCategories) {
+            byte[] image = activeCtg.getImage();
+            activeCtg.setImageString(Base64.encodeBase64String(image));
         }
 
         return "user-main";

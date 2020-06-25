@@ -13,6 +13,7 @@ public class Items {
     private long count;
     private float price;
     private String description;
+    private boolean status;
 
     @ManyToOne()
     @JoinColumn(name = "CATEGORY_ID_F", nullable = false)
@@ -32,12 +33,13 @@ public class Items {
     public Items() {
     }
 
-    public Items(long articul, String name, long count, float price, String description, Categories category) {
+    public Items(long articul, String name, long count, float price, String description, boolean status, Categories category) {
         this.articul = articul;
         this.name = name;
         this.count = count;
         this.price = price;
         this.description = description;
+        this.status = status;
         this.ctg = category;
     }
 
@@ -87,6 +89,14 @@ public class Items {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public Categories getCategory() {

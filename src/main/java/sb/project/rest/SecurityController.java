@@ -26,11 +26,6 @@ public class SecurityController {
         return "login";
     }
 
-    @GetMapping(value = "/successful-login")
-    public String successfulLoginPage(Model model) {
-        return "successful-login";
-    }
-
     @GetMapping(value = "/access-error")
     public String accessErrorPage(Model model) {
         return "access-denied-page";

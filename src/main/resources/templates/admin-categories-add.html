@@ -27,7 +27,6 @@
                         </tr>
                         <tr>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Описание <font color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -35,7 +34,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         </tr>
                         <tr>
@@ -47,6 +45,19 @@
                                     <label class="custom-file-label" for="validatedCustomFile">Выберите файл...</label>
                                 </div>
                             </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><label class="form-check-label">
+                                <input class="form-check-input" name="status" th:checked="${category.status}"
+                                       type="checkbox">Отображать категорию на главной странице
+                            </label></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         </tr>
                     </table>
                     <br>

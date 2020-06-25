@@ -56,14 +56,9 @@ public class ThymeleafAdminCategoriesController {
     @PostMapping(value = {"/admin-categories-add"})
     public String adminAddCategory(Model model, @ModelAttribute("category") Categories ctg,
                                    @RequestParam("img") MultipartFile file) throws IOException {
-        String name = ctg.getName();
-        String description = ctg.getDescription();
 
-        if (name != null && name.length() > 0 && description != null && description.length() > 0) {
-            Categories newCategory = new Categories(name, description);
-            newCategory.setImage(file.getBytes());
-            categoriesRepository.save(newCategory);
-        }
+        ctg.setImage(file.getBytes());
+        categoriesRepository.save(ctg);
 
         return "redirect:/admin-categories";
     }

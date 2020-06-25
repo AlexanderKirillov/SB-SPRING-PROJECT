@@ -25,6 +25,7 @@
                     <th>Изображение</th>
                     <th>Имя</th>
                     <th>Описание</th>
+                    <th>Статус</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -34,6 +35,8 @@
                     </td>
                     <td th:utext="${category.getName()}">...</td>
                     <td th:utext="${category.getDescription()}">...</td>
+                    <td><span th:if="${category.status}">Категория видна всем</span>
+                        <span th:if="${!category.status}">Категория не отображается</span></td>
                     <td><a class="btn btn-success" th:href="@{/categories/{id}/edit(id=${category.getId()})}">Редактировать</a>
                     </td>
                     <td><a class="btn btn-danger"

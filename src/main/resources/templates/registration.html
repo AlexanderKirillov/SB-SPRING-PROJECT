@@ -5,8 +5,6 @@
     <title>Регистрация</title>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
-          rel="stylesheet">
 </head>
 <body>
 <br>
@@ -16,24 +14,35 @@
             <div class="container">
                 <h4 class="display-4" style="margin-bottom: 15px">Регистрация</h4>
             </div>
-            <div style="width: 20rem;alignment: center">
+            <div style="width: 25rem;alignment: center">
                 <form method="POST" th:action="@{/registration}" th:object="${user}">
                     <fieldset>
-                        <div class="alert alert-danger" th:errors="*{userName}"
-                             th:if="${#fields.hasErrors('userName')}">
+                        <div th:if="${#fields.hasErrors('userName')}">
+                            <div class="form-group">
+                                <input autofocus="true" class="form-control input-lg is-invalid" placeholder="Никнейм"
+                                       required="true" th:field="*{userName}" type="text">
+                                <div class="invalid-feedback" th:errors="*{userName}">
+                                </div>
+                            </div>
                         </div>
-                        <div class="alert alert-danger" th:errors="*{email}" th:if="${#fields.hasErrors('email')}">
+                        <div th:if="${!#fields.hasErrors('userName')}">
+                            <div class="form-group">
+                                <input autofocus="true" class="form-control input-lg" placeholder="Никнейм"
+                                       required="true" th:field="*{userName}" type="text">
+                            </div>
                         </div>
-                        <div class="alert alert-danger" th:errors="*{password}"
-                             th:if="${#fields.hasErrors('password')}">
+                        <div th:if="${#fields.hasErrors('email')}">
+                            <div class="form-group">
+                                <input autofocus="true" class="form-control input-lg is-invalid" placeholder="E-Mail"
+                                       required="true" th:field="*{email}" type="email">
+                                <div class="invalid-feedback" th:errors="*{email}"></div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input autofocus="true" class="form-control input-lg" placeholder="Никнейм"
-                                   required="true" th:field="*{userName}" type="text"/>
-                        </div>
-                        <div class="form-group">
-                            <input autofocus="true" class="form-control input-lg" placeholder="E-Mail"
-                                   required="true" th:field="*{email}" type="text"/>
+                        <div th:if="${!#fields.hasErrors('email')}">
+                            <div class="form-group">
+                                <input autofocus="true" class="form-control input-lg" placeholder="E-Mail"
+                                       required="true" th:field="*{email}" type="email"/>
+                            </div>
                         </div>
                         <div class="form-group">
                             <input autofocus="true" class="form-control input-lg" placeholder="Имя"
@@ -43,14 +52,30 @@
                             <input autofocus="true" class="form-control input-lg" placeholder="Фамилия"
                                    required="true" th:field="*{surname}" type="text"/>
                         </div>
-                        <div class="form-group">
-                            <input autofocus="true" class="form-control input-lg" placeholder="Пароль"
-                                   required="true" th:field="*{password}" type="password"/>
+                        <div th:if="${#fields.hasErrors('password')}">
+                            <div class="form-group">
+                                <input autofocus="true" class="form-control input-lg is-invalid" placeholder="Пароль"
+                                       required="true" th:field="*{password}" type="password">
+                                <div class="invalid-feedback" th:errors="*{password}"></div>
+                            </div>
+                            <div class="form-group">
+                                <input autofocus="true" class="form-control input-lg is-invalid"
+                                       placeholder="Подтвердите пароль"
+                                       required="true" th:field="*{confirmPassword}" type="password">
+                                <div class="invalid-feedback" th:errors="*{password}"></div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input autofocus="true" class="form-control input-lg" placeholder="Подтвердите пароль"
-                                   required="true" th:field="*{confirmPassword}" type="password"/>
+                        <div th:if="${!#fields.hasErrors('password')}">
+                            <div class="form-group">
+                                <input autofocus="true" class="form-control input-lg" placeholder="Пароль"
+                                       required="true" th:field="*{password}" type="password">
+                            </div>
+                            <div class="form-group">
+                                <input autofocus="true" class="form-control input-lg" placeholder="Подтвердите пароль"
+                                       required="true" th:field="*{confirmPassword}" type="password">
+                            </div>
                         </div>
+
                         <div class="form-group">
                             <select class="form-control selectpicker" name="gendername" required>
                                 <option disabled selected value="">Выберите пол</option>
@@ -59,11 +84,15 @@
                             </select>
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit" value="Регистрация"/>
-
                     </fieldset>
+                    <br>
+                    <span>У Вас уже есть аккаунт? <a th:href="@{/login}">Войти.</a></span><br>
+                    <div th:errors="*{password}" th:if="${#fields.hasErrors('active')}">
+                        <div class="alert alert-danger">
+                            Ваш аккаунт отключен!
+                        </div>
+                    </div>
                 </form>
-                <br>
-                <span>У Вас уже есть аккаунт? <a th:href="@{/login}">Войти.</a></span>
             </div>
         </div>
         <br/>
