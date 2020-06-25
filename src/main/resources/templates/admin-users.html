@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Page</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <h4 class="display-4">Пользователи</h4>
+            <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+                <span class="btn btn-outline-primary disabled"><span style="color: black">Вы вошли как: <b><span
+                        sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a class="btn btn-primary"
+                                                                                         th:href="@{/main}">Главная страница</a></span>&nbsp;&nbsp;<span><a
+                        class="btn btn-primary"
+                        th:href="@{/logout}">Выход</a></span></span>
+            </div>
+            <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin}">Назад</a></div>
+            <table class="table table-hover">
+                <tr>
+                    <th>Номер</th>
+                    <th>Никнейм</th>
+                    <th>E-Mail</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Пол</th>
+                    <th>Привилегии</th>
+                    <th>Статус</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr th:each="user,index : ${users}">
+                    <td th:utext="${index.count}">...</td>
+                    <td th:utext="${user.getUserName()}">...</td>
+                    <td th:utext="${user.getEmail()}">...</td>
+                    <td th:utext="${user.getName()}">...</td>
+                    <td th:utext="${user.getSurname()}">...</td>
+                    <td th:utext="${user.getGender()}">...</td>
+                    <td>
+                        <div th:if="${user.getRoles()=='ROLE_USER'}">
+                            <span>USER</span>
+                        </div>
+                        <div th:if="${user.getRoles()=='ROLE_ADMIN'}">
+                            <span>ADMIN</span>
+                        </div>
+                    </td>
+                    <td><span th:if="${user.isActive()}">Учетная запись активна</span>
+                        <span th:if="${!user.isActive()}">Учетная запись неактивна</span></td>
+                    <td>
+                        <div th:if="${user.isActive()}">
+                            <a class="btn btn-success" th:href="@{/users/{id}/setStatus(id=${user.getId()})}">Деактивировать</a>
+                        </div>
+                        <div th:if="${!user.isActive()}">
+                            <a class="btn btn-success" th:href="@{/users/{id}/setStatus(id=${user.getId()})}">Активировать</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div th:if="${user.getRoles()=='ROLE_USER'}">
+                            <a class="btn btn-success" th:href="@{/users/{id}/setAdmin(id=${user.getId()})}">Сделать
+                                админом</a>
+                        </div>
+                        <div th:if="${user.getRoles()=='ROLE_ADMIN'}">
+                            <a class="btn btn-success" th:href="@{/users/{id}/setAdmin(id=${user.getId()})}">Отозвать
+                                привилегии админа</a>
+                        </div>
+                    </td>
+                    <td><a class="btn btn-danger"
+                           th:href="@{/users/{id}/delete(id=${user.getId()})}">Удалить</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </div>
+</center>
+</body>
+</html>

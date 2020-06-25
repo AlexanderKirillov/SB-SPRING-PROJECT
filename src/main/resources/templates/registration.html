@@ -11,8 +11,13 @@
 <center>
     <div class="card bg-light mb-3" style="width: 100rem;">
         <div class="card-body">
-            <div class="container">
-                <h4 class="display-4" style="margin-bottom: 15px">Регистрация</h4>
+            <div class="row align-items-center">
+                <div class="col-2 align-items-left">
+                    <a class="btn btn-primary" th:href="@{/main}">На главную</a>
+                </div>
+                <div class="col-8 align-items-center">
+                    <h4 class="display-4">Регистрация</h4>
+                </div>
             </div>
             <div style="width: 25rem;alignment: center">
                 <form method="POST" th:action="@{/registration}" th:object="${user}">

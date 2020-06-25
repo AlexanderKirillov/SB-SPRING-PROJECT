@@ -15,7 +15,9 @@
             <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
                 <span class="btn btn-outline-primary disabled"><span style="color: black">Вы вошли как: <b><span
                         sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a class="btn btn-primary"
-                                                                                         th:href="@{/logout}">Выход</a></span></span>
+                                                                                         th:href="@{/main}">Главная страница</a></span>&nbsp;&nbsp;<span><a
+                        class="btn btn-primary"
+                        th:href="@{/logout}">Выход</a></span></span>
             </div>
             <form enctype="multipart/form-data"
                   method="POST" th:action="@{/categories/{id}/edit(id=${category.getId()})}"

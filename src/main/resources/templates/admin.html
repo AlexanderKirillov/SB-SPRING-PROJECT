@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-right">
-                        <h4 class="display-4">Панель администратора&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+                        <h4 class="display-4">Панель администратора&nbsp;&nbsp;&nbsp;&nbsp;</h4><br>
                     </div>
                     <div class="col-md-left">
                         <img height="80px" src="https://img.icons8.com/dusk/64/000000/admin-settings-male.png"
@@ -25,13 +25,17 @@
             <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
                 <span class="btn btn-outline-primary disabled"><span style="color: black">Вы вошли как: <b><span
                         sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a class="btn btn-primary"
-                                                                                         th:href="@{/logout}">Выход</a></span></span>
+                                                                                         th:href="@{/main}">Главная страница</a></span>&nbsp;&nbsp;<span><a
+                        class="btn btn-primary"
+                        th:href="@{/logout}">Выход</a></span></span>
             </div>
             <br/>
             <div align="center" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin-categories}">Редактировать
                 категории</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"
                                                                     th:href="@{/admin-items?selcat=0}">Редактировать
-                элементы категорий</a></div>
+                элементы категорий</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"
+                                                                             th:href="@{/admin-users}">Управление
+                пользователями</a></div>
         </div>
     </div>
 </center>

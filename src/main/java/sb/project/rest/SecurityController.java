@@ -55,7 +55,7 @@ public class SecurityController {
         }
 
         for (Users exuser : userList) {
-            if (user.getEmail().equals(exuser.getEmail())) {
+            if (user.getEmail().toLowerCase().equals(exuser.getEmail().toLowerCase())) {
                 bindingResult.rejectValue("email", "error.email", "Пользователь с такой электронной почтой уже зарегистрирован!");
             }
         }
@@ -65,6 +65,7 @@ public class SecurityController {
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setActive(true);
+            user.setEmail(user.getEmail().toLowerCase());
             user.setRoles("ROLE_USER");
             user.setGender(gendername);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
