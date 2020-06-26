@@ -12,6 +12,7 @@ import sb.project.domain.Users;
 import sb.project.repositories.CategoriesRepository;
 import sb.project.repositories.UsersRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,10 +27,17 @@ public class ProfileController {
     @GetMapping(value = "/profile")
     public String userItemPage(Model model, @ModelAttribute("ctgSel") Categories ctgSel, Authentication authentication) {
         List<Categories> categoriesList = categoriesRepository.findAll();
-
-        model.addAttribute("categories", categoriesList);
+        List<Categories> activeCategories = new ArrayList<Categories>();
 
         for (Categories ctg : categoriesList) {
+            if (ctg.getStatus()) {
+                activeCategories.add(ctg);
+            }
+        }
+
+        model.addAttribute("categories", activeCategories);
+
+        for (Categories ctg : activeCategories) {
             byte[] img = ctg.getImage();
             ctg.setImageString(Base64.encodeBase64String(img));
         }

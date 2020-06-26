@@ -5,12 +5,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import sb.project.domain.Users;
 import sb.project.repositories.UsersRepository;
+import sb.project.services.EmailService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -21,8 +19,12 @@ public class SecurityController {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping(value = "/login")
     public String loginPage(Model model) {
+        //emailService.sendMail("nowenui@bk.ru", "Test Subject", "Test mail");
         return "login";
     }
 
@@ -41,7 +43,7 @@ public class SecurityController {
     }
 
     @PostMapping(value = {"/registration"})
-    public String registrationPage(Model model, @ModelAttribute("user") @Valid Users user, BindingResult bindingResult, @RequestParam("gendername") String gendername) {
+    public String registrationPage(Model model, @ModelAttribute("user") @Valid Users user, BindingResult bindingResult, @RequestParam("gendername") String gendername) throws Exception {
         List<Users> userList = usersRepository.findAll();
 
         if (!user.getPassword().equals(user.getConfirmPassword())) {
@@ -64,16 +66,31 @@ public class SecurityController {
             return "registration";
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            user.setActive(true);
+            user.setActive(false);
             user.setEmail(user.getEmail().toLowerCase());
             user.setRoles("ROLE_USER");
             user.setGender(gendername);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setToken(emailService.generateToken(user.getUserName()));
+            emailService.sendConfirmationMail(user.getEmail(), user.getUserName(), "http://localhost:8080/users/confirm/" + user.getToken());
 
             usersRepository.save(user);
 
             return "successful-registration";
         }
+    }
 
+    @RequestMapping(value = "/users/confirm/{token}")
+    public String emailConfirmPage(Model model, @PathVariable String token) {
+        if (usersRepository.findByToken(token).isEmpty()) {
+            return "unsuccessful-acc-confirm";
+        } else {
+            Users user = usersRepository.findByToken(token).get();
+            user.setActive(true);
+            user.setToken(null);
+            usersRepository.save(user);
+
+            return "successful-acc-confirm";
+        }
     }
 }

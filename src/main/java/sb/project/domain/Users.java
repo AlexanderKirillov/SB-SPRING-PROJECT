@@ -31,6 +31,8 @@ public class Users {
     @NotNull
     private String gender;
 
+    private String token;
+
     public long getId() {
         return id;
     }
@@ -109,5 +111,13 @@ public class Users {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

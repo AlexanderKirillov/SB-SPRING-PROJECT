@@ -75,16 +75,23 @@ public class ThymeleafUserController {
     @GetMapping(value = "/main/items/{itemId}")
     public String userItemPage(Model model, @PathVariable long itemId, @ModelAttribute("ctgSel") Categories ctgSel) {
         List<Categories> categoriesList = categoriesRepository.findAll();
+        List<Categories> activeCategories = new ArrayList<Categories>();
         Items item = itemsRepository.findById(itemId);
 
-        model.addAttribute("categories", categoriesList);
+        for (Categories ctg : categoriesList) {
+            if (ctg.getStatus()) {
+                activeCategories.add(ctg);
+            }
+        }
+
+        model.addAttribute("categories", activeCategories);
         model.addAttribute("currentCategory", item.getCategory().getName());
         model.addAttribute("item", item);
 
         byte[] image = item.getImage();
         item.setImageString(Base64.encodeBase64String(image));
 
-        for (Categories ctg : categoriesList) {
+        for (Categories ctg : activeCategories) {
             byte[] img = ctg.getImage();
             ctg.setImageString(Base64.encodeBase64String(img));
         }
