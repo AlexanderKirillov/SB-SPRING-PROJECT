@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class Items {
@@ -14,7 +15,7 @@ public class Items {
     private long articul;
     private String name;
     private long count;
-    private float price;
+    private BigDecimal price;
     private String description;
     private boolean status;
     @Lob
@@ -35,7 +36,7 @@ public class Items {
 
     }
 
-    public Items(long articul, String name, long count, float price, String description, boolean status, Categories category) {
+    public Items(long articul, String name, long count, BigDecimal price, String description, boolean status, Categories category) {
         this.articul = articul;
         this.name = name;
         this.count = count;
@@ -77,11 +78,11 @@ public class Items {
         this.count = count;
     }
 
-    public float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
