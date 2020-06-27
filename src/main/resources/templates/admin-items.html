@@ -22,9 +22,9 @@
                         th:href="@{/logout}">Выход</a></span></span>
             </div>
             <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin}">Назад</a> <a
-                    class="btn btn-primary" th:href="@{/admin-items-add}">Создать</a></div>
+                    class="btn btn-primary" th:href="@{/admin/items/add}">Создать</a></div>
             <div align="left" style="margin-bottom:20px">
-                <form class="form-inline" method="GET" th:action="@{/admin-items}" th:object="${ctgSel}">
+                <form class="form-inline" method="GET" th:action="@{/admin/items}" th:object="${ctgSel}">
                     <div class="form-group">
                         <label for="category">Выберите категорию: </label>&nbsp;&nbsp;
                         <select class="form-control selectpicker" data-size="10" id="category" name="selcat">
@@ -67,10 +67,11 @@
                     <td th:utext="${item.getCategoryName()}">...</td>
                     <td><span th:if="${item.status}">Товар виден всем</span>
                         <span th:if="${!item.status}">Товар не отображается</span></td>
-                    <td><a class="btn btn-success" th:href="@{/items/{id}/edit(id=${item.getId()})}">Редактировать</a>
+                    <td><a class="btn btn-success"
+                           th:href="@{/admin/items/{id}/edit(id=${item.getId()})}">Редактировать</a>
                     </td>
                     <td><a class="btn btn-danger"
-                           th:href="@{/category/{c_id}/items/{i_id}/delete(c_id=${item.getCategoryId()},i_id=${item.getId()})}">Удалить</a>
+                           th:href="@{/admin/category/{c_id}/items/{i_id}/delete(c_id=${item.getCategoryId()},i_id=${item.getId()})}">Удалить</a>
                     </td>
                 </tr>
             </table>

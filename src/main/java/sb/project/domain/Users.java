@@ -1,16 +1,16 @@
 package sb.project.domain;
 
 import com.sun.istack.NotNull;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 
 @Entity
 public class Users {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
+    private long user_id;
     @Column(unique = true)
     @NotNull
     private String userName;
@@ -34,11 +34,11 @@ public class Users {
     private String token;
 
     public long getId() {
-        return id;
+        return user_id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long user_id) {
+        this.user_id = user_id;
     }
 
     public String getUserName() {
@@ -120,4 +120,27 @@ public class Users {
     public void setToken(String token) {
         this.token = token;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof Users)) return false;
+        Users o = (Users) obj;
+        return o.user_id == this.user_id;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("ID пользователя", user_id)
+                .append("E-mail", email)
+                .append("Имя", name)
+                .append("Фамилия", surname)
+                .append("Пол", gender)
+                .append("Привилегии", roles)
+                .append("Аккаунт активен", isActive)
+                .toString();
+    }
+
 }

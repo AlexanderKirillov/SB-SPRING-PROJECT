@@ -1,4 +1,4 @@
-package sb.project.rest;
+package sb.project.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,7 +24,6 @@ public class SecurityController {
 
     @GetMapping(value = "/login")
     public String loginPage(Model model) {
-        //emailService.sendMail("nowenui@bk.ru", "Test Subject", "Test mail");
         return "login";
     }
 
@@ -43,7 +42,7 @@ public class SecurityController {
     }
 
     @PostMapping(value = {"/registration"})
-    public String registrationPage(Model model, @ModelAttribute("user") @Valid Users user, BindingResult bindingResult, @RequestParam("gendername") String gendername) throws Exception {
+    public String registration(Model model, @ModelAttribute("user") @Valid Users user, BindingResult bindingResult, @RequestParam("gendername") String gendername) throws Exception {
         List<Users> userList = usersRepository.findAll();
 
         if (!user.getPassword().equals(user.getConfirmPassword())) {
@@ -64,6 +63,7 @@ public class SecurityController {
 
         if (bindingResult.hasErrors()) {
             return "registration";
+
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setActive(false);
@@ -73,7 +73,6 @@ public class SecurityController {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setToken(emailService.generateToken(user.getUserName()));
             emailService.sendConfirmationMail(user.getEmail(), user.getUserName(), "http://localhost:8080/users/confirm/" + user.getToken());
-
             usersRepository.save(user);
 
             return "successful-registration";

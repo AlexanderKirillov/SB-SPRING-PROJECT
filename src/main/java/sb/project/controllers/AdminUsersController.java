@@ -1,4 +1,4 @@
-package sb.project.rest;
+package sb.project.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,35 +13,32 @@ import sb.project.repositories.UsersRepository;
 import java.util.List;
 
 @Controller
-public class ThymeleafAdminUsersController {
+public class AdminUsersController {
 
     @Autowired
     private UsersRepository usersRepository;
 
-    @GetMapping(value = "/admin-users")
+    @GetMapping(value = "/admin/users")
     public String adminUsersPage(Model model, Authentication authentication) {
         List<Users> userList = usersRepository.findAll();
 
         if (authentication != null) {
             Users currentUser = usersRepository.findByUserName(authentication.getName()).get();
-
             userList.removeIf(user -> user.getId() == (currentUser.getId()));
         }
-
         model.addAttribute("users", userList);
-
 
         return "admin-users";
     }
 
-    @RequestMapping(value = "/users/{userId}/delete")
+    @RequestMapping(value = "/admin/users/{userId}/delete")
     public String adminDeleteUser(Model model, @PathVariable Long userId) {
         usersRepository.deleteById(userId);
 
-        return "redirect:/admin-users";
+        return "redirect:/admin/users";
     }
 
-    @RequestMapping(value = "/users/{userId}/setStatus")
+    @RequestMapping(value = "/admin/users/{userId}/setStatus")
     public String adminDeactivateUser(Model model, @PathVariable Long userId) {
         Users user = usersRepository.findById(userId).get();
 
@@ -53,11 +50,11 @@ public class ThymeleafAdminUsersController {
 
         usersRepository.save(user);
 
-        return "redirect:/admin-users";
+        return "redirect:/admin/users";
     }
 
-    @RequestMapping(value = "/users/{userId}/setAdmin")
-    public String adminSetAdminAToUser(Model model, @PathVariable Long userId) {
+    @RequestMapping(value = "/admin/users/{userId}/setRole")
+    public String adminSetUserRole(Model model, @PathVariable Long userId) {
         Users user = usersRepository.findById(userId).get();
 
         if (user.getRoles().equals("ROLE_USER")) {
@@ -68,8 +65,6 @@ public class ThymeleafAdminUsersController {
 
         usersRepository.save(user);
 
-        return "redirect:/admin-users";
+        return "redirect:/admin/users";
     }
-
-
 }

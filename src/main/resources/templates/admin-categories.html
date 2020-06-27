@@ -20,7 +20,7 @@
                         th:href="@{/logout}">Выход</a></span></span>
             </div>
             <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin}">Назад</a> <a
-                    class="btn btn-primary" th:href="@{/admin-categories-add}">Создать категорию</a></div>
+                    class="btn btn-primary" th:href="@{/admin/categories/add}">Создать категорию</a></div>
             <table class="table table-hover">
                 <tr>
                     <th>Номер</th>
@@ -39,10 +39,10 @@
                     <td th:utext="${category.getDescription()}">...</td>
                     <td><span th:if="${category.status}">Категория видна всем</span>
                         <span th:if="${!category.status}">Категория не отображается</span></td>
-                    <td><a class="btn btn-success" th:href="@{/categories/{id}/edit(id=${category.getId()})}">Редактировать</a>
+                    <td><a class="btn btn-success" th:href="@{/admin/categories/{id}/edit(id=${category.getId()})}">Редактировать</a>
                     </td>
                     <td><a class="btn btn-danger"
-                           th:href="@{/categories/{id}/delete(id=${category.getId()})}">Удалить</a></td>
+                           th:href="@{/admin/categories/{id}/delete(id=${category.getId()})}">Удалить</a></td>
                 </tr>
             </table>
         </div>

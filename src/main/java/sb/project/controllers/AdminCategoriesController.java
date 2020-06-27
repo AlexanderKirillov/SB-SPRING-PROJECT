@@ -1,4 +1,4 @@
-package sb.project.rest;
+package sb.project.controllers;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-public class ThymeleafAdminCategoriesController {
+public class AdminCategoriesController {
 
     @Autowired
     private CategoriesRepository categoriesRepository;
 
-    @GetMapping(value = "/admin")
-    public String adminMainPage(Model model) {
-        return "admin";
-    }
-
-    @GetMapping(value = "/admin-categories")
+    @GetMapping(value = "/admin/categories")
     public String adminCategoriesPage(Model model) {
         List<Categories> categoriesList = categoriesRepository.findAll();
 
@@ -37,14 +32,14 @@ public class ThymeleafAdminCategoriesController {
         return "admin-categories";
     }
 
-    @RequestMapping(value = "/categories/{categoryId}/delete")
+    @RequestMapping(value = "/admin/categories/{categoryId}/delete")
     public String adminDeleteCategory(Model model, @PathVariable Long categoryId) {
         categoriesRepository.deleteById(categoryId);
 
-        return "redirect:/admin-categories";
+        return "redirect:/admin/categories";
     }
 
-    @GetMapping(value = {"/admin-categories-add"})
+    @GetMapping(value = {"/admin/categories/add"})
     public String adminAddCategoryPage(Model model) {
         Categories ctg = new Categories();
 
@@ -53,17 +48,17 @@ public class ThymeleafAdminCategoriesController {
         return "admin-categories-add";
     }
 
-    @PostMapping(value = {"/admin-categories-add"})
+    @PostMapping(value = {"/admin/categories/add"})
     public String adminAddCategory(Model model, @ModelAttribute("category") Categories ctg,
                                    @RequestParam("img") MultipartFile file) throws IOException {
 
         ctg.setImage(file.getBytes());
         categoriesRepository.save(ctg);
 
-        return "redirect:/admin-categories";
+        return "redirect:/admin/categories";
     }
 
-    @GetMapping(value = {"/categories/{categoryId}/edit"})
+    @GetMapping(value = {"/admin/categories/{categoryId}/edit"})
     public String adminEditCategoryPage(Model model, @PathVariable long categoryId) {
         Categories category = categoriesRepository.findById(categoryId);
 
@@ -72,15 +67,13 @@ public class ThymeleafAdminCategoriesController {
         return "admin-categories-edit";
     }
 
-    @PostMapping(value = {"/categories/{categoryId}/edit"})
+    @PostMapping(value = {"/admin/categories/{categoryId}/edit"})
     public String adminEditCategory(Model model, @PathVariable long categoryId,
                                     @ModelAttribute("category") Categories category, @RequestParam("img") MultipartFile file) throws IOException {
         category.setId(categoryId);
         category.setImage(file.getBytes());
         categoriesRepository.save(category);
 
-        return "redirect:/admin-categories";
+        return "redirect:/admin/categories";
     }
-
-
 }

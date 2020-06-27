@@ -29,6 +29,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.3.1.RELEASE'
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
     compile group: 'commons-codec', name: 'commons-codec', version: '1.14'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     runtimeOnly 'com.h2database:h2'
 }
 

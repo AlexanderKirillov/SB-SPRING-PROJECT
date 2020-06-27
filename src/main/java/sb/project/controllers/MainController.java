@@ -1,4 +1,4 @@
-package sb.project.rest;
+package sb.project.controllers;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class ThymeleafUserController {
+public class MainController {
 
     @Autowired
     private CategoriesRepository categoriesRepository;
@@ -27,17 +27,10 @@ public class ThymeleafUserController {
 
     @GetMapping(value = "/main")
     public String userMainPage(Model model, @RequestParam(value = "selcat", required = false) Long selcat, @ModelAttribute("ctgSel") Categories ctgSel) {
-        List<Categories> categoriesList = categoriesRepository.findAll();
-        List<Categories> activeCategories = new ArrayList<Categories>();
+        List<Items> itemsList;
         List<Items> activeItems = new ArrayList<Items>();
 
-        for (Categories ctg : categoriesList) {
-            if (ctg.getStatus()) {
-                activeCategories.add(ctg);
-            }
-        }
-        List<Items> itemsList;
-
+        setCtgMenu(model);
         if (selcat == null) {
             itemsList = itemsRepository.findAll();
             for (Items item : itemsList) {
@@ -57,16 +50,10 @@ public class ThymeleafUserController {
         }
 
         model.addAttribute("items", activeItems);
-        model.addAttribute("categories", activeCategories);
 
         for (Items item : itemsList) {
             byte[] image = item.getImage();
             item.setImageString(Base64.encodeBase64String(image));
-        }
-
-        for (Categories activeCtg : activeCategories) {
-            byte[] image = activeCtg.getImage();
-            activeCtg.setImageString(Base64.encodeBase64String(image));
         }
 
         return "user-main";
@@ -74,9 +61,19 @@ public class ThymeleafUserController {
 
     @GetMapping(value = "/main/items/{itemId}")
     public String userItemPage(Model model, @PathVariable long itemId, @ModelAttribute("ctgSel") Categories ctgSel) {
+        Items item = itemsRepository.findById(itemId);
+
+        setCtgMenu(model);
+        model.addAttribute("item", item);
+        byte[] image = item.getImage();
+        item.setImageString(Base64.encodeBase64String(image));
+
+        return "user-main-item";
+    }
+
+    public void setCtgMenu(Model model) {
         List<Categories> categoriesList = categoriesRepository.findAll();
         List<Categories> activeCategories = new ArrayList<Categories>();
-        Items item = itemsRepository.findById(itemId);
 
         for (Categories ctg : categoriesList) {
             if (ctg.getStatus()) {
@@ -84,18 +81,11 @@ public class ThymeleafUserController {
             }
         }
 
-        model.addAttribute("categories", activeCategories);
-        model.addAttribute("currentCategory", item.getCategory().getName());
-        model.addAttribute("item", item);
-
-        byte[] image = item.getImage();
-        item.setImageString(Base64.encodeBase64String(image));
-
         for (Categories ctg : activeCategories) {
             byte[] img = ctg.getImage();
             ctg.setImageString(Base64.encodeBase64String(img));
         }
 
-        return "user-main-item";
+        model.addAttribute("categories", activeCategories);
     }
 }

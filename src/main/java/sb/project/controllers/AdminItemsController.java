@@ -1,4 +1,4 @@
-package sb.project.rest;
+package sb.project.controllers;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-public class ThymeleafAdminItemsController {
+public class AdminItemsController {
 
     @Autowired
     private CategoriesRepository categoriesRepository;
@@ -23,7 +23,7 @@ public class ThymeleafAdminItemsController {
     @Autowired
     private ItemsRepository itemsRepository;
 
-    @GetMapping(value = "/admin-items")
+    @GetMapping(value = "/admin/items")
     public String adminItemsPage(Model model, @RequestParam("selcat") Long selcat, @ModelAttribute("ctgSel") Categories ctgSel) {
         List<Categories> categoriesList = categoriesRepository.findAll();
         List<Items> itemsList;
@@ -48,7 +48,7 @@ public class ThymeleafAdminItemsController {
         return "admin-items";
     }
 
-    @RequestMapping(value = "/category/{categoryId}/items/{itemId}/delete")
+    @RequestMapping(value = "/admin/category/{categoryId}/items/{itemId}/delete")
     public String adminDeleteItem(Model model, @PathVariable long itemId, @PathVariable long categoryId) {
         Categories category = categoriesRepository.findById(categoryId);
         List<Items> items = category.getItems();
@@ -56,36 +56,35 @@ public class ThymeleafAdminItemsController {
         items.removeIf(item -> item.getId() == itemId);
         itemsRepository.deleteById(itemId);
 
-        return "redirect:/admin-items?selcat=0";
+        return "redirect:/admin/items?selcat=0";
     }
 
 
-    @GetMapping(value = {"/admin-items-add"})
+    @GetMapping(value = {"/admin/items/add"})
     public String adminAddItemPage(Model model) {
         List<Categories> categoriesList = categoriesRepository.findAll();
-        model.addAttribute("categories", categoriesList);
-
         Items item = new Items();
+
+        model.addAttribute("categories", categoriesList);
         model.addAttribute("item", item);
 
         return "admin-items-add";
     }
 
-    @PostMapping(value = {"/admin-items-add"})
+    @PostMapping(value = {"/admin/items/add"})
     public String adminAddItem(Model model, @ModelAttribute("item") Items item,
                                @RequestParam("img") MultipartFile file, @RequestParam("categoryId") Long catId) throws IOException {
         Categories ctg = categoriesRepository.findById(catId).get();
 
         item.setCategory(ctg);
         item.setImage(file.getBytes());
-
         itemsRepository.save(item);
 
-        return "redirect:/admin-items?selcat=0";
+        return "redirect:/admin/items?selcat=0";
     }
 
 
-    @GetMapping(value = {"/items/{itemId}/edit"})
+    @GetMapping(value = {"/admin/items/{itemId}/edit"})
     public String adminEditItemPage(Model model, @PathVariable long itemId) {
         List<Categories> categoriesList = categoriesRepository.findAll();
 
@@ -95,7 +94,7 @@ public class ThymeleafAdminItemsController {
         return "admin-items-edit";
     }
 
-    @PostMapping(value = {"/items/{itemId}/edit"})
+    @PostMapping(value = {"/admin/items/{itemId}/edit"})
     public String adminEditItem(Model model, @PathVariable long itemId, @ModelAttribute("item") Items item,
                                 @RequestParam("img") MultipartFile file, @RequestParam("ctgid") long ctgid) throws IOException {
         Categories ctg = categoriesRepository.findById(ctgid);
@@ -105,8 +104,6 @@ public class ThymeleafAdminItemsController {
         item.setImage(file.getBytes());
         itemsRepository.save(item);
 
-        return "redirect:/admin-items?selcat=0";
+        return "redirect:/admin/items?selcat=0";
     }
-
-
 }

@@ -42,13 +42,13 @@
     </div>
     <div class="col-9">
         <div class="card" style="margin: 15px;">
-            <div class="card-body">
-                <span style="font-weight:bold; font-size:30px">Профиль пользователя</span><br>
+            <div class="card-body" style="margin:20px">
+                <h4 class="display-4">Профиль пользователя</h4>
                 <table class="table-no-bordered">
                     <tr>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
-                    <tr style="margin-bottom:20px;">
+                    <tr style="margin-bottom:20px; align-items: center">
                         <td>Ваш никнейм: &nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td><span style="font-weight:bold; font-size:15px" th:utext="${user.getUserName()}"></span>
                         </td>
@@ -56,7 +56,7 @@
                     <tr>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
-                    <tr>
+                    <tr style="align-items: center">
                         <td>Ваш E-Mail: &nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td><a th:href="${'mailto:'+user.getEmail()}"><span style="font-weight:bold; font-size:15px"
                                                                             th:utext="${user.getEmail()}"></span></a>
@@ -64,21 +64,21 @@
                     <tr>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
-                    <tr>
+                    <tr style="align-items: center">
                         <td>Ваше имя: &nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td><span style="font-weight:bold; font-size:15px" th:utext="${user.getName()}"></span>
                     </tr>
                     <tr>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
-                    <tr>
+                    <tr style="align-items: center">
                         <td>Ваша фамилия: &nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td><span style="font-weight:bold; font-size:15px" th:utext="${user.getSurname()}"></span>
                     </tr>
                     <tr>
                         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
-                    <tr>
+                    <tr style="align-items: center">
                         <td>Ваш пол: &nbsp;&nbsp;&nbsp;&nbsp;</td>
                         <td><span style="font-weight:bold; font-size:15px" th:utext="${user.getGender()}"></span>
                     </tr>
@@ -87,7 +87,8 @@
                     </tr>
                 </table>
                 <div align="left" style="margin-bottom:20px">
-                    <button class="btn btn-primary" disabled th:href="@{#}">Редактировать профиль</button>
+                    <a class="btn btn-primary" th:href="@{/users/{id}/edit(id=${user.getId()})}">Редактировать
+                        профиль</a>
                     <a class="btn btn-primary" th:href="@{/main}">На главную страницу
                     </a>
                 </div>

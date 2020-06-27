@@ -52,24 +52,24 @@
                         <span th:if="${!user.isActive()}">Учетная запись неактивна</span></td>
                     <td>
                         <div th:if="${user.isActive()}">
-                            <a class="btn btn-success" th:href="@{/users/{id}/setStatus(id=${user.getId()})}">Деактивировать</a>
+                            <a class="btn btn-success" th:href="@{/admin/users/{id}/setStatus(id=${user.getId()})}">Деактивировать</a>
                         </div>
                         <div th:if="${!user.isActive()}">
-                            <a class="btn btn-success" th:href="@{/users/{id}/setStatus(id=${user.getId()})}">Активировать</a>
+                            <a class="btn btn-success" th:href="@{/admin/users/{id}/setStatus(id=${user.getId()})}">Активировать</a>
                         </div>
                     </td>
                     <td>
                         <div th:if="${user.getRoles()=='ROLE_USER'}">
-                            <a class="btn btn-success" th:href="@{/users/{id}/setAdmin(id=${user.getId()})}">Сделать
+                            <a class="btn btn-success" th:href="@{/admin/users/{id}/setRole(id=${user.getId()})}">Сделать
                                 админом</a>
                         </div>
                         <div th:if="${user.getRoles()=='ROLE_ADMIN'}">
-                            <a class="btn btn-success" th:href="@{/users/{id}/setAdmin(id=${user.getId()})}">Отозвать
+                            <a class="btn btn-success" th:href="@{/admin/users/{id}/setRole(id=${user.getId()})}">Отозвать
                                 привилегии админа</a>
                         </div>
                     </td>
                     <td><a class="btn btn-danger"
-                           th:href="@{/users/{id}/delete(id=${user.getId()})}">Удалить</a></td>
+                           th:href="@{/admin/users/{id}/delete(id=${user.getId()})}">Удалить</a></td>
                 </tr>
             </table>
         </div>

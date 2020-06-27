@@ -22,7 +22,7 @@
                         th:href="@{/logout}">Выход</a></span></span>
             </div>
             <form enctype="multipart/form-data"
-                  method="POST" th:action="@{/admin-items-add}" th:object="${item}">
+                  method="POST" th:action="@{/admin/items/add}" th:object="${item}">
                 <div style="width: 60rem;">
                     <table class="table-no-bordered">
                         <tr>
@@ -67,9 +67,10 @@
                         <tr>
                             <td>Категория <font color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td><select class="form-control selectpicker" data-size="10" name="categoryId" required>
+                                <option disabled selected value="">Выберите категорию</option>
                                 <option th:each="category : ${categories}"
                                         th:text="${category.getName()}"
-                                        th:value="${category.getId()}">Category
+                                        th:value="${category.getId()}">
                                 </option>
                             </select></td>
                         </tr>
@@ -102,7 +103,7 @@
                     </table>
                     <br>
                     <div align="center" style="margin-bottom:20px"><a class="btn btn-primary"
-                                                                      th:href="@{/admin-items?selcat=0}">Назад</a>&nbsp;&nbsp;&nbsp;&nbsp;<input
+                                                                      th:href="@{/admin/items?selcat=0}">Назад</a>&nbsp;&nbsp;&nbsp;&nbsp;<input
                             class="btn btn-success" type="submit" value="Создать элемент категории"/></div>
                 </div>
             </form>

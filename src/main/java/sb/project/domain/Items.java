@@ -1,5 +1,8 @@
 package sb.project.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +17,10 @@ public class Items {
     private float price;
     private String description;
     private boolean status;
+    @Lob
+    private byte[] image;
+    @Transient
+    private String imageString;
 
     @ManyToOne()
     @JoinColumn(name = "CATEGORY_ID_F", nullable = false)
@@ -21,16 +28,11 @@ public class Items {
 
     @Transient
     private String ctgName;
-
     @Transient
     private long ctgId;
 
-    @Lob
-    private byte[] image;
-    @Transient
-    private String imageString;
-
     public Items() {
+
     }
 
     public Items(long articul, String name, long count, float price, String description, boolean status, Categories category) {
@@ -132,9 +134,24 @@ public class Items {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof Items)) return false;
+        Items o = (Items) obj;
+        return o.item_id == this.item_id;
+    }
+
+    @Override
     public String toString() {
-        return String.format(
-                "Items[id=%d, articul='%s', name='%s', count='%d', price='%f', description='%s']",
-                item_id, articul, name, count, price, description);
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("ID товара", item_id)
+                .append("Артикул", articul)
+                .append("Название", name)
+                .append("Описание", description)
+                .append("Количество", count)
+                .append("Цена", price)
+                .append("Категория", ctgName)
+                .toString();
     }
 }

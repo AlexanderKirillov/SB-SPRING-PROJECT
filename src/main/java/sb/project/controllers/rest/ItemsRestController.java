@@ -1,4 +1,4 @@
-package sb.project.rest;
+package sb.project.controllers.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class ItemsController {
+public class ItemsRestController {
 
     @Autowired
     private ItemsRepository itemsRepository;

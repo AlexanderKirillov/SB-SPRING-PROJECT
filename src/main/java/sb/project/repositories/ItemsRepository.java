@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ItemsRepository extends CrudRepository<Items, Long> {
 
+    Items findById(long item_id);
+
     Items findByName(String name);
 
     List<Items> findAll();
-
-    Items findById(long item_id);
 
     void deleteById(long item_id);
 

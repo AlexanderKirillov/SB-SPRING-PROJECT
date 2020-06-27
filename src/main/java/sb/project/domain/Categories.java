@@ -1,6 +1,8 @@
 package sb.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +16,6 @@ public class Categories {
     private String name;
     private String description;
     private boolean status;
-
     @Lob
     private byte[] image;
     @Transient
@@ -26,6 +27,7 @@ public class Categories {
     private List<Items> items;
 
     public Categories() {
+
     }
 
     public Categories(String name, String description, boolean status) {
@@ -87,9 +89,21 @@ public class Categories {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof Categories)) return false;
+        Categories o = (Categories) obj;
+        return o.category_id == this.category_id;
+    }
+
+    @Override
     public String toString() {
-        return String.format(
-                "Categories[id=%d, name='%s', description='%s']",
-                category_id, name, description);
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("ID категории", category_id)
+                .append("Название", name)
+                .append("Описание", description)
+                .append("Статус", status)
+                .toString();
     }
 }
