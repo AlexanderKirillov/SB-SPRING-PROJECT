@@ -27,6 +27,9 @@ public class Items {
     @JoinColumn(name = "CATEGORY_ID_F", nullable = false)
     private Categories ctg;
 
+    @OneToOne(mappedBy = "bitem")
+    private BasketItem basketItem;
+
     @Transient
     private String ctgName;
     @Transient

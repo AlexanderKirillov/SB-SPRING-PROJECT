@@ -20,6 +20,8 @@
             class="btn btn-primary"
             th:href="@{/profile}">Мой профиль</a>&nbsp;&nbsp;</span><span><a
             class="btn btn-primary"
+            th:href="@{/main/basket}">Корзина</a>&nbsp;&nbsp;</span><span><a
+            class="btn btn-primary"
             th:href="@{/logout}">Выход</a></span></span>
 </div>
 <div sec:authorize="!isAuthenticated()" style="text-align: right;margin-right: 20px;">
@@ -56,6 +58,7 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <a class="card-link" th:href="@{/main/items/{id}/addtobasket(id=${item.getId()})}">В корзину</a>
                     <a class="card-link" th:href="@{/main/items/{id}(id=${item.getId()})}">Подробнее</a>
                 </div>
             </div>

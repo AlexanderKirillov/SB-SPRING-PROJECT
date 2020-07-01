@@ -30,8 +30,10 @@ public class Users {
     private String surname;
     @NotNull
     private String gender;
-
     private String token;
+
+    @OneToOne(mappedBy = "user")
+    private Basket basket;
 
     public long getId() {
         return user_id;
