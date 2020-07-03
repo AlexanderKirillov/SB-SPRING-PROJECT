@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sb.project.domain.Categories;
-import sb.project.domain.Items;
-import sb.project.repositories.CategoriesRepository;
-import sb.project.repositories.ItemsRepository;
+import sb.project.domain.Category;
+import sb.project.domain.Item;
+import sb.project.repositories.CategoryRepository;
+import sb.project.repositories.ItemRepository;
 
 import java.net.URI;
 import java.util.List;
@@ -17,25 +17,25 @@ import java.util.Optional;
 public class ItemsRestController {
 
     @Autowired
-    private ItemsRepository itemsRepository;
+    private ItemRepository itemRepository;
 
     @Autowired
-    private CategoriesRepository categoriesRepository;
+    private CategoryRepository categoryRepository;
 
     @GetMapping(value = "/categories/{categoryId}/items")
-    public List<Items> getAllItems(@PathVariable Long categoryId) {
-        Optional<Categories> categoryOptional = categoriesRepository.findById(categoryId);
+    public List<Item> getAllItems(@PathVariable Long categoryId) {
+        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
 
-        Categories category = categoryOptional.get();
+        Category category = categoryOptional.get();
 
         return category.getItems();
     }
 
     @GetMapping(value = "/categories/{categoryId}/items/{itemId}")
-    public Items getItemByID(@PathVariable Long itemId, @PathVariable Long categoryId) {
-        Optional<Items> item = itemsRepository.findById(itemId);
+    public Item getItemByID(@PathVariable Long itemId, @PathVariable Long categoryId) {
+        Optional<Item> item = itemRepository.findById(itemId);
 
-        Categories category = item.get().getCategory();
+        Category category = item.get().getCategory();
         if (category.getId() == categoryId) {
             return item.get();
         } else {
@@ -46,12 +46,12 @@ public class ItemsRestController {
 
     @DeleteMapping("/categories/{categoryId}/items/{itemId}")
     public void deleteItem(@PathVariable Long itemId) {
-        itemsRepository.deleteById(itemId);
+        itemRepository.deleteById(itemId);
     }
 
     @PostMapping("/categories/{categoryId}/items")
-    public ResponseEntity<Object> createItem(@RequestBody Items item) {
-        Items savedItem = itemsRepository.save(item);
+    public ResponseEntity<Object> createItem(@RequestBody Item item) {
+        Item savedItem = itemRepository.save(item);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{itemId}")
                 .buildAndExpand(savedItem.getId()).toUri();
@@ -60,13 +60,13 @@ public class ItemsRestController {
     }
 
     @PutMapping("/categories/{categoryId}/items/{itemId}")
-    public ResponseEntity<Object> updateItem(@RequestBody Items item, @PathVariable Long itemId) {
-        Optional<Items> itemOptional = itemsRepository.findById(itemId);
+    public ResponseEntity<Object> updateItem(@RequestBody Item item, @PathVariable Long itemId) {
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
 
         if (!itemOptional.isPresent())
             return ResponseEntity.notFound().build();
         item.setId(itemId);
-        itemsRepository.save(item);
+        itemRepository.save(item);
 
         return ResponseEntity.noContent().build();
     }

@@ -3,7 +3,7 @@ package sb.project.services;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import sb.project.domain.Users;
+import sb.project.domain.User;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,7 +19,7 @@ public class UserDetailsImpl implements UserDetails {
     private boolean isActive;
     private List<GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Users user) {
+    public UserDetailsImpl(User user) {
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.isActive = user.isActive();

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sb.project.domain.Categories;
-import sb.project.repositories.CategoriesRepository;
+import sb.project.domain.Category;
+import sb.project.repositories.CategoryRepository;
 
 import java.net.URI;
 import java.util.List;
@@ -15,28 +15,28 @@ import java.util.Optional;
 public class CategoriesRestController {
 
     @Autowired
-    private CategoriesRepository categoriesRepository;
+    private CategoryRepository categoryRepository;
 
     @GetMapping(value = "/categories")
-    public List<Categories> getAllCategories() {
-        return categoriesRepository.findAll();
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 
     @GetMapping(value = "/categories/{categoryId}")
-    public Categories getCategoryByID(@PathVariable Long categoryId) {
-        Optional<Categories> category = categoriesRepository.findById(categoryId);
+    public Category getCategoryByID(@PathVariable Long categoryId) {
+        Optional<Category> category = categoryRepository.findById(categoryId);
 
         return category.get();
     }
 
     @DeleteMapping("/categories/{categoryId}")
     public void deleteCategory(@PathVariable Long categoryId) {
-        categoriesRepository.deleteById(categoryId);
+        categoryRepository.deleteById(categoryId);
     }
 
     @PostMapping("/categories")
-    public ResponseEntity<Object> createCategory(@RequestBody Categories category) {
-        Categories savedCategory = categoriesRepository.save(category);
+    public ResponseEntity<Object> createCategory(@RequestBody Category category) {
+        Category savedCategory = categoryRepository.save(category);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{categoryId}")
                 .buildAndExpand(savedCategory.getId()).toUri();
@@ -45,13 +45,13 @@ public class CategoriesRestController {
     }
 
     @PutMapping("/categories/{categoryId}")
-    public ResponseEntity<Object> updateCategory(@RequestBody Categories category, @PathVariable Long categoryId) {
-        Optional<Categories> categoriesOptional = categoriesRepository.findById(categoryId);
+    public ResponseEntity<Object> updateCategory(@RequestBody Category category, @PathVariable Long categoryId) {
+        Optional<Category> categoriesOptional = categoryRepository.findById(categoryId);
 
         if (!categoriesOptional.isPresent())
             return ResponseEntity.notFound().build();
         category.setId(categoryId);
-        categoriesRepository.save(category);
+        categoryRepository.save(category);
 
         return ResponseEntity.noContent().build();
     }

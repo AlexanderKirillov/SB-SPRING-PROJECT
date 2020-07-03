@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sb.project.domain.Categories;
-import sb.project.repositories.CategoriesRepository;
+import sb.project.domain.Category;
+import sb.project.repositories.CategoryRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,15 +16,15 @@ import java.util.List;
 public class AdminCategoriesController {
 
     @Autowired
-    private CategoriesRepository categoriesRepository;
+    private CategoryRepository categoryRepository;
 
     @GetMapping(value = "/admin/categories")
     public String adminCategoriesPage(Model model) {
-        List<Categories> categoriesList = categoriesRepository.findAll();
+        List<Category> categoryList = categoryRepository.findAll();
 
-        model.addAttribute("categories", categoriesList);
+        model.addAttribute("categories", categoryList);
 
-        for (Categories category : categoriesList) {
+        for (Category category : categoryList) {
             byte[] image = category.getImage();
             category.setImageString(Base64.encodeBase64String(image));
         }
@@ -34,14 +34,14 @@ public class AdminCategoriesController {
 
     @RequestMapping(value = "/admin/categories/{categoryId}/delete")
     public String adminDeleteCategory(Model model, @PathVariable Long categoryId) {
-        categoriesRepository.deleteById(categoryId);
+        categoryRepository.deleteById(categoryId);
 
         return "redirect:/admin/categories";
     }
 
     @GetMapping(value = {"/admin/categories/add"})
     public String adminAddCategoryPage(Model model) {
-        Categories ctg = new Categories();
+        Category ctg = new Category();
 
         model.addAttribute("category", ctg);
 
@@ -49,18 +49,18 @@ public class AdminCategoriesController {
     }
 
     @PostMapping(value = {"/admin/categories/add"})
-    public String adminAddCategory(Model model, @ModelAttribute("category") Categories ctg,
+    public String adminAddCategory(Model model, @ModelAttribute("category") Category ctg,
                                    @RequestParam("img") MultipartFile file) throws IOException {
 
         ctg.setImage(file.getBytes());
-        categoriesRepository.save(ctg);
+        categoryRepository.save(ctg);
 
         return "redirect:/admin/categories";
     }
 
     @GetMapping(value = {"/admin/categories/{categoryId}/edit"})
     public String adminEditCategoryPage(Model model, @PathVariable long categoryId) {
-        Categories category = categoriesRepository.findById(categoryId);
+        Category category = categoryRepository.findById(categoryId);
 
         model.addAttribute("category", category);
 
@@ -69,10 +69,10 @@ public class AdminCategoriesController {
 
     @PostMapping(value = {"/admin/categories/{categoryId}/edit"})
     public String adminEditCategory(Model model, @PathVariable long categoryId,
-                                    @ModelAttribute("category") Categories category, @RequestParam("img") MultipartFile file) throws IOException {
+                                    @ModelAttribute("category") Category category, @RequestParam("img") MultipartFile file) throws IOException {
         category.setId(categoryId);
         category.setImage(file.getBytes());
-        categoriesRepository.save(category);
+        categoryRepository.save(category);
 
         return "redirect:/admin/categories";
     }

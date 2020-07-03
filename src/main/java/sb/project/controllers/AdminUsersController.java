@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import sb.project.domain.Users;
-import sb.project.repositories.UsersRepository;
+import sb.project.domain.User;
+import sb.project.repositories.UserRepository;
 
 import java.util.List;
 
@@ -16,14 +16,14 @@ import java.util.List;
 public class AdminUsersController {
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UserRepository userRepository;
 
     @GetMapping(value = "/admin/users")
     public String adminUsersPage(Model model, Authentication authentication) {
-        List<Users> userList = usersRepository.findAll();
+        List<User> userList = userRepository.findAll();
 
         if (authentication != null) {
-            Users currentUser = usersRepository.findByUserName(authentication.getName()).get();
+            User currentUser = userRepository.findByUserName(authentication.getName()).get();
             userList.removeIf(user -> user.getId() == (currentUser.getId()));
         }
         model.addAttribute("users", userList);
@@ -33,14 +33,14 @@ public class AdminUsersController {
 
     @RequestMapping(value = "/admin/users/{userId}/delete")
     public String adminDeleteUser(Model model, @PathVariable Long userId) {
-        usersRepository.deleteById(userId);
+        userRepository.deleteById(userId);
 
         return "redirect:/admin/users";
     }
 
     @RequestMapping(value = "/admin/users/{userId}/setStatus")
     public String adminDeactivateUser(Model model, @PathVariable Long userId) {
-        Users user = usersRepository.findById(userId).get();
+        User user = userRepository.findById(userId).get();
 
         if (user.isActive()) {
             user.setActive(false);
@@ -48,14 +48,14 @@ public class AdminUsersController {
             user.setActive(true);
         }
 
-        usersRepository.save(user);
+        userRepository.save(user);
 
         return "redirect:/admin/users";
     }
 
     @RequestMapping(value = "/admin/users/{userId}/setRole")
     public String adminSetUserRole(Model model, @PathVariable Long userId) {
-        Users user = usersRepository.findById(userId).get();
+        User user = userRepository.findById(userId).get();
 
         if (user.getRoles().equals("ROLE_USER")) {
             user.setRoles("ROLE_ADMIN");
@@ -63,7 +63,7 @@ public class AdminUsersController {
             user.setRoles("ROLE_USER");
         }
 
-        usersRepository.save(user);
+        userRepository.save(user);
 
         return "redirect:/admin/users";
     }

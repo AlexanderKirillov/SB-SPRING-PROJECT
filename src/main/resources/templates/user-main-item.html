@@ -20,7 +20,7 @@
             class="btn btn-primary"
             th:href="@{/profile}">Мой профиль</a>&nbsp;&nbsp;</span><span><a
             class="btn btn-primary"
-            th:href="@{/main/basket}">Корзина</a>&nbsp;&nbsp;</span><span><a
+            th:href="@{/main/shoppingCart}">Корзина</a>&nbsp;&nbsp;</span><span><a
             class="btn btn-primary"
             th:href="@{/logout}">Выход</a></span></span>
 </div>
@@ -44,10 +44,10 @@
     </div>
     <div class="col-9">
         <div class="card" style="margin: 15px;">
-            <div class="card-body" style="margin:20px">
+            <div class="card-body" style="margin-left:20px;margin-right:20px">
                 <div class="row">
                     <div class="col-3">
-                        <img height="100%" th:src="@{'data:image/jpeg;base64,'+${item.getImageString()}}"
+                        <img height="90%" th:src="@{'data:image/jpeg;base64,'+${item.getImageString()}}"
                              width="100%">
                     </div>
                     <div class="col-9">
@@ -58,9 +58,17 @@
                         <span th:utext="${item.getDescription()}"></span><br><br>
                         <span style="font-weight:bold; font-size:17px">Количество на складе:</span> <span
                             style="font-size:20px" th:utext="${item.getCount()}"></span><br><br>
-                        <a class="btn btn-success" th:href="@{/main/items/{id}/addtobasket(id=${item.getId()})}">В
-                            корзину</a><br><br>
-                        <a class="btn btn-primary" th:href="@{/main}">На главную страницу</a>
+                        <div sec:authorize="isAuthenticated()"><a class="card-link btn btn-success btn-lg"
+                                                                  th:href="@{/main/items/{id}/addToCart(id=${item.getId()})}"
+                                                                  th:if="${item.getCount()}>0 ">В
+                            корзину</a></div>
+                        <div sec:authorize="!isAuthenticated()">
+                            <div class="alert alert-warning" role="alert">Для добавления товара в корзину необходимо
+                                войти на сайт!
+                            </div>
+                        </div>
+                        <br>
+                        <a class="btn btn-outline-primary" th:href="@{/main}">На главную страницу</a>
                     </div>
                 </div>
             </div>

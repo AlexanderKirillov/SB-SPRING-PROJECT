@@ -20,7 +20,7 @@
             class="btn btn-primary"
             th:href="@{/profile}">Мой профиль</a>&nbsp;&nbsp;</span><span><a
             class="btn btn-primary"
-            th:href="@{/main/basket}">Корзина</a>&nbsp;&nbsp;</span><span><a
+            th:href="@{/main/shoppingCart}">Корзина</a>&nbsp;&nbsp;</span><span><a
             class="btn btn-primary"
             th:href="@{/logout}">Выход</a></span></span>
 </div>
@@ -46,7 +46,7 @@
         <span style="font-weight:bold; font-size:20px"
               th:text="'Товары из категории: ' + ${currentCategory.toLowerCase()}"></span>
         <div class="row">
-            <div class="card" style="width: 15rem; margin: 15px;" th:each="item: ${items}">
+            <div class="card" style="width: 16rem; margin: 15px;" th:each="item: ${items}">
                 <img class="card-img-top" height="60%" th:src="@{'data:image/jpeg;base64,'+${item.getImageString()}}"
                      width="100%">
                 <div class="card-body">
@@ -58,12 +58,15 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <a class="card-link" th:href="@{/main/items/{id}/addtobasket(id=${item.getId()})}">В корзину</a>
+                    <a class="card-link btn btn-outline-success"
+                       th:href="@{/main/items/{id}/addToCart(id=${item.getId()})}"
+                       th:if="${item.getCount()}>0">В корзину</a>
                     <a class="card-link" th:href="@{/main/items/{id}(id=${item.getId()})}">Подробнее</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script crossorigin="anonymous"

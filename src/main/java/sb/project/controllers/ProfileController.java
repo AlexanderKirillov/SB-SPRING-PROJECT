@@ -9,15 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sb.project.domain.Categories;
-import sb.project.domain.Users;
-import sb.project.repositories.CategoriesRepository;
-import sb.project.repositories.UsersRepository;
+import sb.project.domain.Category;
+import sb.project.domain.User;
+import sb.project.repositories.CategoryRepository;
+import sb.project.repositories.UserRepository;
 import sb.project.services.UserDetailsImpl;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,17 +25,17 @@ import java.util.List;
 public class ProfileController {
 
     @Autowired
-    private CategoriesRepository categoriesRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UserRepository userRepository;
 
     @GetMapping(value = "/profile")
-    public String profilePage(Model model, @ModelAttribute("ctgSel") Categories ctgSel, Authentication authentication) {
+    public String profilePage(Model model, @ModelAttribute("ctgSel") Category ctgSel, Authentication authentication) {
         setCtgMenu(model);
 
         if (authentication != null) {
-            Users user = usersRepository.findByUserName(authentication.getName()).get();
+            User user = userRepository.findByUserName(authentication.getName()).get();
             model.addAttribute("user", user);
         }
 
@@ -46,7 +44,7 @@ public class ProfileController {
 
     @GetMapping(value = {"/users/{profileId}/edit"})
     public String userProfileEditPage(Model model, @PathVariable long profileId) {
-        Users user = usersRepository.findById(profileId).get();
+        User user = userRepository.findById(profileId).get();
 
         model.addAttribute("user", user);
         setCtgMenu(model);
@@ -56,16 +54,16 @@ public class ProfileController {
 
     @PostMapping(value = {"/users/{profileId}/edit"})
     public String userProfileEdit(Model model, @PathVariable long profileId,
-                                  @ModelAttribute("user") @Valid Users user, BindingResult bindingResult,
-                                  @RequestParam("gendername") String gendername, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+                                  @ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+                                  @RequestParam("gendername") String gendername) throws IOException, ServletException {
         setCtgMenu(model);
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        List<Users> userList = usersRepository.findAll();
-        Users thisUser = usersRepository.findById(profileId).get();
+        List<User> userList = userRepository.findAll();
+        User thisUser = userRepository.findById(profileId).get();
 
         for (int i = 0; i < userList.size(); i++) {
-            Users usr = userList.get(i);
+            User usr = userList.get(i);
             if (usr.getId() == profileId) {
                 userList.remove(i);
             }
@@ -75,13 +73,13 @@ public class ProfileController {
             bindingResult.rejectValue("password", "error.password", "Пароли не совпадают!");
         }
 
-        for (Users exuser : userList) {
+        for (User exuser : userList) {
             if (user.getUserName().equals(exuser.getUserName())) {
                 bindingResult.rejectValue("userName", "error.userName", "Пользователь с таким никнейном уже зарегистрирован!");
             }
         }
 
-        for (Users exuser : userList) {
+        for (User exuser : userList) {
             if (user.getEmail().toLowerCase().equals(exuser.getEmail().toLowerCase())) {
                 bindingResult.rejectValue("email", "error.email", "Пользователь с такой электронной почтой уже зарегистрирован!");
             }
@@ -96,7 +94,7 @@ public class ProfileController {
             user.setRoles(thisUser.getRoles());
             user.setGender(gendername);
 
-            usersRepository.save(user);
+            userRepository.save(user);
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -108,16 +106,16 @@ public class ProfileController {
     }
 
     public void setCtgMenu(Model model) {
-        List<Categories> categoriesList = categoriesRepository.findAll();
-        List<Categories> activeCategories = new ArrayList<Categories>();
+        List<Category> categoryList = categoryRepository.findAll();
+        List<Category> activeCategories = new ArrayList<Category>();
 
-        for (Categories ctg : categoriesList) {
+        for (Category ctg : categoryList) {
             if (ctg.getStatus()) {
                 activeCategories.add(ctg);
             }
         }
 
-        for (Categories ctg : activeCategories) {
+        for (Category ctg : activeCategories) {
             byte[] img = ctg.getImage();
             ctg.setImageString(Base64.encodeBase64String(img));
         }
