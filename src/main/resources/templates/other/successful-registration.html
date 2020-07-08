@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Регистрация</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <div class="container">
+                <h4 class="display-4" style="margin-bottom: 15px">Регистрация успешно завершена!</h4>
+            </div>
+            <img height="100px" src="https://i.ibb.co/fX4djjk/register.png">
+            <br><br><span style="font-size: large">Благодарим Вас за регистрацию!</span><br><br>
+            <span style="font-size: large">На указанный E-mail отправлено письмо с инструкцией по активации аккаунта!</span><br><br>
+            <a class="btn btn-primary" th:href="@{/main}">Перейти на главную страницу</a>&nbsp;&nbsp;<a
+                class="btn btn-primary" th:href="@{/login}">Перейти на страницу входа</a>
+        </div>
+        <br/>
+    </div>
+    </div>
+</center>
+</body>
+</html>

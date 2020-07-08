@@ -45,7 +45,7 @@ public class AdminItemsController {
             item.setImageString(Base64.encodeBase64String(image));
         }
 
-        return "admin-items";
+        return "admin/admin-items";
     }
 
     @RequestMapping(value = "/admin/category/{categoryId}/items/{itemId}/delete")
@@ -68,7 +68,7 @@ public class AdminItemsController {
         model.addAttribute("categories", categoryList);
         model.addAttribute("item", item);
 
-        return "admin-items-add";
+        return "admin/admin-items-add";
     }
 
     @PostMapping(value = {"/admin/items/add"})
@@ -91,7 +91,7 @@ public class AdminItemsController {
         model.addAttribute("categories", categoryList);
         model.addAttribute("item", itemRepository.findById(itemId));
 
-        return "admin-items-edit";
+        return "admin/admin-items-edit";
     }
 
     @PostMapping(value = {"/admin/items/{itemId}/edit"})
@@ -101,7 +101,11 @@ public class AdminItemsController {
 
         item.setId(itemId);
         item.setCategory(ctg);
-        item.setImage(file.getBytes());
+        if (!file.isEmpty()) {
+            item.setImage(file.getBytes());
+        } else {
+            item.setImage(item.getImage());
+        }
         itemRepository.save(item);
 
         return "redirect:/admin/items?selcat=0";

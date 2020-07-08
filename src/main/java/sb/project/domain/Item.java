@@ -11,7 +11,7 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long item_id;
+    private long id;
     private long articul;
     private String name;
     private long count;
@@ -48,11 +48,11 @@ public class Item {
     }
 
     public long getId() {
-        return item_id;
+        return id;
     }
 
-    public void setId(long item_id) {
-        this.item_id = item_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getArticul() {
@@ -149,13 +149,13 @@ public class Item {
         if (obj == this) return true;
         if (!(obj instanceof Item)) return false;
         Item o = (Item) obj;
-        return o.item_id == this.item_id;
+        return o.id == this.id;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("ID товара", item_id)
+                .append("ID товара", id)
                 .append("Артикул", articul)
                 .append("Название", name)
                 .append("Описание", description)

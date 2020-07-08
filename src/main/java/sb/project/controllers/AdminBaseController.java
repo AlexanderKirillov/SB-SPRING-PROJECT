@@ -9,6 +9,6 @@ public class AdminBaseController {
 
     @GetMapping(value = "/admin")
     public String adminMainPage(Model model) {
-        return "admin";
+        return "admin/admin-base";
     }
 }

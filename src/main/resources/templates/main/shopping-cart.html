@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Корзина</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+    <link href="https://gitcdn.link/repo/AlexanderKirillov/SB-SPRING-PROJECT/master/src/main/resources/static/css/logo.css"
+          rel="stylesheet">
+    <link href="https://gitcdn.link/repo/AlexanderKirillov/SB-SPRING-PROJECT/master/src/main/resources/static/css/navbar.css"
+          rel="stylesheet">
+</head>
+<body>
+<div><a th:href="@{/main}"><h1><i class="fas fa-microchip"></i> <i class="fas fa-desktop"></i> Компьютерные
+    комплектующие</h1></a></div>
+<div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+    <span><span style="color: black">Вы вошли как: <b><span
+            sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="btn btn-primary" th:href="@{/admin}"><i aria-hidden="true"
+                                                                      class="fas fa-users-cog"></i>  Панель администратора</a></span>&nbsp;&nbsp;<span><a
+            class="btn btn-primary"
+            th:href="@{/profile}"><i aria-hidden="true"
+                                     class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
+            class="btn btn-primary"
+            th:href="@{/myOrders}"><i aria-hidden="true"
+                                      class="fas fa-laptop"></i>  Мои заказы</a>&nbsp;&nbsp;</span><span><a
+            class="btn btn-primary"
+            th:href="@{/main/shoppingCart}"><i aria-hidden="true" class="fas fa-shopping-cart"></i>  Корзина</a>&nbsp;&nbsp;</span><span><a
+            class="btn btn-primary"
+            th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
+</div>
+<div sec:authorize="!isAuthenticated()" style="text-align: right;margin-right: 20px;">
+    <span><a class="btn btn-primary" th:href="@{/login}"><i aria-hidden="true" class="fas fa-sign-in-alt"></i>  Вход</a></span>&nbsp;&nbsp;<span><a
+        class="btn btn-primary" th:href="@{/registration}"><i aria-hidden="true" class="fas fa-user-plus"></i>  Регистрация</a></span>
+</div>
+<div class="row">
+    <div class="col-3">
+        <div class="category-wrap" style="margin-top:20px;margin-right:20px;margin-left:20px;">
+            <h3>Категории</h3>
+            <ul>
+                <li><a th:href="@{/main}">(не учитывать)</a></li>
+            </ul>
+            <ul th:each="category: ${categories}">
+                <li><img height="30px" th:src="@{'data:image/jpeg;base64,'+${category.getImageString()}}" width="30px">&nbsp;&nbsp;<a
+                        th:href="@{/main?selcat={id}(id=${category.getId()})}"
+                        th:utext="${category.getName()}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="card" style="margin-left: 5px;margin-right: 20px;margin-top: 20px;margin-bottom:20px">
+            <div class="card-body" style="margin-left:20px;margin-right:20px">
+                <h4 class="display-4" style="margin-bottom:20px">Корзина</h4>
+                <div th:if="${shoppingCartItems==null || shoppingCartItems.isEmpty()}"><h5>Пока что тут пусто!</h5>
+                    <br>
+                    <img height="80px" src="https://i.ibb.co/268RcPg/17-cart-cat-icon-icons-com-76693.png"
+                         style="margin-left:20px;margin-right:20px;"
+                         width="80px">
+                    <br><br>
+                    <a class="btn btn-primary" th:href="@{/main}"><i
+                            aria-hidden="true"
+                            class="fas fa-cart-plus"></i> Продолжить
+                        покупки</a></div>
+                <div th:if="${shoppingCartItems!=null && !shoppingCartItems.isEmpty()}">
+                    <div class="card" style="margin-bottom:20px" th:each="shoppingCartItem: ${shoppingCartItems}">
+                        <div class="card-body" style="margin-left:20px;margin-right:20px;">
+                            <div class="row">
+                                <div class="col-xs-4"><span
+                                        style="position: relative;top: 35%;transform: translateY(-50%);margin-right:20px;"><a
+                                        class="btn btn-danger"
+                                        th:href="@{/main/shoppingCart/items/{id}/delete(id=${shoppingCartItem.getId()})}"><i
+                                        aria-hidden="true"
+                                        class="fas fa-trash-alt"></i></a></span></div>
+                                <div class="col-xs-8">
+                                    <table class="table-no-bordered">
+                                        <tr style="margin-bottom:20px; align-items: center">
+                                            <td>Товар: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><span style="font-weight:bold; font-size:15px"
+                                                      th:utext="${shoppingCartItem.getGoods().name}"></span>&nbsp;<span
+                                                    style="font-weight:bold; font-size:15px"
+                                                    th:utext="'(артикул: '+${shoppingCartItem.getGoods().articul}+')'"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+                                        <tr style="margin-bottom:20px; align-items: center">
+                                            <td>Количество: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><a class="btn btn-outline-primary"
+                                                   th:href="@{/main/shoppingCart/items/{id}/remq(id=${shoppingCartItem.getId()})}">–</a>&nbsp;&nbsp;
+                                                <span style="font-weight:bold; font-size:15px"
+                                                      th:utext="${shoppingCartItem.quantity}"></span>&nbsp;&nbsp;
+                                                <a class="btn btn-outline-primary"
+                                                   th:href="@{/main/shoppingCart/items/{id}/addq(id=${shoppingCartItem.getId()})}">+</a>
+                                            </td>
+                                        </tr>
+                                        <div th:if="${error}">
+                                            <tr>
+                                                <td></td>
+                                                <td><br>
+                                                    <div class="alert alert-danger" role="alert">
+                                                        <span th:utext="${error}"></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <span style="margin-bottom:20px;margin-top:20px;font-size:25px">Общая цена: </span><span
+                        style="font-weight:bold; font-size:25px"
+                        th:utext="${totalPrice}"></span><br><br>
+                    <div align="left">
+                        <a class="btn btn-success" th:href="@{/main/shoppingCart/checkout}"><i aria-hidden="true"
+                                                                                               class="fas fa-tasks"></i>
+                            Оформить заказ</a>&nbsp;&nbsp;&nbsp;&nbsp;<a
+                            class="btn btn-primary" th:href="@{/main}"><i aria-hidden="true"
+                                                                          class="fas fa-cart-plus"></i>
+                        Продолжить
+                        покупки
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script charset="utf8" src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script charset="utf8" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-right">
+                        <h4 class="display-4">Панель администратора&nbsp;&nbsp;&nbsp;&nbsp;</h4><br>
+                    </div>
+                    <div class="col-md-left">
+                        <img height="80px" src="https://img.icons8.com/dusk/64/000000/admin-settings-male.png"
+                             width="80px"/>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+            <span><span style="color: black">Вы вошли как: <b><span
+                    sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a
+                    class="btn btn-primary"
+                    th:href="@{/profile}"><i aria-hidden="true"
+                                             class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/main/}"><i aria-hidden="true" class="fas fa-home"></i>  Главная страница</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
+            </div>
+            <br/>
+            <div align="center" style="margin-bottom:20px;width: 20rem;"><a class="btn btn-primary btn-block"
+                                                                            th:href="@{/admin/categories}">Управление
+                категориями</a><br><a class="btn btn-primary btn-block" th:href="@{/admin/items?selcat=0}">Управление
+                товарами</a><br><a class="btn btn-primary btn-block" th:href="@{/admin/users}">Управление
+                пользователями</a><br><a class="btn btn-primary btn-block" th:href="@{/admin/orders}">Управление
+                заказами</a></div>
+        </div>
+    </div>
+</center>
+</body>
+</html>

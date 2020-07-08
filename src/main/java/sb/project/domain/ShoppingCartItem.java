@@ -1,5 +1,8 @@
 package sb.project.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,7 +10,7 @@ public class ShoppingCartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long shoppingCartItem_id;
+    private long id;
 
     @ManyToOne()
     @JoinColumn(name = "SHOPPINGCART_ID_F", nullable = false)
@@ -23,11 +26,11 @@ public class ShoppingCartItem {
     }
 
     public long getId() {
-        return shoppingCartItem_id;
+        return id;
     }
 
-    public void setId(long shoppingCartItem_id) {
-        this.shoppingCartItem_id = shoppingCartItem_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public ShoppingCart getShoppingCart() {
@@ -52,5 +55,24 @@ public class ShoppingCartItem {
 
     public void setQuantity(long quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof ShoppingCartItem)) return false;
+        ShoppingCartItem o = (ShoppingCartItem) obj;
+        return o.id == this.id;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("ID элемента корзины", id)
+                .append("Корзина, к которой относится элемент", shoppingCart)
+                .append("Товар", goods)
+                .append("Количество товара", quantity)
+                .toString();
     }
 }

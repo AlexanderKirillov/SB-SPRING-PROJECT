@@ -12,7 +12,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long category_id;
+    private long id;
     private String name;
     private String description;
     private boolean status;
@@ -37,11 +37,11 @@ public class Category {
     }
 
     public long getId() {
-        return category_id;
+        return id;
     }
 
-    public void setId(long category_id) {
-        this.category_id = category_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -98,13 +98,13 @@ public class Category {
         if (obj == this) return true;
         if (!(obj instanceof Category)) return false;
         Category o = (Category) obj;
-        return o.category_id == this.category_id;
+        return o.id == this.id;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("ID категории", category_id)
+                .append("ID категории", id)
                 .append("Название", name)
                 .append("Описание", description)
                 .append("Статус", status)

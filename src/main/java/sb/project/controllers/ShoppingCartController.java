@@ -39,7 +39,7 @@ public class ShoppingCartController {
     private UserRepository userRepository;
 
     @GetMapping(value = "/main/shoppingCart")
-    public String ShoppingCartPage(Model model, Authentication authentication) {
+    public String shoppingCartPage(Model model, Authentication authentication) {
         setCtgMenu(model);
 
         List<ShoppingCartItem> shoppingCartItems = null;
@@ -47,15 +47,16 @@ public class ShoppingCartController {
 
         if (authentication != null) {
             User user = userRepository.findByUserName(authentication.getName()).get();
-            Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findByUser(user);
+            Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findByUserAndStatus(user, "in_cart");
 
-            if (shoppingCartRepository.findByUser(user).isPresent()) {
+            if (shoppingCartOptional.isPresent()) {
                 shoppingCart = shoppingCartOptional.get();
                 shoppingCartItems = shoppingCart.getCartItems();
                 shoppingCart.setTotalPrice();
             } else {
                 shoppingCart = new ShoppingCart();
                 shoppingCart.setUser(user);
+                shoppingCart.setStatus("in_cart");
                 shoppingCartItems = shoppingCart.getCartItems();
             }
 
@@ -65,7 +66,7 @@ public class ShoppingCartController {
             model.addAttribute("totalPrice", shoppingCart.getTotalPrice());
         }
 
-        return "shopping-cart";
+        return "main/shopping-cart";
     }
 
     @GetMapping(value = "/main/items/{itemId}/addToCart")
@@ -76,10 +77,12 @@ public class ShoppingCartController {
 
         if (authentication != null) {
             user = userRepository.findByUserName(authentication.getName()).get();
+            Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findByUserAndStatus(user, "in_cart");
 
-            if (shoppingCartRepository.findByUser(user).isEmpty()) {
+            if (shoppingCartOptional.isEmpty()) {
                 shoppingCart = new ShoppingCart();
                 shoppingCart.setUser(user);
+                shoppingCart.setStatus("in_cart");
                 shoppingCartRepository.save(shoppingCart);
 
                 shoppingCartItem = new ShoppingCartItem();
@@ -90,12 +93,12 @@ public class ShoppingCartController {
                 shoppingCartItemRepository.save(shoppingCartItem);
 
             } else {
-                shoppingCart = shoppingCartRepository.findByUser(user).get();
+                shoppingCart = shoppingCartRepository.findByUserAndStatus(user, "in_cart").get();
 
-                List<ShoppingCartItem> ShoppingCartItemList = shoppingCart.getCartItems();
+                List<ShoppingCartItem> shoppingCartItemList = shoppingCart.getCartItems();
                 Optional<ShoppingCartItem> basItem = shoppingCartItemRepository.findByGoodsAndShoppingCart(itemRepository.findById(itemId), shoppingCart);
 
-                if (basItem.isPresent() && ShoppingCartItemList.contains(basItem.get())) {
+                if (basItem.isPresent() && shoppingCartItemList.contains(basItem.get())) {
                     ShoppingCartItem ShoppingCart_item = shoppingCartItemRepository.findByGoodsAndShoppingCart(itemRepository.findById(itemId), shoppingCart).get();
                     if (ShoppingCart_item.getQuantity() < ShoppingCart_item.getGoods().getCount()) {
                         ShoppingCart_item.setQuantity(ShoppingCart_item.getQuantity() + 1);
@@ -117,7 +120,7 @@ public class ShoppingCartController {
     }
 
     @RequestMapping(value = "/main/shoppingCart/items/{itemId}/delete")
-    public String ShoppingCartDeleteItem(Model model, @PathVariable long itemId, Authentication authentication) {
+    public String shoppingCartDeleteItem(Model model, @PathVariable long itemId, Authentication authentication) {
         User user = null;
         Optional<ShoppingCart> shoppingCartOptional;
         ShoppingCart shoppingCart = null;
@@ -125,7 +128,7 @@ public class ShoppingCartController {
 
         if (authentication != null) {
             user = userRepository.findByUserName(authentication.getName()).get();
-            shoppingCartOptional = shoppingCartRepository.findByUser(user);
+            shoppingCartOptional = shoppingCartRepository.findByUserAndStatus(user, "in_cart");
 
             if (shoppingCartOptional.isPresent()) {
                 shoppingCart = shoppingCartOptional.get();
@@ -142,30 +145,54 @@ public class ShoppingCartController {
     }
 
     @RequestMapping(value = "/main/shoppingCart/items/{itemId}/addq")
-    public String ShoppingCartAddQuantity(@Valid Model model, @PathVariable long itemId, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public String shoppingCartAddQuantity(@Valid Model model, @PathVariable long itemId, Authentication authentication, RedirectAttributes redirectAttributes) {
+        User user = null;
+        Optional<ShoppingCart> shoppingCartOptional;
+        ShoppingCart shoppingCart = null;
 
-        ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findById(itemId).get();
+        if (authentication != null) {
+            user = userRepository.findByUserName(authentication.getName()).get();
 
-        if (shoppingCartItem.getQuantity() < shoppingCartItem.getGoods().getCount()) {
-            shoppingCartItem.setQuantity(shoppingCartItem.getQuantity() + 1);
-            shoppingCartItemRepository.save(shoppingCartItem);
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Произошла ошибка при увеличении количества товара в корзине. На складе недостаточно товара!");
+            shoppingCartOptional = shoppingCartRepository.findByUserAndStatus(user, "in_cart");
+
+            if (shoppingCartOptional.isPresent()) {
+                shoppingCart = shoppingCartOptional.get();
+                ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findByIdAndShoppingCart(itemId, shoppingCart).get();
+                if (shoppingCartItem.getQuantity() < shoppingCartItem.getGoods().getCount()) {
+                    shoppingCartItem.setQuantity(shoppingCartItem.getQuantity() + 1);
+                    shoppingCartItemRepository.save(shoppingCartItem);
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "Произошла ошибка при увеличении количества товара в корзине. На складе недостаточно товара!");
+                }
+            }
+
         }
 
         return "redirect:/main/shoppingCart";
     }
 
     @RequestMapping(value = "/main/shoppingCart/items/{itemId}/remq")
-    public String ShoppingCartRemoveQuantity(Model model, @PathVariable long itemId, Authentication authentication) {
+    public String shoppingCartRemoveQuantity(Model model, @PathVariable long itemId, Authentication authentication) {
+        User user = null;
+        Optional<ShoppingCart> shoppingCartOptional;
+        ShoppingCart shoppingCart = null;
 
-        ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findById(itemId).get();
+        if (authentication != null) {
+            user = userRepository.findByUserName(authentication.getName()).get();
 
-        if (shoppingCartItem.getQuantity() == 1) {
-            ShoppingCartDeleteItem(model, itemId, authentication);
-        } else {
-            shoppingCartItem.setQuantity(shoppingCartItem.getQuantity() - 1);
-            shoppingCartItemRepository.save(shoppingCartItem);
+            shoppingCartOptional = shoppingCartRepository.findByUserAndStatus(user, "in_cart");
+
+            if (shoppingCartOptional.isPresent()) {
+                shoppingCart = shoppingCartOptional.get();
+                ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findByIdAndShoppingCart(itemId, shoppingCart).get();
+                if (shoppingCartItem.getQuantity() == 1) {
+                    shoppingCartDeleteItem(model, itemId, authentication);
+                } else {
+                    shoppingCartItem.setQuantity(shoppingCartItem.getQuantity() - 1);
+                    shoppingCartItemRepository.save(shoppingCartItem);
+                }
+            }
+
         }
 
         return "redirect:/main/shoppingCart";

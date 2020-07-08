@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Вход</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-2 align-items-left">
+                    <a class="btn btn-primary" th:href="@{/main}"><i aria-hidden="true"
+                                                                     class="fas fa-home"></i> На главную</a>
+                </div>
+                <div class="col-8 align-items-center">
+                    <h4 class="display-4">Вход</h4>
+                </div>
+            </div>
+            <div style="width: 20rem;alignment: center">
+                <form method="post" th:action="@{/login}">
+                    <fieldset>
+                        <div th:if="${param.error}">
+                            <div class="alert alert-danger">
+                                Неверный никнейм и(или) пароль
+                            </div>
+                        </div>
+                        <div th:if="${param.logout}">
+                            <div class="alert alert-info">
+                                Выход успешно выполнен!
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input autofocus="true" class="form-control input-lg" id="username" name="username"
+                                   placeholder="Никнейм" required="true" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control input-lg" id="password" name="password" placeholder="Пароль"
+                                   required="true" type="password"/>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Войти"/>
+
+                    </fieldset>
+                </form>
+                <br>
+                <span>У Вас нет аккаунта? <a th:href="@{/registration}">Зарегистрироваться.</a></span>
+            </div>
+        </div>
+        <br/>
+    </div>
+    </div>
+</center>
+</body>
+</html>

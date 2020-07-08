@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Заказ принят!</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <div class="container">
+                <h4 class="display-4" style="margin-bottom: 15px">Заказ №<span th:utext="${order.getId()}"></span>
+                    принят в обработку!</h4>
+            </div>
+            <img height="100px" src="https://i.ibb.co/X53n0p3/fast-delivery-116471.png">
+            <br><br>
+            <span style="font-size: large">Письмо с информацией о заказе отправлено на Вашу электронную почту!</span><br><br>
+            <span style="font-size: large">В ближайшее время с Вами свяжется наш менеджер!</span><br><br>
+            <a class="btn btn-primary" th:href="@{/main}">Перейти на главную страницу</a>
+        </div>
+        <br/>
+    </div>
+    </div>
+</center>
+</body>
+</html>

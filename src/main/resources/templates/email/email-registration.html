@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Подтверждение регистрации</title>
+</head>
+<body>
+<p></p>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody>
+    <tr>
+        <td style="padding: 10px 0 30px 0;">
+            <table align="center" border="0" cellpadding="0" cellspacing="0"
+                   style="border: 1px solid #cccccc; border-collapse: collapse;"
+                   width="600">
+                <tbody>
+                <tr>
+                    <td align="center" bgcolor="#5cb885"
+                        style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                        <img height="150px" src="https://i.ibb.co/X2kp1k0/login-2.png"
+                             style="display: block;" width="150px"/></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+                        <table border="0" cellpadding="0" cellspacing="0" style="height: 171px;" width="100%">
+                            <tbody>
+                            <tr style="height: 79px;">
+                                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px; height: 79px;">
+                                    <p><b>Спасибо за регистрацию<br/>на сайте "Компьютерные комплектующие"!</b></p>
+                                </td>
+                            </tr>
+                            <tr style="height: 71px;">
+                                <td style="padding: 20px 0px 30px; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; height: 71px;">
+                                    <p>Для активации аккаунта пожалуйста перейдите по ссылке:&nbsp;</p>
+                                    <p><a th:href="@{'http://localhost:8080/users/confirm/'+${token}}"
+                                          th:utext="${'http://localhost:8080/users/confirm/'+token}"></a></p>
+                                </td>
+                            </tr>
+                            <tr style="height: 21px;">
+                                <td style="height: 21px;"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ee4c50" style="padding: 30px 30px 30px 30px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tbody>
+                            <tr>
+                                <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;"
+                                    width="75%">&reg; Александр Кириллов
+                                </td>
+                                <td align="right" width="25%">
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                        <tr>
+                                            <td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; width: 39px;"></td>
+                                            <td style="font-size: 0px; line-height: 0; width: 20px;" width="20">&nbsp;
+                                            </td>
+                                            <td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; width: 39px;"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+
+</html>

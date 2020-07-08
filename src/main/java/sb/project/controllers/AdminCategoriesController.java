@@ -29,7 +29,7 @@ public class AdminCategoriesController {
             category.setImageString(Base64.encodeBase64String(image));
         }
 
-        return "admin-categories";
+        return "admin/admin-categories";
     }
 
     @RequestMapping(value = "/admin/categories/{categoryId}/delete")
@@ -45,7 +45,7 @@ public class AdminCategoriesController {
 
         model.addAttribute("category", ctg);
 
-        return "admin-categories-add";
+        return "admin/admin-categories-add";
     }
 
     @PostMapping(value = {"/admin/categories/add"})
@@ -64,14 +64,20 @@ public class AdminCategoriesController {
 
         model.addAttribute("category", category);
 
-        return "admin-categories-edit";
+        return "admin/admin-categories-edit";
     }
 
     @PostMapping(value = {"/admin/categories/{categoryId}/edit"})
     public String adminEditCategory(Model model, @PathVariable long categoryId,
                                     @ModelAttribute("category") Category category, @RequestParam("img") MultipartFile file) throws IOException {
         category.setId(categoryId);
-        category.setImage(file.getBytes());
+
+        if (!file.isEmpty()) {
+            category.setImage(file.getBytes());
+        } else {
+            category.setImage(category.getImage());
+        }
+
         categoryRepository.save(category);
 
         return "redirect:/admin/categories";

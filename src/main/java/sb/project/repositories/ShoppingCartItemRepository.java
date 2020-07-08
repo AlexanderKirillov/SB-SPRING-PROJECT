@@ -15,5 +15,7 @@ public interface ShoppingCartItemRepository extends CrudRepository<ShoppingCartI
 
     Optional<ShoppingCartItem> findByGoodsAndShoppingCart(Item item, ShoppingCart shoppingCart);
 
+    Optional<ShoppingCartItem> findByIdAndShoppingCart(long id, ShoppingCart shoppingcart);
+
     void deleteById(long id);
 }

@@ -8,7 +8,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import sb.project.domain.Category;
 import sb.project.domain.User;
 import sb.project.repositories.CategoryRepository;
@@ -39,32 +42,32 @@ public class ProfileController {
             model.addAttribute("user", user);
         }
 
-        return "profile";
+        return "main/profile";
     }
 
-    @GetMapping(value = {"/users/{profileId}/edit"})
-    public String userProfileEditPage(Model model, @PathVariable long profileId) {
-        User user = userRepository.findById(profileId).get();
+    @GetMapping(value = {"/profile/edit"})
+    public String userProfileEditPage(Model model, Authentication authentication) {
+        User user = userRepository.findByUserName(authentication.getName()).get();
 
         model.addAttribute("user", user);
+
         setCtgMenu(model);
 
-        return "profile-edit";
+        return "main/profile-edit";
     }
 
-    @PostMapping(value = {"/users/{profileId}/edit"})
-    public String userProfileEdit(Model model, @PathVariable long profileId,
-                                  @ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                                  @RequestParam("gendername") String gendername) throws IOException, ServletException {
+    @PostMapping(value = {"/profile/edit"})
+    public String userProfileEdit(Model model, @ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+                                  @RequestParam("gendername") String gendername, Authentication authentication) throws IOException, ServletException {
         setCtgMenu(model);
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         List<User> userList = userRepository.findAll();
-        User thisUser = userRepository.findById(profileId).get();
+        User thisUser = userRepository.findByUserName(authentication.getName()).get();
 
         for (int i = 0; i < userList.size(); i++) {
             User usr = userList.get(i);
-            if (usr.getId() == profileId) {
+            if (usr.getId() == thisUser.getId()) {
                 userList.remove(i);
             }
         }
@@ -86,9 +89,9 @@ public class ProfileController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "profile-edit";
+            return "main/profile-edit";
         } else {
-            user.setId(profileId);
+            user.setId(thisUser.getId());
             user.setActive(true);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRoles(thisUser.getRoles());
@@ -96,7 +99,7 @@ public class ProfileController {
 
             userRepository.save(user);
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            authentication = SecurityContextHolder.getContext().getAuthentication();
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
             userDetails.setUsername(user.getUserName());
             userDetails.setPassword(user.getPassword());
@@ -122,5 +125,4 @@ public class ProfileController {
 
         model.addAttribute("categories", activeCategories);
     }
-
 }

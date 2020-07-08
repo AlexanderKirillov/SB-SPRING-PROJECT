@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Page</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <h4 class="display-4">Информация о заказе №<span th:utext="${order.getId()}"></span></h4><br>
+            <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+            <span><span style="color: black">Вы вошли как: <b><span
+                    sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a
+                    class="btn btn-primary"
+                    th:href="@{/profile}"><i aria-hidden="true"
+                                             class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/main/}"><i aria-hidden="true" class="fas fa-home"></i>  Главная страница</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
+            </div>
+            <br>
+            <div align="left" style="margin-bottom:20px;margin-left:20px;"><a class="btn btn-primary"
+                                                                              th:href="@{/admin/orders}"><i
+                    aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a>&nbsp;&nbsp;<a
+                    class="btn btn-danger" th:href="@{/admin/orders/{id}/delete(id=${order.getId()})}"><i
+                    aria-hidden="true" class="fas fa-trash-alt"></i> Удалить заказ из
+                БД</a></div>
+            <div class="card" style="width: 50rem;margin:0 auto;">
+                <div class="card-body">
+                    <table class="table-no-bordered">
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="margin-bottom:20px; align-items: center">
+                            <td>Номер заказа: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><span style="font-weight:bold; font-size:15px" th:utext="${order.getId()}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="align-items: center">
+                            <td>Дата заказа: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><span style="font-weight:bold; font-size:15px"
+                                      th:utext="${order.getDateTimeOrder()}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="align-items: center">
+                            <td>Статус заказа: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><span style="font-weight:bold; font-size:15px"
+                                      th:utext="${order.getOrderStatus()}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="align-items: center">
+                            <td>Фамилия заказчика: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><span style="font-weight:bold; font-size:15px" th:utext="${order.getSurname()}"></span>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="align-items: center">
+                            <td>Имя заказчика: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><span style="font-weight:bold; font-size:15px" th:utext="${order.getName()}"></span>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="align-items: center">
+                            <td>Отчество заказчика: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><span style="font-weight:bold; font-size:15px"
+                                      th:utext="${order.getMiddlename()}"></span>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="align-items: center">
+                            <td>E-mail заказчика: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><span style="font-weight:bold; font-size:15px"
+                                      th:utext="${order.getOrderUser().getEmail()}"></span>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="align-items: center">
+                            <td>Адрес заказчика: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><span style="font-weight:bold; font-size:15px" th:utext="${order.getAddress()}"></span>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr style="align-items: center">
+                            <td>Телефон заказчика: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><span style="font-weight:bold; font-size:15px" th:utext="${order.getPhone()}"></span>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                    </table>
+                    <br><span style="font-size:25px">Товары в заказе: </span><br><br>
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th>Артикул</th>
+                            <th>Товар</th>
+                            <th>Количество</th>
+                        </tr>
+                        <tr th:each="shoppingCartItem : ${order.getShoppingCartOrder().getCartItems()}">
+                            <td th:utext="${shoppingCartItem.getGoods().articul}">...</td>
+                            <td th:utext="${shoppingCartItem.getGoods().name}">...</td>
+                            <td th:utext="${shoppingCartItem.getQuantity()}">...</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</center>
+</body>
+</html>

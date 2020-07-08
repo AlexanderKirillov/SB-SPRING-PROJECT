@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Ошибка!</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <div class="container">
+                <h4 class="display-4" style="margin-bottom: 15px;color: red">Произошла ошибка при оформлении
+                    заказа!</h4>
+            </div>
+            <div style="width: 50rem;alignment: center">
+                <span style="font-size: x-large">Заказ невозможно оформить, если в корзине отсутствуют товары!</span><br><br>
+                <a class="btn btn-primary" th:href="@{/main}">Перейти на главную страницу</a>&nbsp;
+            </div>
+        </div>
+        <br/>
+    </div>
+    </div>
+</center>
+</body>
+</html>

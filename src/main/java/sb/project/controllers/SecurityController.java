@@ -12,6 +12,7 @@ import sb.project.services.EmailService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class SecurityController {
@@ -24,12 +25,12 @@ public class SecurityController {
 
     @GetMapping(value = "/login")
     public String loginPage(Model model) {
-        return "login";
+        return "security/login";
     }
 
     @GetMapping(value = "/access-error")
     public String accessErrorPage(Model model) {
-        return "access-denied-page";
+        return "error/access-denied-page";
     }
 
     @GetMapping(value = {"/registration"})
@@ -38,11 +39,11 @@ public class SecurityController {
 
         model.addAttribute("user", user);
 
-        return "registration";
+        return "security/registration";
     }
 
     @PostMapping(value = {"/registration"})
-    public String registration(Model model, @ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam("gendername") String gendername) throws Exception {
+    public String registration(Model model, @ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam("gendername") String gendername, Locale locale) throws Exception {
         List<User> userList = userRepository.findAll();
 
         if (!user.getPassword().equals(user.getConfirmPassword())) {
@@ -62,7 +63,7 @@ public class SecurityController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return "security/registration";
 
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -72,24 +73,24 @@ public class SecurityController {
             user.setGender(gendername);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setToken(emailService.generateToken(user.getUserName()));
-            emailService.sendConfirmationMail(user.getEmail(), user.getUserName(), "http://localhost:8080/users/confirm/" + user.getToken());
+            emailService.sendConfirmationMail(user.getEmail(), user.getToken(), locale);
             userRepository.save(user);
 
-            return "successful-registration";
+            return "other/successful-registration";
         }
     }
 
     @RequestMapping(value = "/users/confirm/{token}")
     public String emailConfirmPage(Model model, @PathVariable String token) {
         if (userRepository.findByToken(token).isEmpty()) {
-            return "unsuccessful-acc-confirm";
+            return "other/unsuccessful-acc-confirm";
         } else {
             User user = userRepository.findByToken(token).get();
             user.setActive(true);
             user.setToken(null);
             userRepository.save(user);
 
-            return "successful-acc-confirm";
+            return "other/successful-acc-confirm";
         }
     }
 }

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<div class="card bg-light mb-3" style="width: 100rem;margin:0 auto;">
+    <div class="card-body">
+        <center><h4 class="display-4">Категории</h4></center>
+        <br>
+        <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+            <span><span style="color: black">Вы вошли как: <b><span
+                    sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a
+                    class="btn btn-primary"
+                    th:href="@{/profile}"><i aria-hidden="true"
+                                             class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/main/}"><i aria-hidden="true" class="fas fa-home"></i>  Главная страница</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
+        </div>
+        <br>
+        <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin}"><i
+                aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a> <a
+                class="btn btn-primary" th:href="@{/admin/categories/add}"><i aria-hidden="true"
+                                                                              class="fas fa-plus"></i> Добавить
+            категорию</a></div>
+        <table class="table table-hover" id="ctgstable" style="width:100%">
+            <thead>
+            <tr class="table-secondary">
+                <th class="align-middle">Номер</th>
+                <th class="align-middle">Изображение</th>
+                <th class="align-middle">Имя</th>
+                <th class="align-middle">Описание</th>
+                <th class="align-middle">Статус</th>
+                <th class="align-middle"></th>
+                <th class="align-middle"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category,index : ${categories}">
+                <td class="align-middle" th:utext="${index.count}">...</td>
+                <td class="align-middle"><img height="70"
+                                              th:src="@{'data:image/jpeg;base64,'+${category.getImageString()}}"
+                                              width="70"/>
+                </td>
+                <td class="align-middle" th:utext="${category.getName()}">...</td>
+                <td class="align-middle" th:utext="${category.getDescription()}">...</td>
+                <td class="align-middle"><span th:if="${category.status}">Категория видна всем</span>
+                    <span th:if="${!category.status}">Категория не отображается</span></td>
+                <td class="align-middle"><a class="btn btn-success"
+                                            th:href="@{/admin/categories/{id}/edit(id=${category.getId()})}"><i
+                        aria-hidden="true" class="fas fa-pencil-alt"></i></a>
+                </td>
+                <td class="align-middle"><a class="btn btn-danger"
+                                            th:href="@{/admin/categories/{id}/delete(id=${category.getId()})}"><i
+                        aria-hidden="true"
+                        class="fas fa-trash-alt"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js" type="text/javascript"></script>
+<script charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"
+        type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ctgstable").DataTable({
+            "pagingType": "full_numbers",
+            "paging": true,
+            "ordering": false,
+            "info": true,
+            "language": {
+                "processing": "Подождите...",
+                "search": "Поиск:",
+                "lengthMenu": "Показать _MENU_ категорий на странице",
+                "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Записи с 0 до 0 (из 0 записей)",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "infoPostFix": "",
+                "loadingRecords": "Загрузка записей...",
+                "zeroRecords": "Записи отсутствуют.",
+                "emptyTable": "В таблице отсутствуют данные",
+                "paginate": {
+                    "first": "<<",
+                    "previous": "<",
+                    "next": ">",
+                    "last": ">>"
+                },
+                "aria": {
+                    "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sortDescending": ": активировать для сортировки столбца по убыванию"
+                },
+                "select": {
+                    "rows": {
+                        "_": "Выбрано записей: %d",
+                        "0": "Кликните по записи для выбора",
+                        "1": "Выбрана одна запись"
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

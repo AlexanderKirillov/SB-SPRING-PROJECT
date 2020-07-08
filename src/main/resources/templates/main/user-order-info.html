@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Информация о заказе</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+    <link href="https://gitcdn.link/repo/AlexanderKirillov/SB-SPRING-PROJECT/master/src/main/resources/static/css/logo.css"
+          rel="stylesheet">
+    <link href="https://gitcdn.link/repo/AlexanderKirillov/SB-SPRING-PROJECT/master/src/main/resources/static/css/navbar.css"
+          rel="stylesheet">
+</head>
+<body>
+<div><a th:href="@{/main}"><h1><i class="fas fa-microchip"></i> <i class="fas fa-desktop"></i> Компьютерные
+    комплектующие</h1></a></div>
+<div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+    <span><span style="color: black">Вы вошли как: <b><span
+            sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="btn btn-primary" th:href="@{/admin}"><i aria-hidden="true"
+                                                                      class="fas fa-users-cog"></i>  Панель администратора</a></span>&nbsp;&nbsp;<span><a
+            class="btn btn-primary"
+            th:href="@{/profile}"><i aria-hidden="true"
+                                     class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
+            class="btn btn-primary"
+            th:href="@{/myOrders}"><i aria-hidden="true"
+                                      class="fas fa-laptop"></i>  Мои заказы</a>&nbsp;&nbsp;</span><span><a
+            class="btn btn-primary"
+            th:href="@{/main/shoppingCart}"><i aria-hidden="true" class="fas fa-shopping-cart"></i>  Корзина</a>&nbsp;&nbsp;</span><span><a
+            class="btn btn-primary"
+            th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
+</div>
+<div sec:authorize="!isAuthenticated()" style="text-align: right;margin-right: 20px;">
+    <span><a class="btn btn-primary" th:href="@{/login}"><i aria-hidden="true" class="fas fa-sign-in-alt"></i>  Вход</a></span>&nbsp;&nbsp;<span><a
+        class="btn btn-primary" th:href="@{/registration}"><i aria-hidden="true" class="fas fa-user-plus"></i>  Регистрация</a></span>
+</div>
+<div class="row">
+    <div class="col-3">
+        <div class="category-wrap" style="margin-top:20px;margin-right:20px;margin-left:20px;">
+            <h3>Категории</h3>
+            <ul>
+                <li><a th:href="@{/main}">(не учитывать)</a></li>
+            </ul>
+            <ul th:each="category: ${categories}">
+                <li><img height="30px" th:src="@{'data:image/jpeg;base64,'+${category.getImageString()}}" width="30px">&nbsp;&nbsp;<a
+                        th:href="@{/main?selcat={id}(id=${category.getId()})}"
+                        th:utext="${category.getName()}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="card" style="margin-left: 5px;margin-right: 20px;margin-top: 20px;margin-bottom:20px">
+            <div class="card-body" style="margin-left:20px;margin-right:20px;">
+                <h4 class="display-4"><a class="btn btn-secondary" th:href="@{/myOrders}"><i
+                        aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a> Информация о заказе №<span
+                        th:utext="${order.getId()}"></span></h4>
+                <table class="table-no-bordered">
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style=" align-items: center">
+                        <td><b>Дата заказа:</b> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span th:utext="${order.getDateTimeOrder()}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="margin-bottom:20px; align-items: center">
+                        <td><b>Статус заказа:</b> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span th:utext="${order.getOrderStatus()}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="margin-bottom:20px; align-items: center">
+                        <td><b>Фамилия заказчика:</b> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span th:utext="${order.getSurname()}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="margin-bottom:20px; align-items: center">
+                        <td><b>Имя заказчика:</b> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span th:utext="${order.getName()}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="margin-bottom:20px; align-items: center">
+                        <td><b>Отчество заказчика:</b> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span th:utext="${order.getMiddlename()}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="margin-bottom:20px; align-items: center">
+                        <td><b>E-mail заказчика:</b> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span th:utext="${order.getOrderUser().getEmail()}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="margin-bottom:20px; align-items: center">
+                        <td><b>Адрес заказчика:</b> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span th:utext="${order.getAddress()}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr style="margin-bottom:20px; align-items: center">
+                        <td><b>Телефон заказчика:</b> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><span th:utext="${order.getPhone()}"></span>
+                        </td>
+                    </tr>
+                </table>
+                <br><span style="font-size:25px">Товары в заказе: </span><br><br>
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Артикул</th>
+                        <th>Товар</th>
+                        <th>Количество</th>
+                    </tr>
+                    <tr th:each="shoppingCartItem : ${order.getShoppingCartOrder().getCartItems()}">
+                        <td th:utext="${shoppingCartItem.getGoods().articul}">...</td>
+                        <td th:utext="${shoppingCartItem.getGoods().name}">...</td>
+                        <td th:utext="${shoppingCartItem.getQuantity()}">...</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script charset="utf8" src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script charset="utf8" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+</body>
+</html>

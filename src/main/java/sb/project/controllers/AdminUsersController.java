@@ -28,7 +28,7 @@ public class AdminUsersController {
         }
         model.addAttribute("users", userList);
 
-        return "admin-users";
+        return "admin/admin-users";
     }
 
     @RequestMapping(value = "/admin/users/{userId}/delete")

@@ -14,7 +14,9 @@ import sb.project.repositories.CategoryRepository;
 import sb.project.repositories.ItemRepository;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class MainController {
@@ -27,10 +29,11 @@ public class MainController {
 
     @GetMapping(value = "/main")
     public String userMainPage(Model model, @RequestParam(value = "selcat", required = false) Long selcat, @ModelAttribute("ctgSel") Category ctgSel) {
-        List<Item> itemsList;
-        List<Item> activeItems = new ArrayList<Item>();
-
         setCtgMenu(model);
+
+        List<Item> itemsList;
+        Set<Item> activeItems = new LinkedHashSet<Item>();
+
         if (selcat == null) {
             itemsList = itemRepository.findAll();
             for (Item item : itemsList) {
@@ -56,19 +59,20 @@ public class MainController {
             item.setImageString(Base64.encodeBase64String(image));
         }
 
-        return "user-main";
+        return "main/user-main";
     }
 
     @GetMapping(value = "/main/items/{itemId}")
     public String userItemPage(Model model, @PathVariable long itemId, @ModelAttribute("ctgSel") Category ctgSel) {
-        Item item = itemRepository.findById(itemId);
-
         setCtgMenu(model);
+
+        Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
+
         byte[] image = item.getImage();
         item.setImageString(Base64.encodeBase64String(image));
 
-        return "user-main-item";
+        return "main/user-main-item";
     }
 
     public void setCtgMenu(Model model) {

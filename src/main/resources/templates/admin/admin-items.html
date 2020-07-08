@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
+          rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<div class="card bg-light mb-3" style="width: 100rem;margin:0 auto;">
+    <div class="card-body">
+        <center><h4 class="display-4">Товары</h4></center>
+        <br>
+        <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+            <span><span style="color: black">Вы вошли как: <b><span
+                    sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a
+                    class="btn btn-primary"
+                    th:href="@{/profile}"><i aria-hidden="true"
+                                             class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/main/}"><i aria-hidden="true" class="fas fa-home"></i>  Главная страница</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
+        </div>
+        <br>
+        <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin}"><i
+                aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a> <a
+                class="btn btn-primary" th:href="@{/admin/items/add}"><i aria-hidden="true" class="fas fa-plus"></i>
+            Добавить товар</a></div>
+        <div align="left" style="margin-bottom:20px">
+            <form class="form-inline" method="GET" th:action="@{/admin/items}" th:object="${ctgSel}">
+                <div class="form-group">
+                    <label for="category">Выберите категорию: </label>&nbsp;&nbsp;
+                    <select class="form-control selectpicker" id="category" name="selcat">
+                        <option th:value="0">(по-умолчанию)</option>
+                        <option data-divider="true"></option>
+                        <option th:each="category : ${categories}"
+                                th:text="${category.getName()}"
+                                th:value="${category.getId()}">
+                        </option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" type="submit"><i aria-hidden="true" class="fas fa-check-circle"></i>
+                </button>
+                &nbsp;&nbsp;&nbsp;&nbsp;-->&nbsp;&nbsp;&nbsp;&nbsp;
+                <span th:text="'(выбранная категория: ' + ${currentCategory.toLowerCase()} +')'"></span>
+            </form>
+        </div>
+        <table class="table table-hover" id="itemstable">
+            <thead>
+            <tr class="table-secondary">
+                <th class="align-middle">Номер</th>
+                <th class="align-middle">Изображение</th>
+                <th class="align-middle">Артикул</th>
+                <th class="align-middle">Название</th>
+                <th class="align-middle">Описание</th>
+                <th class="align-middle">Количество</th>
+                <th class="align-middle">Цена</th>
+                <th class="align-middle">Категория</th>
+                <th class="align-middle">Статус</th>
+                <th class="align-middle"></th>
+                <th class="align-middle"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item,index : ${items}">
+                <td class="align-middle" th:utext="${index.count}">...</td>
+                <td class="align-middle"><img height="70" th:src="@{'data:image/jpeg;base64,'+${item.getImageString()}}"
+                                              width="70"/>
+                </td>
+                <td class="align-middle" th:utext="${item.getArticul()}">...</td>
+                <td class="align-middle" th:utext="${item.getName()}">...</td>
+                <td class="align-middle" th:utext="${item.getDescription()}">...</td>
+                <td class="align-middle" th:utext="${item.getCount()}">...</td>
+                <td class="align-middle" th:utext="${item.getPrice()}">...</td>
+                <td class="align-middle" th:utext="${item.getCategoryName()}">...</td>
+                <td class="align-middle"><span th:if="${item.status}">Товар виден всем</span>
+                    <span th:if="${!item.status}">Товар не отображается</span></td>
+                <td class="align-middle"><a class="btn btn-success"
+                                            th:href="@{/admin/items/{id}/edit(id=${item.getId()})}"><i
+                        aria-hidden="true"
+                        class="fas fa-pencil-alt"></i></a>
+                </td>
+                <td class="align-middle"><a class="btn btn-danger"
+                                            th:href="@{/admin/category/{c_id}/items/{i_id}/delete(c_id=${item.getCategoryId()},i_id=${item.getId()})}"><i
+                        aria-hidden="true" class="fas fa-trash-alt"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script charset="utf8" src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script charset="utf8" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script charset="utf8"
+        src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js" type="text/javascript"></script>
+<script charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"
+        type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#itemstable").DataTable({
+            "pagingType": "full_numbers",
+            "paging": true,
+            "ordering": false,
+            "info": true,
+            "language": {
+                "processing": "Подождите...",
+                "search": "Поиск:",
+                "lengthMenu": "Показать _MENU_ товаров на странице",
+                "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Записи с 0 до 0 (из 0 записей)",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "infoPostFix": "",
+                "loadingRecords": "Загрузка записей...",
+                "zeroRecords": "Записи отсутствуют.",
+                "emptyTable": "В таблице отсутствуют данные",
+                "paginate": {
+                    "first": "<<",
+                    "previous": "<",
+                    "next": ">",
+                    "last": ">>"
+                },
+                "aria": {
+                    "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sortDescending": ": активировать для сортировки столбца по убыванию"
+                },
+                "select": {
+                    "rows": {
+                        "_": "Выбрано записей: %d",
+                        "0": "Кликните по записи для выбора",
+                        "1": "Выбрана одна запись"
+                    }
+                }
+            }
+
+        });
+    });
+</script>
+</body>
+</html>

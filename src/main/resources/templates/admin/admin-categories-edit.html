@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <h4 class="display-4">Редактирование категории</h4><br>
+            <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+            <span><span style="color: black">Вы вошли как: <b><span
+                    sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a
+                    class="btn btn-primary"
+                    th:href="@{/profile}"><i aria-hidden="true"
+                                             class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/main/}"><i aria-hidden="true" class="fas fa-home"></i>  Главная страница</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
+            </div>
+            <br>
+            <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin/categories}"><i
+                    aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a></div>
+            <form enctype="multipart/form-data"
+                  method="POST" th:action="@{/admin/categories/{id}/edit(id=${category.getId()})}"
+                  th:object="${category}">
+                <div style="width: 40rem;">
+                    <table class="table-no-bordered">
+                        <tr style="margin-bottom:20px;">
+                            <td>Название <font color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><input class="form-control" required th:field="*{name}" th:value="*{name}" type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>Описание <font color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><input class="form-control" required size="50"
+                                       th:field="*{description}" th:value="*{description}" type="text"/></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>Изображение: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>
+                                <div class="custom-file">
+                                    <input class="custom-file-input" id="validatedCustomFile" name="img"
+                                           type="file">
+                                    <label class="custom-file-label" for="validatedCustomFile">Выберите файл...</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <label class="form-check-label" th:if="${category.status}">
+                                    <input checked class="form-check-input" name="status"
+                                           th:checked="${category.status}" type="checkbox">Отображать категорию на
+                                    главной странице
+                                </label><label class="form-check-label" th:if="${!category.status}">
+                                <input class="form-check-input" name="status" th:checked="${category.status}"
+                                       type="checkbox">Отображать категорию на главной странице
+                            </label></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                    </table>
+                    <input class="btn btn-success" type="submit" value="Сохранить изменения"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</center>
+</body>
+</html>
