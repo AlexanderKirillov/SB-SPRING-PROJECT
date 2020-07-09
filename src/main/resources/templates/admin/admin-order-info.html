@@ -31,12 +31,9 @@
                     class="btn btn-danger" th:href="@{/admin/orders/{id}/delete(id=${order.getId()})}"><i
                     aria-hidden="true" class="fas fa-trash-alt"></i> Удалить заказ из
                 БД</a></div>
-            <div class="card" style="width: 50rem;margin:0 auto;">
-                <div class="card-body">
+            <div class="border py-2 px-3 rounded" style="width: 50rem;margin-left:20px;margin-right:20px">
+                <div align="left" class="card-body">
                     <table class="table-no-bordered">
-                        <tr>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        </tr>
                         <tr style="margin-bottom:20px; align-items: center">
                             <td>Номер заказа: &nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td><span style="font-weight:bold; font-size:15px" th:utext="${order.getId()}"></span>

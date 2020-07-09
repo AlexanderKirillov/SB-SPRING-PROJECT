@@ -36,7 +36,7 @@ public class UserOrdersController {
 
         User currentUser = userRepository.findByUserName(authentication.getName()).get();
 
-        List<Order> allOrders = orderRepository.findAll();
+        List<Order> allOrders = orderRepository.findAllByOrderByDateTimeOrderDesc();
         List<Order> userOrders = new ArrayList<Order>();
 
         for (Order order : allOrders) {

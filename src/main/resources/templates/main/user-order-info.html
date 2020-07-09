@@ -122,20 +122,28 @@
                 </table>
                 <br><span style="font-size:25px">Товары в заказе: </span><br><br>
                 <table class="table table-bordered table-hover">
-                    <tr>
-                        <th>Артикул</th>
-                        <th>Товар</th>
-                        <th>Количество</th>
+                    <thead>
+                    <tr class="table-secondary">
+                        <th class="align-middle">Артикул</th>
+                        <th class="align-middle">Товар</th>
+                        <th class="align-middle">Количество</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr th:each="shoppingCartItem : ${order.getShoppingCartOrder().getCartItems()}">
                         <td th:utext="${shoppingCartItem.getGoods().articul}">...</td>
                         <td th:utext="${shoppingCartItem.getGoods().name}">...</td>
                         <td th:utext="${shoppingCartItem.getQuantity()}">...</td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
+</div>
+<div class="py-2 px-3 text-white rounded"
+     style="background: #5cb885;margin-left:20px;margin-right: 20px;padding:20px;margin-top:30px">
+    <i class="fas fa-code"></i> Developed by Alexander Kirillov, 2020
 </div>
 <script charset="utf8" src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

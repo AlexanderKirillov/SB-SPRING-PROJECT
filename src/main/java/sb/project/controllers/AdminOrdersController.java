@@ -28,7 +28,7 @@ public class AdminOrdersController {
 
     @GetMapping(value = "/admin/orders")
     public String adminOrdersPage(Model model) {
-        List<Order> ordersList = orderRepository.findAll();
+        List<Order> ordersList = orderRepository.findAllByOrderByDateTimeOrderDesc();
 
         model.addAttribute("orders", ordersList);
 

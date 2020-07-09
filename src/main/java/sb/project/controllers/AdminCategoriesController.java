@@ -71,11 +71,12 @@ public class AdminCategoriesController {
     public String adminEditCategory(Model model, @PathVariable long categoryId,
                                     @ModelAttribute("category") Category category, @RequestParam("img") MultipartFile file) throws IOException {
         category.setId(categoryId);
+        Category oldCategory = categoryRepository.findById(categoryId);
 
         if (!file.isEmpty()) {
             category.setImage(file.getBytes());
         } else {
-            category.setImage(category.getImage());
+            category.setImage(oldCategory.getImage());
         }
 
         categoryRepository.save(category);

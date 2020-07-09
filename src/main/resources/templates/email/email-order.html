@@ -45,16 +45,20 @@
 
                                     <p style="font-size: 20px;"><b>Товары в заказе:</b></p>
                                     <table border="1px" cellpadding="15" cellspacing="0" width="100%">
+                                        <thead>
                                         <tr>
-                                            <th>Артикул</th>
-                                            <th>Товар</th>
-                                            <th>Количество</th>
+                                            <th class="align-middle">Артикул</th>
+                                            <th class="align-middle">Товар</th>
+                                            <th class="align-middle">Количество</th>
                                         </tr>
+                                        </thead>
+                                        <tbody>
                                         <tr th:each="shoppingCartItem : ${shoppingCartItems}">
                                             <td th:utext="${shoppingCartItem.getGoods().articul}">...</td>
                                             <td th:utext="${shoppingCartItem.getGoods().name}">...</td>
                                             <td th:utext="${shoppingCartItem.getQuantity()}">...</td>
                                         </tr>
+                                        </tbody>
                                     </table>
                                     <br>
                                     <p>Благодарим Вас за совершение заказа в нашем магазине!<br><br> В ближайшее время с

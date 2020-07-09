@@ -45,10 +45,13 @@
                 <small class="form-text text-muted" style="margin-bottom:10px">Шаблоны:</small>
                 <button class="btn btn-secondary btn-block" id="var1">Обрабатывается.</button>
                 <button class="btn btn-secondary btn-block" id="var2">Подтвержден.</button>
-                <button class="btn btn-secondary btn-block" id="var3">Оплачен.</button>
-                <button class="btn btn-secondary btn-block" id="var4">Отправлен.</button>
-                <button class="btn btn-secondary btn-block" id="var5">Получен.</button>
-                <button class="btn btn-secondary btn-block" id="var6">Отменен.</button>
+                <button class="btn btn-secondary btn-block" id="var3">Ожидает оплаты.</button>
+                <button class="btn btn-secondary btn-block" id="var4">Оплачен.</button>
+                <button class="btn btn-secondary btn-block" id="var5">Ожидает отправки.</button>
+                <button class="btn btn-secondary btn-block" id="var6">Отправлен.</button>
+                <button class="btn btn-secondary btn-block" id="var7">Завершен.</button>
+                <button class="btn btn-danger btn-block" id="var8">Отменен.</button>
+                <br><br>
             </div>
         </div>
     </div>
@@ -60,6 +63,8 @@
     var var4 = document.getElementById("var4");
     var var5 = document.getElementById("var5");
     var var6 = document.getElementById("var6");
+    var var7 = document.getElementById("var7");
+    var var8 = document.getElementById("var8");
     var text = document.getElementById("statusField");
 
     var1.addEventListener('click', function () {
@@ -69,15 +74,21 @@
         text.value = "Подтвержден.";
     });
     var3.addEventListener('click', function () {
-        text.value = "Оплачен.";
+        text.value = "Ожидает оплаты.";
     });
     var4.addEventListener('click', function () {
-        text.value = "Отправлен.";
+        text.value = "Оплачен.";
     });
     var5.addEventListener('click', function () {
-        text.value = "Получен.";
+        text.value = "Ожидает отправки.";
     });
     var6.addEventListener('click', function () {
+        text.value = "Отправлен.";
+    });
+    var7.addEventListener('click', function () {
+        text.value = "Завершен.";
+    });
+    var8.addEventListener('click', function () {
         text.value = "Отменен.";
     });
 </script>

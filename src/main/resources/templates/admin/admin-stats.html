@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+<br>
+<center>
+    <div class="card bg-light mb-3" style="width: 100rem;">
+        <div class="card-body">
+            <center><h4 class="display-4">Статистика</h4></center>
+            <br>
+            <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
+            <span><span style="color: black">Вы вошли как: <b><span
+                    sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a
+                    class="btn btn-primary"
+                    th:href="@{/profile}"><i aria-hidden="true"
+                                             class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/main/}"><i aria-hidden="true" class="fas fa-home"></i>  Главная страница</a>&nbsp;&nbsp;</span><span><a
+                    class="btn btn-primary"
+                    th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
+            </div>
+            <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin}"><i
+                    aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a></div>
+            <br/><span style="font-size:25px"><b>Текущий IP адрес: <span
+                th:utext="${currentIP}"></span></b></span><br><br>
+            <div style="width: 80rem;margin:0 auto;">
+                <br><span style="font-size:25px">Категории: </span><br><br>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th class="align-middle">Общее кол-во категорий</th>
+                        <th class="align-middle">Кол-во отображаемых категорий</th>
+                        <th class="align-middle">Кол-во скрытых категорий</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><span th:utext="${categoryQuantity}"></span></td>
+                        <td><span th:utext="${showingCategoriesQuantity}"></span></td>
+                        <td><span th:utext="${hiddenCategoriesQuantity}"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br><span style="font-size:25px">Товары: </span><br><br>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th class="align-middle">Общее кол-во товаров</th>
+                        <th class="align-middle">Кол-во отображаемых товаров</th>
+                        <th class="align-middle">Кол-во скрытых товаров</th>
+                        <th class="align-middle">Минимальная цена товара</th>
+                        <th class="align-middle">Максимальная цена товара</th>
+                        <th class="align-middle">Средняя цена товара</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><span th:utext="${itemsQuantity}"></span></td>
+                        <td><span th:utext="${showingItemsQuantity}"></span></td>
+                        <td><span th:utext="${hiddenItemsQuantity}"></span></td>
+                        <td><span th:utext="${minItemPrice}"></span></td>
+                        <td><span th:utext="${maxItemPrice}"></span></td>
+                        <td><span th:utext="${avgItemsPrice}"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br><span style="font-size:25px">Пользователи: </span><br><br>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th class="align-middle">Общее кол-во пользователей</th>
+                        <th class="align-middle">Общее кол-во пользователей мужского пола</th>
+                        <th class="align-middle">Общее кол-во пользователей женского пола</th>
+                        <th class="align-middle">Кол-во активных пользователей</th>
+                        <th class="align-middle">Количество неактивных пользователей</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><span th:utext="${usersQuantity}"></span></td>
+                        <td><span th:utext="${mGenderQuantity}"></span></td>
+                        <td><span th:utext="${wGenderQuantity}"></span></td>
+                        <td><span th:utext="${activeUsersQuantity}"></span></td>
+                        <td><span th:utext="${inActiveUsersQuantity}"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br><span style="font-size:25px">Заказы: </span><br><br>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th class="align-middle">Общее кол-во заказов</th>
+                        <th class="align-middle">Минимальная сумма заказа</th>
+                        <th class="align-middle">Максимальная сумма заказа</th>
+                        <th class="align-middle">Средняя сумма заказа</th>
+                        <th class="align-middle">Общая сумма всех заказов</th>
+                        <th class="align-middle">Кол-во активных заказов</th>
+                        <th class="align-middle">Кол-во завершенных заказов</th>
+                        <th class="align-middle">Кол-во отмененных заказов</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><span th:utext="${ordersQuantity}"></span></td>
+                        <td><span th:utext="${minOrderPrice}"></span></td>
+                        <td><span th:utext="${maxOrderPrice}"></span></td>
+                        <td><span th:utext="${avgOrdersPrice}"></span></td>
+                        <td><span th:utext="${allOrdersPrice}"></span></td>
+                        <td><span th:utext="${activeOrdersQuantity}"></span></td>
+                        <td><span th:utext="${completedOrdersQuantity}"></span></td>
+                        <td><span th:utext="${canceledOrdersQuantity}"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</center>
+<script charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+</body>
+</html>

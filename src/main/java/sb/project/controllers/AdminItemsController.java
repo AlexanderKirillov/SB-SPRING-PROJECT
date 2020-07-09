@@ -98,13 +98,14 @@ public class AdminItemsController {
     public String adminEditItem(Model model, @PathVariable long itemId, @ModelAttribute("item") Item item,
                                 @RequestParam("img") MultipartFile file, @RequestParam("ctgid") long ctgid) throws IOException {
         Category ctg = categoryRepository.findById(ctgid);
+        Item oldItem = itemRepository.findById(itemId);
 
         item.setId(itemId);
         item.setCategory(ctg);
         if (!file.isEmpty()) {
             item.setImage(file.getBytes());
         } else {
-            item.setImage(item.getImage());
+            item.setImage(oldItem.getImage());
         }
         itemRepository.save(item);
 

@@ -41,8 +41,6 @@
 }
 
 .category-wrap li:after {
-    content: "\f18e";
-    font-family: FontAwesome;
     position: absolute;
     right: 5px;
     color: white;

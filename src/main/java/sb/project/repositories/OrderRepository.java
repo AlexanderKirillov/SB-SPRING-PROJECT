@@ -13,6 +13,8 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
     List<Order> findAll();
 
+    List<Order> findAllByOrderByDateTimeOrderDesc();
+
     void deleteById(long id);
 
 }
