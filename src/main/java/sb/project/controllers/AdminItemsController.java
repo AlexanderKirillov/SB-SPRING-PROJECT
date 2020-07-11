@@ -48,7 +48,7 @@ public class AdminItemsController {
         return "admin/admin-items";
     }
 
-    @RequestMapping(value = "/admin/category/{categoryId}/items/{itemId}/delete")
+    @PostMapping(value = "/admin/category/{categoryId}/items/{itemId}/delete")
     public String adminDeleteItem(Model model, @PathVariable long itemId, @PathVariable long categoryId) {
         Category category = categoryRepository.findById(categoryId);
         List<Item> itemList = category.getItems();

@@ -44,7 +44,7 @@ public class OrderController {
 
         User currentUser = userRepository.findByUserName(authentication.getName()).get();
 
-        if (currentUser.getShoppingCart().getCartItems().isEmpty()) {
+        if (shoppingCartRepository.findByUserAndStatus(currentUser, "in_cart").get().getCartItems().isEmpty()) {
             return "error/error-checkout";
         } else {
             Order newOrder = new Order();

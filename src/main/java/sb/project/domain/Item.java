@@ -1,10 +1,12 @@
 package sb.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 public class Item {
@@ -23,8 +25,13 @@ public class Item {
     @Transient
     private String imageString;
 
-    @OneToOne(mappedBy = "goods")
-    private ShoppingCartItem shoppingCartItem;
+    @JsonIgnore
+    @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL)
+    private List<ShoppingCartItem> shoppingCartItem;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cmtGoods", cascade = CascadeType.ALL)
+    private List<Comment> commentList;
 
     @ManyToOne()
     @JoinColumn(name = "CATEGORY_ID_F", nullable = false)
@@ -141,6 +148,22 @@ public class Item {
 
     public void setImageString(String imageString) {
         this.imageString = imageString;
+    }
+
+    public List<ShoppingCartItem> getShoppingCartItem() {
+        return shoppingCartItem;
+    }
+
+    public void setShoppingCartItem(List<ShoppingCartItem> shoppingCartItem) {
+        this.shoppingCartItem = shoppingCartItem;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 
     @Override

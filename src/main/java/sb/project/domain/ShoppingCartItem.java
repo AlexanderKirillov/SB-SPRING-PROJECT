@@ -16,7 +16,7 @@ public class ShoppingCartItem {
     @JoinColumn(name = "SHOPPINGCART_ID_F", nullable = false)
     private ShoppingCart shoppingCart;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "GOODS_ID_F")
     private Item goods;
 

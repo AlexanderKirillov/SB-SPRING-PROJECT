@@ -24,7 +24,7 @@ public class Order {
     private String address;
     private String phone;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "USER_ORDER_ID_F")
     private User orderUser;
 

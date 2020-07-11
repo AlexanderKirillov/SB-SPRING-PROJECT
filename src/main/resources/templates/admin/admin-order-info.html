@@ -27,10 +27,48 @@
             <br>
             <div align="left" style="margin-bottom:20px;margin-left:20px;"><a class="btn btn-primary"
                                                                               th:href="@{/admin/orders}"><i
-                    aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a>&nbsp;&nbsp;<a
-                    class="btn btn-danger" th:href="@{/admin/orders/{id}/delete(id=${order.getId()})}"><i
-                    aria-hidden="true" class="fas fa-trash-alt"></i> Удалить заказ из
-                БД</a></div>
+                    aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a>&nbsp;&nbsp;
+                <div aria-hidden="true" class="modal fade"
+                     role="dialog" tabindex="-1"
+                     th:attr="id='deleteOrder'+${order.getId()}">
+                    <div class="modal-dialog modal-dialog-centered"
+                         role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Удаление заказа из БД</span>
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div align="left">Вы действительно
+                                    хотите удалить из БД заказ №<span th:utext="${order.getId()}"></span>
+                                </div>
+                                <br>
+                                <form method="POST"
+                                      th:action="@{/admin/orders/{id}/delete(id=${order.getId()})}">
+                                    <button class="btn btn-secondary"
+                                            data-dismiss="modal"
+                                            type="button">
+                                        <i aria-hidden="true"
+                                           class="fas fa-times"></i>
+                                        Отменить
+                                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-danger"
+                                            type="submit">
+                                        <i aria-hidden="true"
+                                           class="fas fa-trash-alt"></i>
+                                        Удалить
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-danger" data-toggle="modal"
+                        th:attr="data-target='#deleteOrder'+${order.getId()}"><i aria-hidden="true"
+                                                                                 class="fas fa-trash-alt"></i> Удалить
+                    заказ из БД
+                </button>
+            </div>
             <div class="border py-2 px-3 rounded" style="width: 50rem;margin-left:20px;margin-right:20px">
                 <div align="left" class="card-body">
                     <table class="table-no-bordered">

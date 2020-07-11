@@ -1,10 +1,12 @@
 package sb.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -32,11 +34,17 @@ public class User {
     private String gender;
     private String token;
 
-    @OneToOne(mappedBy = "user")
-    private ShoppingCart shoppingCart;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ShoppingCart> shoppingCart;
 
-    @OneToOne(mappedBy = "orderUser")
-    private Order order;
+    @JsonIgnore
+    @OneToMany(mappedBy = "orderUser", cascade = CascadeType.ALL)
+    private List<Order> order;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "commentUser", cascade = CascadeType.ALL)
+    private List<Comment> commentList;
 
     public long getId() {
         return id;
@@ -126,12 +134,28 @@ public class User {
         this.token = token;
     }
 
-    public ShoppingCart getShoppingCart() {
+    public List<ShoppingCart> getShoppingCart() {
         return shoppingCart;
     }
 
-    public void setShoppingCart(ShoppingCart shoppingCart) {
+    public void setShoppingCart(List<ShoppingCart> shoppingCart) {
         this.shoppingCart = shoppingCart;
+    }
+
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 
     @Override

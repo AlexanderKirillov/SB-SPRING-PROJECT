@@ -57,7 +57,7 @@ public class AdminOrdersController {
         return "admin/admin-order-info";
     }
 
-    @RequestMapping(value = "/admin/orders/{orderId}/delete")
+    @PostMapping(value = "/admin/orders/{orderId}/delete")
     public String adminDeleteOrder(Model model, @PathVariable Long orderId) {
         orderRepository.deleteById(orderId);
 

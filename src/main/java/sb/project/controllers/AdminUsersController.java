@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import sb.project.domain.User;
 import sb.project.repositories.UserRepository;
@@ -31,7 +32,7 @@ public class AdminUsersController {
         return "admin/admin-users";
     }
 
-    @RequestMapping(value = "/admin/users/{userId}/delete")
+    @PostMapping(value = "/admin/users/{userId}/delete")
     public String adminDeleteUser(Model model, @PathVariable Long userId) {
         userRepository.deleteById(userId);
 

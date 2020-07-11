@@ -32,7 +32,7 @@ public class AdminCategoriesController {
         return "admin/admin-categories";
     }
 
-    @RequestMapping(value = "/admin/categories/{categoryId}/delete")
+    @PostMapping(value = "/admin/categories/{categoryId}/delete")
     public String adminDeleteCategory(Model model, @PathVariable Long categoryId) {
         categoryRepository.deleteById(categoryId);
 

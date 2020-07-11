@@ -20,7 +20,7 @@ public class ShoppingCart {
             fetch = FetchType.EAGER)
     private List<ShoppingCartItem> cart_items;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "USER_ID_F")
     private User user;
 

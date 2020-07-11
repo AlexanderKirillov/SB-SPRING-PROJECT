@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sb.project.domain.Category;
@@ -119,7 +120,7 @@ public class ShoppingCartController {
         return "redirect:/main/shoppingCart";
     }
 
-    @RequestMapping(value = "/main/shoppingCart/items/{itemId}/delete")
+    @PostMapping(value = "/main/shoppingCart/items/{itemId}/delete")
     public String shoppingCartDeleteItem(Model model, @PathVariable long itemId, Authentication authentication) {
         User user = null;
         Optional<ShoppingCart> shoppingCartOptional;
