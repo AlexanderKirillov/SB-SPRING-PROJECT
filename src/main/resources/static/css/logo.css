@@ -2,11 +2,9 @@ h1 {
     --color1: #5cb885;
     --color2: #e6c619;
     font-family: 'Lato', sans-serif;
-    text-align: left;
     font-size: 46px;
     font-weight: 900;
     margin-left: 20px;
-    margin-top: 20px;
     text-transform: uppercase;
     background: repeating-linear-gradient(
             45deg,

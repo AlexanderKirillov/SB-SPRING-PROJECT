@@ -15,7 +15,8 @@
     <link rel="stylesheet" th:href="@{/css/star-theme.css}">
 </head>
 <body>
-<div><a th:href="@{/main}"><h1><i class="fas fa-microchip"></i> <i class="fas fa-desktop"></i> Компьютерные
+<div style="text-align: left;margin-top: 20px;"><a th:href="@{/main}"><h1><i class="fas fa-microchip"></i> <i
+        class="fas fa-desktop"></i> Компьютерные
     комплектующие</h1></a></div>
 <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
     <span><span style="color: black">Вы вошли как: <b><span
@@ -77,11 +78,14 @@
                         <span th:utext="${item.getDescription()}"></span><br><br>
                         <span style="font-weight:bold; font-size:17px">Количество на складе:</span> <span
                             style="font-size:20px" th:utext="${item.getCount()}"></span><br><br>
-                        <a class="card-link btn btn-success btn-lg"
-                           th:href="@{/main/items/{id}/addToCart(id=${item.getId()})}"
-                           th:if="${item.getCount()}>0 "><i
-                                aria-hidden="true" class="fas fa-shopping-basket"></i> В
-                            корзину</a>
+                        <form method="POST"
+                              th:action="@{/main/items/{id}/addToCart(id=${item.getId()})}">
+                            <button class="btn btn-success btn-lg" th:if="${item.getCount()}>0"
+                                    type="submit"><i aria-hidden="true"
+                                                     class="fas fa-shopping-basket"></i> В
+                                корзину
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -97,7 +101,7 @@
                                    name="ratingAdd" value="0">
                         </div>
                         <br>
-                        <input class="form-control" maxlength="500" minlength="10"
+                        <input class="form-control" maxlength="500" minlength="5"
                                placeholder="Введите текст комментария" required style="margin-bottom:20px"
                                th:field="*{commentText}"
                                type="text"/>
@@ -161,7 +165,7 @@
                                                                     <br>
                                                                     <input class="form-control"
                                                                            maxlength="500"
-                                                                           minlength="10"
+                                                                           minlength="5"
                                                                            name="commentText"
                                                                            th:value="${comment.getCommentText()}"
                                                                            type="text"><br>
@@ -304,6 +308,47 @@
             readonly: true
         });
 
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#commentstable").DataTable({
+            "pagingType": "full_numbers",
+            "paging": true,
+            "dom": 'tp',
+            "ordering": false,
+            "info": false,
+            "language": {
+                "processing": "Подождите...",
+                "search": "Поиск:",
+                "lengthMenu": "Показать _MENU_ комментариев на странице",
+                "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                "infoEmpty": "Записи с 0 до 0 (из 0 записей)",
+                "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                "infoPostFix": "",
+                "loadingRecords": "Загрузка комментариев...",
+                "zeroRecords": "Комментарии отсутствуют.",
+                "emptyTable": "Комментарии отсутствуют",
+                "paginate": {
+                    "first": "<<",
+                    "previous": "<",
+                    "next": ">",
+                    "last": ">>"
+                },
+                "aria": {
+                    "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                    "sortDescending": ": активировать для сортировки столбца по убыванию"
+                },
+                "select": {
+                    "rows": {
+                        "_": "Выбрано записей: %d",
+                        "0": "Кликните по записи для выбора",
+                        "1": "Выбрана одна запись"
+                    }
+                }
+            }
+
+        });
     });
 </script>
 </body>

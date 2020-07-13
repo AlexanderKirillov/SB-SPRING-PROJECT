@@ -29,6 +29,12 @@ public class AdminCategoriesController {
             category.setImageString(Base64.encodeBase64String(image));
         }
 
+        Category newCtg = new Category();
+        Category editCtg = new Category();
+
+        model.addAttribute("newCtg", newCtg);
+        model.addAttribute("editCtg", editCtg);
+
         return "admin/admin-categories";
     }
 
@@ -39,47 +45,33 @@ public class AdminCategoriesController {
         return "redirect:/admin/categories";
     }
 
-    @GetMapping(value = {"/admin/categories/add"})
-    public String adminAddCategoryPage(Model model) {
-        Category ctg = new Category();
-
-        model.addAttribute("category", ctg);
-
-        return "admin/admin-categories-add";
-    }
 
     @PostMapping(value = {"/admin/categories/add"})
-    public String adminAddCategory(Model model, @ModelAttribute("category") Category ctg,
+    public String adminAddCategory(Model model, @ModelAttribute("newCtg") Category newCtg,
                                    @RequestParam("img") MultipartFile file) throws IOException {
 
-        ctg.setImage(file.getBytes());
-        categoryRepository.save(ctg);
+        newCtg.setImage(file.getBytes());
+        categoryRepository.save(newCtg);
 
         return "redirect:/admin/categories";
     }
 
-    @GetMapping(value = {"/admin/categories/{categoryId}/edit"})
-    public String adminEditCategoryPage(Model model, @PathVariable long categoryId) {
-        Category category = categoryRepository.findById(categoryId);
-
-        model.addAttribute("category", category);
-
-        return "admin/admin-categories-edit";
-    }
-
     @PostMapping(value = {"/admin/categories/{categoryId}/edit"})
     public String adminEditCategory(Model model, @PathVariable long categoryId,
-                                    @ModelAttribute("category") Category category, @RequestParam("img") MultipartFile file) throws IOException {
-        category.setId(categoryId);
+                                    @ModelAttribute("editCtg") Category editCtg, @RequestParam("img") MultipartFile file,
+                                    @RequestParam("name") String name, @RequestParam("description") String description) throws IOException {
+        editCtg.setId(categoryId);
+        editCtg.setName(name);
+        editCtg.setDescription(description);
         Category oldCategory = categoryRepository.findById(categoryId);
 
         if (!file.isEmpty()) {
-            category.setImage(file.getBytes());
+            editCtg.setImage(file.getBytes());
         } else {
-            category.setImage(oldCategory.getImage());
+            editCtg.setImage(oldCategory.getImage());
         }
 
-        categoryRepository.save(category);
+        categoryRepository.save(editCtg);
 
         return "redirect:/admin/categories";
     }

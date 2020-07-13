@@ -28,6 +28,7 @@
             <div align="left" style="margin-bottom:20px;margin-left:20px;"><a class="btn btn-primary"
                                                                               th:href="@{/admin/orders}"><i
                     aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a>&nbsp;&nbsp;
+
                 <div aria-hidden="true" class="modal fade"
                      role="dialog" tabindex="-1"
                      th:attr="id='deleteOrder'+${order.getId()}">
@@ -35,8 +36,11 @@
                          role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">Удаление заказа из БД</span>
-                                </h4>
+                                <div align="left"
+                                     style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:left;">
+                                    <a class="btn" data-dismiss="modal" style="font-size:30px;color:red"><i
+                                            aria-hidden="true" class="far fa-window-close"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <h4 class="modal-title">Удаление заказа из БД</h4></div>
                             </div>
                             <div class="modal-body">
                                 <div align="left">Вы действительно
@@ -63,6 +67,7 @@
                         </div>
                     </div>
                 </div>
+
                 <button class="btn btn-danger" data-toggle="modal"
                         th:attr="data-target='#deleteOrder'+${order.getId()}"><i aria-hidden="true"
                                                                                  class="fas fa-trash-alt"></i> Удалить
@@ -161,5 +166,7 @@
     </div>
     </div>
 </center>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script charset="utf8" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 </html>

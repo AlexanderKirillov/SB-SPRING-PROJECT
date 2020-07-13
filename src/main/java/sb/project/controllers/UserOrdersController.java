@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import sb.project.domain.Category;
 import sb.project.domain.Order;
 import sb.project.domain.User;
@@ -50,7 +49,7 @@ public class UserOrdersController {
         return "main/user-orders";
     }
 
-    @RequestMapping(value = "/myOrders/{orderId}/info")
+    @GetMapping(value = "/myOrders/{orderId}/info")
     public String userOrderInfo(Model model, @PathVariable long orderId, Authentication authentication) {
         setCtgMenu(model);
 

@@ -14,6 +14,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private boolean status;
     @Lob

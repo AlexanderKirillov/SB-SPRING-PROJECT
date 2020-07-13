@@ -62,21 +62,122 @@
                 <td class="align-middle"><span th:if="${user.isActive()}">Учетная запись активна</span>
                     <span th:if="${!user.isActive()}">Учетная запись неактивна</span></td>
                 <td class="align-middle">
+                    <div aria-hidden="true" class="modal fade"
+                         role="dialog" tabindex="-1"
+                         th:attr="id='setStatus'+${user.getId()}">
+                        <div class="modal-dialog modal-dialog-centered"
+                             role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div align="left"
+                                         style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:left;">
+                                        <a class="btn" data-dismiss="modal" style="font-size:30px;color:red"><i
+                                                aria-hidden="true" class="far fa-window-close"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <h4 class="modal-title">Изменение статуса учетной записи пользователя</h4></div>
+                                </div>
+                                <div class="modal-body">
+                                    <div th:if="${user.isActive()}">
+                                        <div align="left">Вы действительно
+                                            хотите деактивировать учетную запись пользователя '<span
+                                                    th:utext="${user.getUserName()}"></span>'?
+                                        </div>
+                                    </div>
+                                    <div th:if="${!user.isActive()}">
+                                        <div align="left">Вы действительно
+                                            хотите активировать учетную запись пользователя '<span
+                                                    th:utext="${user.getUserName()}"></span>'?
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <form method="POST"
+                                          th:action="@{/admin/users/{id}/setStatus(id=${user.getId()})}">
+                                        <button class="btn btn-secondary"
+                                                data-dismiss="modal"
+                                                type="button">
+                                            <i aria-hidden="true"
+                                               class="fas fa-times"></i>
+                                            Отменить
+                                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-danger"
+                                                type="submit">
+                                            <i aria-hidden="true"
+                                               class="fas fa-edit"></i>
+                                            Да
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div th:if="${user.isActive()}">
-                        <a class="btn btn-success" th:href="@{/admin/users/{id}/setStatus(id=${user.getId()})}">Деактивировать</a>
+                        <button class="btn btn-success" data-toggle="modal"
+                                th:attr="data-target='#setStatus'+${user.getId()}">Деактивировать
+                        </button>
                     </div>
                     <div th:if="${!user.isActive()}">
-                        <a class="btn btn-success" th:href="@{/admin/users/{id}/setStatus(id=${user.getId()})}">Активировать</a>
+                        <button class="btn btn-success" data-toggle="modal"
+                                th:attr="data-target='#setStatus'+${user.getId()}">Активировать
+                        </button>
                     </div>
                 </td>
                 <td class="align-middle">
+                    <div aria-hidden="true" class="modal fade"
+                         role="dialog" tabindex="-1"
+                         th:attr="id='setUserRole'+${user.getId()}">
+                        <div class="modal-dialog modal-dialog-centered"
+                             role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div align="left"
+                                         style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:left;">
+                                        <a class="btn" data-dismiss="modal" style="font-size:30px;color:red"><i
+                                                aria-hidden="true" class="far fa-window-close"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <h4 class="modal-title">Изменение привилегий учетной записи пользователя</h4>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div th:if="${user.getRoles()=='ROLE_USER'}">
+                                        <div align="left">Вы действительно
+                                            хотите дать пользователю '<span
+                                                    th:utext="${user.getUserName()}"></span>' админские привилегии?
+                                        </div>
+                                    </div>
+                                    <div th:if="${user.getRoles()=='ROLE_ADMIN'}">
+                                        <div align="left">Вы действительно
+                                            хотите отозвать админские привилегии пользователя '<span
+                                                    th:utext="${user.getUserName()}"></span>'?
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <form method="POST"
+                                          th:action="@{/admin/users/{id}/setRole(id=${user.getId()})}">
+                                        <button class="btn btn-secondary"
+                                                data-dismiss="modal"
+                                                type="button">
+                                            <i aria-hidden="true"
+                                               class="fas fa-times"></i>
+                                            Отменить
+                                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-danger"
+                                                type="submit">
+                                            <i aria-hidden="true"
+                                               class="fas fa-edit"></i>
+                                            Да
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div th:if="${user.getRoles()=='ROLE_USER'}">
-                        <a class="btn btn-success" th:href="@{/admin/users/{id}/setRole(id=${user.getId()})}">Сделать
-                            админом</a>
+                        <button class="btn btn-success" data-toggle="modal"
+                                th:attr="data-target='#setUserRole'+${user.getId()}">Сделать админом
+                        </button>
                     </div>
                     <div th:if="${user.getRoles()=='ROLE_ADMIN'}">
-                        <a class="btn btn-success" th:href="@{/admin/users/{id}/setRole(id=${user.getId()})}">Отозвать
-                            привилегии админа</a>
+                        <button class="btn btn-success" data-toggle="modal"
+                                th:attr="data-target='#setUserRole'+${user.getId()}">Отозвать привилегии админа
+                        </button>
                     </div>
                 </td>
                 <td class="align-middle">
@@ -87,8 +188,11 @@
                              role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Удаление учетной записи пользователя</span>
-                                    </h4>
+                                    <div align="left"
+                                         style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:left;">
+                                        <a class="btn" data-dismiss="modal" style="font-size:30px;color:red"><i
+                                                aria-hidden="true" class="far fa-window-close"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <h4 class="modal-title">Удаление учетной записи пользователя</h4></div>
                                 </div>
                                 <div class="modal-body">
                                     <div align="left">Вы действительно

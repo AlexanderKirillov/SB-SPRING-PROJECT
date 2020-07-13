@@ -12,6 +12,7 @@ import sb.project.repositories.CategoryRepository;
 import sb.project.repositories.ItemRepository;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -45,6 +46,12 @@ public class AdminItemsController {
             item.setImageString(Base64.encodeBase64String(image));
         }
 
+        Item newItem = new Item();
+        Item editItem = new Item();
+
+        model.addAttribute("newItem", newItem);
+        model.addAttribute("editItem", editItem);
+
         return "admin/admin-items";
     }
 
@@ -60,54 +67,41 @@ public class AdminItemsController {
     }
 
 
-    @GetMapping(value = {"/admin/items/add"})
-    public String adminAddItemPage(Model model) {
-        List<Category> categoryList = categoryRepository.findAll();
-        Item item = new Item();
-
-        model.addAttribute("categories", categoryList);
-        model.addAttribute("item", item);
-
-        return "admin/admin-items-add";
-    }
-
     @PostMapping(value = {"/admin/items/add"})
-    public String adminAddItem(Model model, @ModelAttribute("item") Item item,
+    public String adminAddItem(Model model, @ModelAttribute("newItem") Item newItem,
                                @RequestParam("img") MultipartFile file, @RequestParam("categoryId") Long catId) throws IOException {
         Category ctg = categoryRepository.findById(catId).get();
 
-        item.setCategory(ctg);
-        item.setImage(file.getBytes());
-        itemRepository.save(item);
+        newItem.setCategory(ctg);
+        newItem.setImage(file.getBytes());
+        itemRepository.save(newItem);
 
         return "redirect:/admin/items?selcat=0";
     }
 
 
-    @GetMapping(value = {"/admin/items/{itemId}/edit"})
-    public String adminEditItemPage(Model model, @PathVariable long itemId) {
-        List<Category> categoryList = categoryRepository.findAll();
-
-        model.addAttribute("categories", categoryList);
-        model.addAttribute("item", itemRepository.findById(itemId));
-
-        return "admin/admin-items-edit";
-    }
-
     @PostMapping(value = {"/admin/items/{itemId}/edit"})
-    public String adminEditItem(Model model, @PathVariable long itemId, @ModelAttribute("item") Item item,
-                                @RequestParam("img") MultipartFile file, @RequestParam("ctgid") long ctgid) throws IOException {
+    public String adminEditItem(Model model, @PathVariable long itemId, @ModelAttribute("editItem") Item editItem,
+                                @RequestParam("img") MultipartFile file, @RequestParam("ctgid") long ctgid,
+                                @RequestParam("articul") long articul, @RequestParam("name") String name,
+                                @RequestParam("count") long count, @RequestParam("price") BigDecimal price,
+                                @RequestParam("description") String description) throws IOException {
         Category ctg = categoryRepository.findById(ctgid);
         Item oldItem = itemRepository.findById(itemId);
 
-        item.setId(itemId);
-        item.setCategory(ctg);
+        editItem.setId(itemId);
+        editItem.setArticul(articul);
+        editItem.setName(name);
+        editItem.setCount(count);
+        editItem.setPrice(price);
+        editItem.setDescription(description);
+        editItem.setCategory(ctg);
         if (!file.isEmpty()) {
-            item.setImage(file.getBytes());
+            editItem.setImage(file.getBytes());
         } else {
-            item.setImage(oldItem.getImage());
+            editItem.setImage(oldItem.getImage());
         }
-        itemRepository.save(item);
+        itemRepository.save(editItem);
 
         return "redirect:/admin/items?selcat=0";
     }

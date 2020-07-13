@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sb.project.domain.Category;
 import sb.project.domain.ShoppingCart;
@@ -70,7 +69,7 @@ public class ShoppingCartController {
         return "main/shopping-cart";
     }
 
-    @GetMapping(value = "/main/items/{itemId}/addToCart")
+    @PostMapping(value = "/main/items/{itemId}/addToCart")
     public String addToShoppingCart(Model model, Authentication authentication, @PathVariable long itemId, RedirectAttributes redirectAttributes) {
         User user = null;
         ShoppingCart shoppingCart = null;
@@ -145,7 +144,7 @@ public class ShoppingCartController {
         return "redirect:/main/shoppingCart";
     }
 
-    @RequestMapping(value = "/main/shoppingCart/items/{itemId}/addq")
+    @GetMapping(value = "/main/shoppingCart/items/{itemId}/addq")
     public String shoppingCartAddQuantity(@Valid Model model, @PathVariable long itemId, Authentication authentication, RedirectAttributes redirectAttributes) {
         User user = null;
         Optional<ShoppingCart> shoppingCartOptional;
@@ -172,7 +171,7 @@ public class ShoppingCartController {
         return "redirect:/main/shoppingCart";
     }
 
-    @RequestMapping(value = "/main/shoppingCart/items/{itemId}/remq")
+    @GetMapping(value = "/main/shoppingCart/items/{itemId}/remq")
     public String shoppingCartRemoveQuantity(Model model, @PathVariable long itemId, Authentication authentication) {
         User user = null;
         Optional<ShoppingCart> shoppingCartOptional;

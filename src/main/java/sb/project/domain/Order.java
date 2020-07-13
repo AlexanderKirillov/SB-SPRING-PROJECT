@@ -21,6 +21,7 @@ public class Order {
     private String name;
     private String surname;
     private String middlename;
+    @Column(columnDefinition = "TEXT")
     private String address;
     private String phone;
 

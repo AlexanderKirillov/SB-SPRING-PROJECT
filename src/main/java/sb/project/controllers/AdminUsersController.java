@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import sb.project.domain.User;
 import sb.project.repositories.UserRepository;
 
@@ -39,7 +38,7 @@ public class AdminUsersController {
         return "redirect:/admin/users";
     }
 
-    @RequestMapping(value = "/admin/users/{userId}/setStatus")
+    @PostMapping(value = "/admin/users/{userId}/setStatus")
     public String adminDeactivateUser(Model model, @PathVariable Long userId) {
         User user = userRepository.findById(userId).get();
 
@@ -54,7 +53,7 @@ public class AdminUsersController {
         return "redirect:/admin/users";
     }
 
-    @RequestMapping(value = "/admin/users/{userId}/setRole")
+    @PostMapping(value = "/admin/users/{userId}/setRole")
     public String adminSetUserRole(Model model, @PathVariable Long userId) {
         User user = userRepository.findById(userId).get();
 

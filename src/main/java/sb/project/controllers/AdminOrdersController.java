@@ -32,23 +32,13 @@ public class AdminOrdersController {
 
         model.addAttribute("orders", ordersList);
 
+        Order order = new Order();
+        model.addAttribute("orderS", order);
+
         return "admin/admin-orders";
     }
 
-    @RequestMapping(value = "/admin/orders/{orderId}/cancel")
-    public String adminCancelOrder(Model model, @PathVariable Long orderId, Authentication authentication, Locale locale) throws Exception {
-        User currentUser = userRepository.findByUserName(authentication.getName()).get();
-        Order order = orderRepository.findById(orderId).get();
-
-        order.setOrderStatus("Отменен.");
-        orderRepository.save(order);
-
-        emailService.sendOrderStatusMail(currentUser.getEmail(), order, order.getShoppingCartOrder(), locale);
-
-        return "redirect:/admin/orders";
-    }
-
-    @RequestMapping(value = "/admin/orders/{orderId}/info")
+    @GetMapping(value = "/admin/orders/{orderId}/info")
     public String adminOrderInfo(Model model, @PathVariable Long orderId) {
         Order order = orderRepository.findById(orderId).get();
 
@@ -64,21 +54,12 @@ public class AdminOrdersController {
         return "redirect:/admin/orders";
     }
 
-    @RequestMapping(value = "/admin/orders/{orderId}/changestatus")
-    public String adminChangeOrderStatus(Model model, @PathVariable Long orderId) {
-        Order order = orderRepository.findById(orderId).get();
-
-        model.addAttribute("order", order);
-
-        return "admin/admin-order-changestatus";
-    }
-
     @PostMapping(value = "/admin/orders/{orderId}/changestatus")
-    public String adminChangeOrderStatusProcess(Model model, @ModelAttribute("order") Order order, @PathVariable Long orderId, Authentication authentication, Locale locale) throws Exception {
+    public String adminChangeOrderStatusProcess(Model model, @ModelAttribute("orderS") Order orderS, @PathVariable Long orderId, @RequestParam("status") String status, Authentication authentication, Locale locale) throws Exception {
         User currentUser = userRepository.findByUserName(authentication.getName()).get();
         Order uOrder = orderRepository.findById(orderId).get();
 
-        uOrder.setOrderStatus(order.getOrderStatus());
+        uOrder.setOrderStatus(status);
         orderRepository.save(uOrder);
 
         emailService.sendOrderStatusMail(currentUser.getEmail(), uOrder, uOrder.getShoppingCartOrder(), locale);

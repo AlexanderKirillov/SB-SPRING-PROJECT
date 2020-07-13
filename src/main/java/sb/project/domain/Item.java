@@ -18,6 +18,7 @@ public class Item {
     private String name;
     private long count;
     private BigDecimal price;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private boolean status;
     @Lob

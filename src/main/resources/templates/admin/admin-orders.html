@@ -55,10 +55,167 @@
                 <td class="align-middle"><a class="btn btn-primary"
                                             style="height:75px;display: flex;justify-content: center;align-items: center;"
                                             th:href="@{/admin/orders/{id}/info(id=${order.getId()})}">Подробнее</a></td>
-                <td class="align-middle"><a class="btn btn-info"
-                                            style="height:75px;display: flex;justify-content: center;align-items: center;color: white;"
-                                            th:href="@{/admin/orders/{id}/changestatus(id=${order.getId()})}">Изменить
-                    статус заказа</a></td>
+                <td class="align-middle">
+                    <div aria-hidden="true" class="modal fade bd-example-modal-lg"
+                         role="dialog" tabindex="-1"
+                         th:attr="id='editOrderStatus'+${order.getId()}">
+                        <div class="modal-dialog modal-dialog-centered modal-lg"
+                             role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div align="left"
+                                         style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:left;">
+                                        <a class="btn" data-dismiss="modal" style="font-size:30px;color:red"><i
+                                                aria-hidden="true" class="far fa-window-close"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <h4 class="modal-title">Изменение статуса заказа №<span
+                                                th:utext="${order.getId()}"></span></h4></div>
+                                </div>
+                                <div class="modal-body">
+                                    <div align="center"
+                                         style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:center;">
+                                        <form enctype="multipart/form-data"
+                                              method="POST"
+                                              th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                              th:object="${orderS}">
+                                            <div style="width: 30rem;">
+                                                <form method="post"
+                                                      th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                                      th:object="${orderS}">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <small class="form-text text-muted"
+                                                                   style="margin-bottom:10px">Введите статус заказа или
+                                                                выберите из шаблонов, расположенных ниже:</small>
+                                                            <input autofocus="true" class="form-control"
+                                                                   id="statusField"
+                                                                   name="status"
+                                                                   placeholder="Введите новый статус" required="true"
+                                                                   th:value="${order.getOrderStatus()}" type="text"/>
+                                                        </div>
+                                                        <input class="btn btn-lg btn-success btn-block" type="submit"
+                                                               value="Сохранить"/>
+                                                    </fieldset>
+                                                </form>
+                                                <br><br>
+                                                <small class="form-text text-muted"
+                                                       style="margin-bottom:10px">Шаблоны:</small>
+                                                <form method="post"
+                                                      th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                                      th:object="${orderS}">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <input autofocus="true" class="form-control" hidden
+                                                                   name="status" required="true" type="text"
+                                                                   value="Обрабатывается."/>
+                                                        </div>
+                                                        <input class="btn btn-secondary btn-block" type="submit"
+                                                               value="Обрабатывается."/>
+                                                    </fieldset>
+                                                </form>
+                                                <form method="post"
+                                                      th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                                      th:object="${orderS}">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <input autofocus="true" class="form-control" hidden
+                                                                   name="status" required="true" type="text"
+                                                                   value="Подтвержден."/>
+                                                        </div>
+                                                        <input class="btn btn-secondary btn-block" type="submit"
+                                                               value="Подтвержден."/>
+                                                    </fieldset>
+                                                </form>
+                                                <form method="post"
+                                                      th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                                      th:object="${orderS}">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <input autofocus="true" class="form-control" hidden
+                                                                   name="status" required="true" type="text"
+                                                                   value="Ожидает оплаты."/>
+                                                        </div>
+                                                        <input class="btn btn-secondary btn-block" type="submit"
+                                                               value="Ожидает оплаты."/>
+                                                    </fieldset>
+                                                </form>
+                                                <form method="post"
+                                                      th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                                      th:object="${orderS}">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <input autofocus="true" class="form-control" hidden
+                                                                   name="status" required="true" type="text"
+                                                                   value="Оплачен."/>
+                                                        </div>
+                                                        <input class="btn btn-secondary btn-block" type="submit"
+                                                               value="Оплачен."/>
+                                                    </fieldset>
+                                                </form>
+                                                <form method="post"
+                                                      th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                                      th:object="${orderS}">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <input autofocus="true" class="form-control" hidden
+                                                                   name="status" required="true"
+                                                                   type="text" value="Ожидает отправки."/>
+                                                        </div>
+                                                        <input class="btn btn-secondary btn-block" type="submit"
+                                                               value="Ожидает отправки."/>
+                                                    </fieldset>
+                                                </form>
+                                                <form method="post"
+                                                      th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                                      th:object="${orderS}">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <input autofocus="true" class="form-control" hidden
+                                                                   name="status" required="true" type="text"
+                                                                   value="Отправлен."/>
+                                                        </div>
+                                                        <input class="btn btn-secondary btn-block" type="submit"
+                                                               value="Отправлен."/>
+                                                    </fieldset>
+                                                </form>
+                                                <form method="post"
+                                                      th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                                      th:object="${orderS}">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <input autofocus="true" class="form-control" hidden
+                                                                   name="status" required="true" type="text"
+                                                                   value="Завершен."/>
+                                                        </div>
+                                                        <input class="btn btn-secondary btn-block" type="submit"
+                                                               value="Завершен."/>
+                                                    </fieldset>
+                                                </form>
+                                                <form method="post"
+                                                      th:action="@{/admin/orders/{id}/changestatus(id=${order.getId()})}"
+                                                      th:object="${orderS}">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <input autofocus="true" class="form-control" hidden
+                                                                   name="status" required="true" type="text"
+                                                                   value="Отменен."/>
+                                                        </div>
+                                                        <input class="btn btn-danger btn-block" type="submit"
+                                                               value="Отменен."/>
+                                                    </fieldset>
+                                                </form>
+                                                <br><br>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-info"
+                            data-toggle="modal"
+                            style="height:75px;display: flex;justify-content: center;align-items: center;color: white;"
+                            th:attr="data-target='#editOrderStatus'+${order.getId()}">Изменить статус заказа</i>
+                    </button>
             </tr>
             </tbody>
         </table>

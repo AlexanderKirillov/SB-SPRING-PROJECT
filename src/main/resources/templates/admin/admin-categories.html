@@ -6,6 +6,12 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
     <link href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+    <style>.table-plain tbody tr,
+    .table-plain tbody tr:hover,
+    .table-plain tbody td {
+        background-color: transparent;
+        border: none;
+    }</style>
 </head>
 <body>
 <br>
@@ -26,86 +32,260 @@
         </div>
         <br>
         <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin}"><i
-                aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a> <a
-                class="btn btn-primary" th:href="@{/admin/categories/add}"><i aria-hidden="true"
-                                                                              class="fas fa-plus"></i> Добавить
-            категорию</a></div>
-        <table class="table table-hover" id="ctgstable" style="width:100%">
-            <thead>
-            <tr class="table-secondary">
-                <th class="align-middle">Номер</th>
-                <th class="align-middle">Изображение</th>
-                <th class="align-middle">Имя</th>
-                <th class="align-middle">Описание</th>
-                <th class="align-middle">Статус</th>
-                <th class="align-middle"></th>
-                <th class="align-middle"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="category,index : ${categories}">
-                <td class="align-middle" th:utext="${index.count}">...</td>
-                <td class="align-middle"><img height="70"
-                                              th:src="@{'data:image/jpeg;base64,'+${category.getImageString()}}"
-                                              width="70"/>
-                </td>
-                <td class="align-middle" th:utext="${category.getName()}">...</td>
-                <td class="align-middle" th:utext="${category.getDescription()}">...</td>
-                <td class="align-middle"><span th:if="${category.status}">Категория видна всем</span>
-                    <span th:if="${!category.status}">Категория не отображается</span></td>
-                <td class="align-middle"><a class="btn btn-success"
-                                            th:href="@{/admin/categories/{id}/edit(id=${category.getId()})}"><i
-                        aria-hidden="true" class="fas fa-pencil-alt"></i></a>
-                </td>
-                <td class="align-middle">
-                    <div aria-hidden="true" class="modal fade"
-                         role="dialog" tabindex="-1"
-                         th:attr="id='deleteCategory'+${category.getId()}">
-                        <div class="modal-dialog modal-dialog-centered"
-                             role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Удаление категории</span>
-                                    </h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div align="left">Вы действительно
-                                        хотите удалить категорию '<span th:utext="${category.getName()}"></span>'
-                                    </div>
+                aria-hidden="true" class="fas fa-long-arrow-alt-left"></i></a>
+            <div aria-hidden="true" class="modal fade bd-example-modal-lg"
+                 id="addCategory" role="dialog"
+                 tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg"
+                     role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div align="left"
+                                 style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:left;">
+                                <a class="btn" data-dismiss="modal" style="font-size:30px;color: red"><i
+                                        aria-hidden="true" class="far fa-window-close"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <h4 class="modal-title">Добавление категории</h4></div>
+                        </div>
+                        <div class="modal-body">
+                            <div align="center"
+                                 style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:center;">
+                                <form enctype="multipart/form-data"
+                                      method="POST" th:action="@{/admin/categories/add}" th:object="${newCtg}">
+                                    <table class="table-no-bordered">
+                                        <tr style="margin-bottom:20px;">
+                                            <td>Название <font color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><input class="form-control" required th:field="*{name}" type="text"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Описание <font color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><input class="form-control" required th:field="*{description}"
+                                                       type="text"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Изображение: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td>
+                                                <div class="custom-file">
+                                                    <input class="custom-file-input" id="validatedCustomFile" name="img"
+                                                           type="file">
+                                                    <label class="custom-file-label" for="validatedCustomFile">Выберите
+                                                        файл...</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td><label class="form-check-label">
+                                                <input class="form-check-input" name="status"
+                                                       th:checked="${newCtg.status}"
+                                                       type="checkbox">Отображать категорию на главной странице
+                                            </label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+                                    </table>
                                     <br>
-                                    <form method="POST"
-                                          th:action="@{/admin/categories/{id}/delete(id=${category.getId()})}">
-                                        <button class="btn btn-secondary"
-                                                data-dismiss="modal"
-                                                type="button">
-                                            <i aria-hidden="true"
-                                               class="fas fa-times"></i>
-                                            Отменить
-                                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <button class="btn btn-danger"
-                                                type="submit">
-                                            <i aria-hidden="true"
-                                               class="fas fa-trash-alt"></i>
-                                            Удалить
-                                        </button>
-                                    </form>
-                                </div>
+                                    <button class="btn btn-secondary" data-dismiss="modal" type="button"><i
+                                            aria-hidden="true" class="fas fa-times"></i> Отменить
+                                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-success" type="submit"><i aria-hidden="true"
+                                                                                     class="fas fa-plus"></i> Создать
+                                        категорию
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-danger" data-toggle="modal"
-                            th:attr="data-target='#deleteCategory'+${category.getId()}"><i aria-hidden="true"
-                                                                                           class="fas fa-trash-alt"></i>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                </div>
+            </div>
+            <button class="btn btn-primary" data-target="#addCategory"
+                    data-toggle="modal"><i aria-hidden="true"
+                                           class="fas fa-plus"></i> Добавить категорию
+            </button>
+            <br><br>
+            <table class="table table-hover" id="ctgstable" style="width:100%">
+                <thead>
+                <tr class="table-secondary">
+                    <th class="align-middle">Номер</th>
+                    <th class="align-middle">Изображение</th>
+                    <th class="align-middle">Имя</th>
+                    <th class="align-middle">Описание</th>
+                    <th class="align-middle">Статус</th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category,index : ${categories}">
+                    <td class="align-middle" th:utext="${index.count}">...</td>
+                    <td class="align-middle"><img height="70"
+                                                  th:src="@{'data:image/jpeg;base64,'+${category.getImageString()}}"
+                                                  width="70"/>
+                    </td>
+                    <td class="align-middle" th:utext="${category.getName()}">...</td>
+                    <td class="align-middle" th:utext="${category.getDescription()}">...</td>
+                    <td class="align-middle"><span th:if="${category.status}">Категория видна всем</span>
+                        <span th:if="${!category.status}">Категория не отображается</span></td>
+                    <td class="align-middle">
+                        <div aria-hidden="true" class="modal fade bd-example-modal-lg"
+                             role="dialog" tabindex="-1"
+                             th:attr="id='editCategory'+${category.getId()}">
+                            <div class="modal-dialog modal-dialog-centered modal-lg"
+                                 role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div align="left"
+                                             style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:left;">
+                                            <a class="btn" data-dismiss="modal" style="font-size:30px;color:red"><i
+                                                    aria-hidden="true" class="far fa-window-close"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <h4 class="modal-title">Редактирование категории</h4></div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div align="center"
+                                             style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:center;">
+                                            <form enctype="multipart/form-data"
+                                                  method="POST"
+                                                  th:action="@{/admin/categories/{id}/edit(id=${category.getId()})}"
+                                                  th:object="${editCtg}">
+                                                <div style="width: 40rem;">
+                                                    <table class="table-plain">
+                                                        <tr class="no-hover" style="margin-bottom:20px;">
+                                                            <td class="align-middle">Название <font
+                                                                    color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            </td>
+                                                            <td class="align-middle"><input class="form-control"
+                                                                                            name="name" required
+                                                                                            th:value="${category.name}"
+                                                                                            type="text"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="no-hover" style="margin-bottom:20px;">
+                                                            <td class="align-middle">Описание <font
+                                                                    color="red">(*)</font>: &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            </td>
+                                                            <td class="align-middle"><input class="form-control"
+                                                                                            name="description" required
+                                                                                            th:value="${category.description}"
+                                                                                            type="text"/></td>
+                                                        </tr>
+                                                        <tr class="no-hover" style="margin-bottom:20px;">
+                                                            <td class="align-middle">Изображение: &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                            <td class="align-middle">
+                                                                <div class="custom-file">
+                                                                    <input class="custom-file-input"
+                                                                           id="validatedCustomFileEditCtg" name="img"
+                                                                           type="file">
+                                                                    <label class="custom-file-label"
+                                                                           for="validatedCustomFileEditCtg">Выберите
+                                                                        файл...</label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="no-hover" style="margin-bottom:20px;">
+                                                            <td class="align-middle"></td>
+                                                            <td class="align-middle">
+                                                                <label class="form-check-label"
+                                                                       th:if="${category.status}">
+                                                                    <input checked class="form-check-input"
+                                                                           name="status"
+                                                                           th:checked="${category.status}"
+                                                                           type="checkbox">Отображать категорию на
+                                                                    главной странице
+                                                                </label><label class="form-check-label"
+                                                                               th:if="${!category.status}">
+                                                                <input class="form-check-input" name="status"
+                                                                       th:checked="${category.status}"
+                                                                       type="checkbox">Отображать категорию на главной
+                                                                странице
+                                                            </label></td>
+                                                        </tr>
+                                                    </table>
+                                                    <br>
+                                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                                            type="button"><i aria-hidden="true"
+                                                                             class="fas fa-times"></i> Отменить
+                                                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <button class="btn btn-success" type="submit"><i aria-hidden="true"
+                                                                                                     class="fas fa-save"></i>
+                                                        Сохранить изменения
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-success" data-toggle="modal"
+                                th:attr="data-target='#editCategory'+${category.getId()}"><i aria-hidden="true"
+                                                                                             class="fas fa-pencil-alt"></i>
+                        </button>
+                    </td>
+                    <td class="align-middle">
+                        <div aria-hidden="true" class="modal fade"
+                             role="dialog" tabindex="-1"
+                             th:attr="id='deleteCategory'+${category.getId()}">
+                            <div class="modal-dialog modal-dialog-centered"
+                                 role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div align="left"
+                                             style="width: 100%;height:100%;display: flex;margin: auto;align-items:center;justify-content:left;">
+                                            <a class="btn" data-dismiss="modal" style="font-size:30px;color:red"><i
+                                                    aria-hidden="true" class="far fa-window-close"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <h4 class="modal-title">Удаление категории</h4></div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div align="left">Вы действительно
+                                            хотите удалить категорию '<span th:utext="${category.getName()}"></span>'
+                                        </div>
+                                        <br>
+                                        <form method="POST"
+                                              th:action="@{/admin/categories/{id}/delete(id=${category.getId()})}">
+                                            <button class="btn btn-secondary"
+                                                    data-dismiss="modal"
+                                                    type="button">
+                                                <i aria-hidden="true"
+                                                   class="fas fa-times"></i>
+                                                Отменить
+                                            </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button class="btn btn-danger"
+                                                    type="submit">
+                                                <i aria-hidden="true"
+                                                   class="fas fa-trash-alt"></i>
+                                                Удалить
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger" data-toggle="modal"
+                                th:attr="data-target='#deleteCategory'+${category.getId()}"><i aria-hidden="true"
+                                                                                               class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js" type="text/javascript"></script>
+<script charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"
+        type="text/javascript"></script>
 <script charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"
         type="text/javascript"></script>
 <script type="text/javascript">
