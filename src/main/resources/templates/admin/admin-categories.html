@@ -19,16 +19,30 @@
     <div class="card-body">
         <center><h4 class="display-4">Категории</h4></center>
         <br>
-        <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
-            <span><span style="color: black">Вы вошли как: <b><span
-                    sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span><a
-                    class="btn btn-primary"
-                    th:href="@{/profile}"><i aria-hidden="true"
-                                             class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
-                    class="btn btn-primary"
-                    th:href="@{/main/}"><i aria-hidden="true" class="fas fa-home"></i>  Главная страница</a>&nbsp;&nbsp;</span><span><a
-                    class="btn btn-primary"
-                    th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
+        <div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;margin-top:20px">
+            <div class="btn-group">
+                <button aria-expanded="false" aria-haspopup="true" class="btn btn-lg dropdown-toggle"
+                        data-placement="left"
+                        data-toggle="dropdown"
+                        data-toggle-second="tooltip" th:title="${'Вы вошли как: '+#authentication.getName()}"
+                        type="button">
+                    <i class="far fa-user-circle"></i> <span sec:authentication="name"></span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" th:href="@{/main}"><i aria-hidden="true" class="fas fa-home"
+                                                                   style="margin-right:8px"></i>Главная страница</a>
+                    <a class="dropdown-item" th:href="@{/profile}"><i aria-hidden="true" class="fas fa-user"
+                                                                      style="margin-right:11px"></i>Мой
+                        профиль</a>
+                    <a class="dropdown-item" th:href="@{/myOrders}"><i aria-hidden="true" class="fas fa-dolly"
+                                                                       style="margin-right:6.8px"></i>Мои
+                        заказы</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" style="color:red" th:href="@{/logout}"><i aria-hidden="true"
+                                                                                       class="fas fa-sign-out-alt"
+                                                                                       style="margin-right:8px"></i>Выход</a>
+                </div>
+            </div>
         </div>
         <br>
         <div align="left" style="margin-bottom:20px"><a class="btn btn-primary" th:href="@{/admin}"><i
@@ -283,6 +297,7 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"
         type="text/javascript"></script>
@@ -327,5 +342,7 @@
         });
     });
 </script>
+<script>$('[data-toggle-second="tooltip"]').tooltip();
+$('[data-toggle="tooltip"]').tooltip();</script>
 </body>
 </html>

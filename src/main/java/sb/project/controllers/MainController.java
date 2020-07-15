@@ -15,6 +15,7 @@ import sb.project.repositories.CommentRepository;
 import sb.project.repositories.ItemRepository;
 import sb.project.repositories.UserRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -41,14 +42,25 @@ public class MainController {
     private UserRepository userRepository;
 
     @GetMapping(value = "/main")
-    public String userMainPage(Model model, @RequestParam(value = "selcat", required = false) Long selcat, @ModelAttribute("ctgSel") Category ctgSel) {
+    public String userMainPage(Model model, @RequestParam(value = "selcat", required = false) Long selcat, @RequestParam(value = "sort", required = false) String sortMethod, @ModelAttribute("ctgSel") Category ctgSel, HttpServletRequest request) {
         setCtgMenu(model);
 
         List<Item> itemsList;
         Set<Item> activeItems = new LinkedHashSet<Item>();
 
         if (selcat == null) {
-            itemsList = itemRepository.findAll();
+            if ((sortMethod != null) && sortMethod.equals("priceDesc")) {
+                itemsList = itemRepository.findAllByOrderByPriceDesc();
+            } else if ((sortMethod != null) && sortMethod.equals("priceAsc")) {
+                itemsList = itemRepository.findAllByOrderByPriceAsc();
+            } else if ((sortMethod != null) && sortMethod.equals("ratingAsc")) {
+                itemsList = itemRepository.findAllByOrderByRatingAsc();
+            } else if ((sortMethod != null) && sortMethod.equals("ratingDesc")) {
+                itemsList = itemRepository.findAllByOrderByRatingDesc();
+            } else {
+                itemsList = itemRepository.findAll();
+            }
+
             for (Item item : itemsList) {
                 if (item.getCategory().getStatus() && item.getStatus()) {
                     activeItems.add(item);
@@ -56,7 +68,17 @@ public class MainController {
             }
             model.addAttribute("currentCategory", "-");
         } else {
-            itemsList = categoryRepository.findById(selcat).get().getItems();
+            if ((sortMethod != null) && sortMethod.equals("priceDesc")) {
+                itemsList = itemRepository.findAllByCtgOrderByPriceDesc(categoryRepository.findById(selcat).get());
+            } else if ((sortMethod != null) && sortMethod.equals("priceAsc")) {
+                itemsList = itemRepository.findAllByCtgOrderByPriceAsc(categoryRepository.findById(selcat).get());
+            } else if ((sortMethod != null) && sortMethod.equals("ratingAsc")) {
+                itemsList = itemRepository.findAllByCtgOrderByRatingAsc(categoryRepository.findById(selcat).get());
+            } else if ((sortMethod != null) && sortMethod.equals("ratingDesc")) {
+                itemsList = itemRepository.findAllByCtgOrderByRatingDesc(categoryRepository.findById(selcat).get());
+            } else {
+                itemsList = itemRepository.findAllByCtg(categoryRepository.findById(selcat).get());
+            }
             for (Item item : itemsList) {
                 if (item.getStatus()) {
                     activeItems.add(item);
@@ -70,7 +92,51 @@ public class MainController {
         for (Item item : itemsList) {
             byte[] image = item.getImage();
             item.setImageString(Base64.encodeBase64String(image));
+
+            Float totalRating = (float) 0;
+            long scoreQuantity = 0;
+
+            if (item.getCommentList() != null) {
+                List<Comment> commentList = item.getCommentList();
+                for (Comment cmnt : commentList) {
+                    if (cmnt.getRating() != null && cmnt.getRating() > 0) {
+                        totalRating += cmnt.getRating();
+                        scoreQuantity++;
+                    }
+
+                }
+                totalRating = totalRating / scoreQuantity;
+
+                item.setRating((float) (Math.round(totalRating * 100.0) / 100.0));
+            } else {
+                item.setRating(null);
+            }
+
+            itemRepository.save(item);
+
+
         }
+
+        String currentURL = request.getRequestURL().toString() + "?" + request.getQueryString();
+        model.addAttribute("currentURL", currentURL);
+        if (request.getQueryString() != null) {
+            model.addAttribute("paramsURL", "?" + request.getQueryString());
+        }
+
+        char[] array = currentURL.toCharArray();
+        int firstPos = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == '&') {
+                firstPos = i;
+                break;
+            }
+        }
+
+        StringBuffer sb = new StringBuffer(currentURL);
+        sb.delete(firstPos, currentURL.length());
+        String currentUROnlyCtg = sb.toString();
+        model.addAttribute("urlOnlyGoodsId", currentUROnlyCtg);
+
 
         return "main/user-main";
     }
@@ -103,7 +169,7 @@ public class MainController {
         }
         totalRating = totalRating / scoreQuantity;
 
-        model.addAttribute("totalRating", Math.round(totalRating * 100.0) / 100.0);
+        model.addAttribute("totalRating", (Math.round(totalRating * 100.0) / 100.0));
         model.addAttribute("scoreQuantity", scoreQuantity);
 
         return "main/user-main-item";
@@ -115,7 +181,7 @@ public class MainController {
         if ((ratingAdd != null) && !ratingAdd.isEmpty()) {
             cmnt.setRating(Float.parseFloat(ratingAdd));
         } else {
-            cmnt.setRating(0);
+            cmnt.setRating((float) 0);
         }
 
         cmnt.setCommentUser(userRepository.findByUserName(authentication.getName()).get());
@@ -151,7 +217,7 @@ public class MainController {
         if ((ratingEdit != null) && !ratingEdit.isEmpty()) {
             cmntE.setRating(Float.parseFloat(ratingEdit));
         } else {
-            cmntE.setRating(0);
+            cmntE.setRating((float) 0);
         }
 
         commentRepository.save(cmntE);

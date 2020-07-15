@@ -8,26 +8,49 @@
     <link rel="stylesheet" th:href="@{/css/logo.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
-<body>
-<div style="text-align: left;margin-top: 20px;"><a th:href="@{/main}"><h1><i class="fas fa-microchip"></i> <i
-        class="fas fa-desktop"></i> Компьютерные
-    комплектующие</h1></a></div>
-<div sec:authorize="isAuthenticated()" style="text-align: right;margin-right: 20px;">
-    <span><span style="color: black">Вы вошли как: <b><span
-            sec:authentication="name"></span></b></span>&nbsp;&nbsp;<span sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a class="btn btn-primary" th:href="@{/admin}"><i aria-hidden="true"
-                                                                      class="fas fa-users-cog"></i>  Панель администратора</a></span>&nbsp;&nbsp;<span><a
-            class="btn btn-primary"
-            th:href="@{/profile}"><i aria-hidden="true"
-                                     class="fas fa-user"></i>  Мой профиль</a>&nbsp;&nbsp;</span><span><a
-            class="btn btn-primary"
-            th:href="@{/main/shoppingCart}"><i aria-hidden="true" class="fas fa-shopping-cart"></i>  Корзина</a>&nbsp;&nbsp;</span><span><a
-            class="btn btn-primary"
-            th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>  Выход</a></span></span>
-</div>
-<div sec:authorize="!isAuthenticated()" style="text-align: right;margin-right: 20px;">
-    <span><a class="btn btn-primary" th:href="@{/login}"><i aria-hidden="true" class="fas fa-sign-in-alt"></i>  Вход</a></span>&nbsp;&nbsp;<span><a
-        class="btn btn-primary" th:href="@{/registration}"><i aria-hidden="true" class="fas fa-user-plus"></i>  Регистрация</a></span>
+<body style='overflow-x:hidden;'>
+<div class="row">
+    <div class="col-10" style="display: flex;margin: auto;align-items:center;justify-content:left;">
+        <div style="text-align: left;margin-top: 20px;width: 100%"><a th:href="@{/main}"><h1><i
+                class="fas fa-microchip"></i> <i
+                class="fas fa-desktop"></i> Компьютерные
+            комплектующие</h1></a></div>
+    </div>
+    <div class="col-2" style="display: flex;margin: auto;align-items:start;justify-content:left;">
+        <div sec:authorize="isAuthenticated()" style="text-align: right;margin-left: 20px;margin-top:20px">
+            <div class="btn-group">
+                <button aria-expanded="false" aria-haspopup="true" class="btn btn-lg dropdown-toggle"
+                        data-placement="left"
+                        data-toggle="dropdown"
+                        data-toggle-second="tooltip" th:title="${'Вы вошли как: '+#authentication.getName()}"
+                        type="button">
+                    <i class="far fa-user-circle"></i> <span sec:authentication="name"></span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><i
+                            aria-hidden="true" class="fas fa-tools"
+                            style="margin-right:8px"></i>Панель администратора</a>
+                    <a class="dropdown-item" th:href="@{/profile}"><i aria-hidden="true" class="fas fa-user"
+                                                                      style="margin-right:10.5px"></i>Мой
+                        профиль</a>
+                    <a class="dropdown-item" th:href="@{/myOrders}"><i aria-hidden="true" class="fas fa-dolly"
+                                                                       style="margin-right:6.8px"></i>Мои
+                        заказы</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" style="color:red" th:href="@{/logout}"><i aria-hidden="true"
+                                                                                       class="fas fa-sign-out-alt"
+                                                                                       style="margin-right:8px"></i>Выход</a>
+                </div>
+            </div>
+            <span><a class="btn btn-lg" data-placement="bottom" data-toggle="tooltip" th:href="@{/main/shoppingCart}"
+                     title="Корзина"><i aria-hidden="true"
+                                        class="fas fa-shopping-cart"></i></a>&nbsp;&nbsp;</span>
+        </div>
+        <div sec:authorize="!isAuthenticated()" style="text-align: right;margin-left: 20px;margin-top:20px">
+            <span><a class="btn btn-primary" th:href="@{/login}"><i aria-hidden="true" class="fas fa-sign-in-alt"></i>  Вход</a></span>&nbsp;&nbsp;<span><a
+                class="btn btn-primary" th:href="@{/registration}"><i aria-hidden="true" class="fas fa-user-plus"></i>  Регистрация</a></span>
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-3">
@@ -157,5 +180,7 @@
 <script charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script charset="utf8" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script>$('[data-toggle-second="tooltip"]').tooltip();
+$('[data-toggle="tooltip"]').tooltip();</script>
 </body>
 </html>

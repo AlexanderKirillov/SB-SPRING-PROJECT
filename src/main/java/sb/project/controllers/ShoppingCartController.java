@@ -144,7 +144,7 @@ public class ShoppingCartController {
         return "redirect:/main/shoppingCart";
     }
 
-    @GetMapping(value = "/main/shoppingCart/items/{itemId}/addq")
+    @PostMapping(value = "/main/shoppingCart/items/{itemId}/addq")
     public String shoppingCartAddQuantity(@Valid Model model, @PathVariable long itemId, Authentication authentication, RedirectAttributes redirectAttributes) {
         User user = null;
         Optional<ShoppingCart> shoppingCartOptional;
@@ -171,7 +171,7 @@ public class ShoppingCartController {
         return "redirect:/main/shoppingCart";
     }
 
-    @GetMapping(value = "/main/shoppingCart/items/{itemId}/remq")
+    @PostMapping(value = "/main/shoppingCart/items/{itemId}/remq")
     public String shoppingCartRemoveQuantity(Model model, @PathVariable long itemId, Authentication authentication) {
         User user = null;
         Optional<ShoppingCart> shoppingCartOptional;

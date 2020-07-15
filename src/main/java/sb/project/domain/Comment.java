@@ -27,7 +27,7 @@ public class Comment {
     @JoinColumn(name = "GOODCMT_ID_F")
     private Item cmtGoods;
 
-    private float rating;
+    private Float rating;
 
     public Comment() {
     }
@@ -72,11 +72,11 @@ public class Comment {
         this.cmtGoods = cmtGoods;
     }
 
-    public float getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 

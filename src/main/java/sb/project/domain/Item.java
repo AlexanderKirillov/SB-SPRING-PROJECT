@@ -21,6 +21,7 @@ public class Item {
     @Column(columnDefinition = "TEXT")
     private String description;
     private boolean status;
+    private Float rating;
     @Lob
     private byte[] image;
     @Transient
@@ -109,6 +110,14 @@ public class Item {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
 
     public Category getCategory() {
