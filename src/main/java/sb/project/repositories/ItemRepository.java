@@ -1,11 +1,13 @@
 package sb.project.repositories;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import sb.project.domain.Category;
 import sb.project.domain.Item;
 
 import java.util.List;
 
+@Repository
 public interface ItemRepository extends CrudRepository<Item, Long> {
 
     Item findById(long id);
