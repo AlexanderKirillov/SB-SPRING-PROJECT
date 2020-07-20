@@ -40,6 +40,11 @@ public class MainController {
 
     @Autowired
     private UserRepository userRepository;
+	
+	@GetMapping(value = "/")
+    public String mainPage(Model model) {
+        return "redirect:/main";
+    }
 
     @GetMapping(value = "/main")
     public String userMainPage(Model model, @RequestParam(value = "selcat", required = false) Long selcat, @RequestParam(value = "sort", required = false) String sortMethod, @ModelAttribute("ctgSel") Category ctgSel, HttpServletRequest request) {
