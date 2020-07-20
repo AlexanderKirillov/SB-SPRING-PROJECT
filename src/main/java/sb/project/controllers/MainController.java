@@ -40,8 +40,8 @@ public class MainController {
 
     @Autowired
     private UserRepository userRepository;
-	
-	@GetMapping(value = "/")
+
+    @GetMapping(value = "/")
     public String mainPage(Model model) {
         return "redirect:/main";
     }
