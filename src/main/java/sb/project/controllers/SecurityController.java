@@ -82,7 +82,7 @@ public class SecurityController {
 
     @RequestMapping(value = "/users/confirm/{token}")
     public String emailConfirmPage(Model model, @PathVariable String token) {
-        if (userRepository.findByToken(token).isEmpty()) {
+        if (!userRepository.findByToken(token).isPresent()) {
             return "other/unsuccessful-acc-confirm";
         } else {
             User user = userRepository.findByToken(token).get();
