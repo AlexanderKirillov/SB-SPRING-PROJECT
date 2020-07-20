@@ -79,7 +79,7 @@ public class ShoppingCartController {
             user = userRepository.findByUserName(authentication.getName()).get();
             Optional<ShoppingCart> shoppingCartOptional = shoppingCartRepository.findByUserAndStatus(user, "in_cart");
 
-            if (shoppingCartOptional.isEmpty()) {
+            if (!shoppingCartOptional.isPresent()) {
                 shoppingCart = new ShoppingCart();
                 shoppingCart.setUser(user);
                 shoppingCart.setStatus("in_cart");
