@@ -6,13 +6,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sb.project.domain.User;
 import sb.project.repositories.UserRepository;
 import sb.project.services.EmailService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Controller
 public class SecurityController {
@@ -42,8 +45,17 @@ public class SecurityController {
         return "security/registration";
     }
 
+    @GetMapping(value = {"/resetPassword"})
+    public String resetPasswordPage(Model model) {
+        User user = new User();
+
+        model.addAttribute("user", user);
+
+        return "security/reset-password";
+    }
+
     @PostMapping(value = {"/registration"})
-    public String registration(Model model, @ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam("gendername") String gendername, Locale locale) throws Exception {
+    public String registration(Model model, @ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam("gendername") String gendername, Locale locale, HttpServletRequest request) throws Exception {
         List<User> userList = userRepository.findAll();
 
         if (!user.getPassword().equals(user.getConfirmPassword())) {
@@ -72,25 +84,81 @@ public class SecurityController {
             user.setRoles("ROLE_USER");
             user.setGender(gendername);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setToken(emailService.generateToken(user.getUserName()));
-            emailService.sendConfirmationMail(user.getEmail(), user.getToken(), locale);
+            user.setActivationToken(emailService.generateToken(user.getUserName()));
+            emailService.sendConfirmationMail(user.getEmail(), user.getActivationToken(), locale, request);
             userRepository.save(user);
 
             return "other/successful-registration";
         }
     }
 
-    @RequestMapping(value = "/users/confirm/{token}")
-    public String emailConfirmPage(Model model, @PathVariable String token) {
-        if (!userRepository.findByToken(token).isPresent()) {
-            return "other/unsuccessful-acc-confirm";
+    @PostMapping(value = {"/resetPassword"})
+    public String resetPassword(Model model, @ModelAttribute("user") @Valid User user, BindingResult bindingResult, Locale locale, HttpServletRequest request) throws Exception {
+        List<User> userList = userRepository.findAll();
+
+        Optional<User> originalUser = userRepository.findByEmail(user.getEmail());
+        if (!originalUser.isPresent()) {
+            bindingResult.rejectValue("email", "error.email", "Пользователь с указанным e-mail не зарегистрирован!");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "security/reset-password";
         } else {
-            User user = userRepository.findByToken(token).get();
+            originalUser.get().setResetPassToken(emailService.generateToken(user.getEmail()));
+            emailService.sendPasswordResetMail(originalUser.get().getEmail(), originalUser.get().getResetPassToken(), locale, request, originalUser.get().getUserName());
+            userRepository.save(originalUser.get());
+
+            return "other/successful-password-reset-firststep";
+        }
+    }
+
+    @RequestMapping(value = "/registration/confirm/{token}")
+    public String emailConfirmPage(Model model, @PathVariable String token) {
+        if (!userRepository.findByActivationToken(token).isPresent()) {
+            return "other/unsuccessful-token-error";
+        } else {
+            User user = userRepository.findByActivationToken(token).get();
             user.setActive(true);
-            user.setToken(null);
+            user.setActivationToken(null);
             userRepository.save(user);
 
             return "other/successful-acc-confirm";
+        }
+    }
+
+    @RequestMapping(value = "/resetPassword/{resetPassToken}")
+    public String emailResetPasswordPage(Model model, @PathVariable String resetPassToken) {
+        if (!userRepository.findByResetPassToken(resetPassToken).isPresent()) {
+            return "other/unsuccessful-token-error";
+        } else {
+            User user = userRepository.findByResetPassToken(resetPassToken).get();
+            model.addAttribute(user);
+
+            return "security/reset-set-password";
+        }
+    }
+
+    @PostMapping(value = "/resetPassword/{resetPassToken}")
+    public String emailResetPassword(Model model, @ModelAttribute("user") @Valid User user, BindingResult bindingResult, @PathVariable String resetPassToken, RedirectAttributes redirectAttributes) {
+
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            bindingResult.rejectValue("password", "error.password", "Пароли не совпадают!");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "security/reset-set-password";
+        } else {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+            User originalUser = userRepository.findByResetPassToken(resetPassToken).get();
+
+            originalUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            originalUser.setResetPassToken(null);
+            userRepository.save(originalUser);
+
+            redirectAttributes.addFlashAttribute("resetOk", "Пароль успешно сброшен!");
+
+            return "redirect:/login";
         }
     }
 }

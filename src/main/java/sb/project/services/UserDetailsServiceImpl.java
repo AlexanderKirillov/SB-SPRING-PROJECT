@@ -10,7 +10,7 @@ import sb.project.repositories.UserRepository;
 
 import java.util.Optional;
 
-@Service
+@Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired

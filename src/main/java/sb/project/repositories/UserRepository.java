@@ -12,7 +12,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     Optional<User> findByUserName(String userName);
 
-    Optional<User> findByToken(String token);
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByActivationToken(String activationToken);
+
+    Optional<User> findByResetPassToken(String resetPassToken);
 
     List<User> findAll();
 

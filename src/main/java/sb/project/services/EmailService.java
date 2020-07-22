@@ -12,6 +12,7 @@ import sb.project.domain.Order;
 import sb.project.domain.ShoppingCart;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -30,10 +31,11 @@ public class EmailService {
     }
 
     @Async
-    public void sendConfirmationMail(String toEmail, String token, final Locale locale) throws Exception {
+    public void sendConfirmationMail(String toEmail, String token, final Locale locale, HttpServletRequest request) throws Exception {
 
         final Context ctx = new Context(locale);
         ctx.setVariable("token", token);
+        ctx.setVariable("baseURL", request.getRequestURL().toString());
 
         final MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
@@ -42,6 +44,26 @@ public class EmailService {
         message.setTo(toEmail);
 
         final String htmlContent = htmlTemplateEngine.process("email/email-registration", ctx);
+        message.setText(htmlContent, true);
+
+        javaMailSender.send(mimeMessage);
+    }
+
+    @Async
+    public void sendPasswordResetMail(String toEmail, String token, final Locale locale, HttpServletRequest request, String userName) throws Exception {
+
+        final Context ctx = new Context(locale);
+        ctx.setVariable("token", token);
+        ctx.setVariable("baseURL", request.getRequestURL().toString());
+        ctx.setVariable("userName", userName);
+
+        final MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+        message.setSubject("Сброс пароля на сайте \"Компьютерные комплектующие\"");
+        message.setFrom("sb.spring.project@gmail.com");
+        message.setTo(toEmail);
+
+        final String htmlContent = htmlTemplateEngine.process("email/email-reset-password", ctx);
         message.setText(htmlContent, true);
 
         javaMailSender.send(mimeMessage);

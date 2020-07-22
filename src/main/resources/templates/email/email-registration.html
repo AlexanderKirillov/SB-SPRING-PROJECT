@@ -24,14 +24,16 @@
                             <tbody>
                             <tr style="height: 79px;">
                                 <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px; height: 79px;">
-                                    <p><b>Спасибо за регистрацию<br/>на сайте "Компьютерные комплектующие"!</b></p>
+                                    <p style="line-height: 1.5em;"><b>Спасибо за регистрацию<br/>на сайте "Компьютерные
+                                        комплектующие"!</b></p>
                                 </td>
                             </tr>
                             <tr style="height: 71px;">
                                 <td style="padding: 20px 0px 30px; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; height: 71px;">
-                                    <p>Для активации аккаунта пожалуйста перейдите по ссылке:&nbsp;</p>
-                                    <p><a th:href="@{'http://localhost:8080/users/confirm/'+${token}}"
-                                          th:utext="${'http://localhost:8080/users/confirm/'+token}"></a></p>
+                                    <p style="line-height: 1.5em;">Для активации аккаунта пожалуйста перейдите по
+                                        ссылке:&nbsp;</p>
+                                    <p><a th:href="@{${baseURL}+'/confirm/'+${token}}"
+                                          th:utext="${baseURL+'/confirm/'+token}"></a></p>
                                 </td>
                             </tr>
                             <tr style="height: 21px;">

@@ -32,7 +32,8 @@ public class User {
     private String surname;
     @NotNull
     private String gender;
-    private String token;
+    private String activationToken;
+    private String resetPassToken;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -126,12 +127,20 @@ public class User {
         this.gender = gender;
     }
 
-    public String getToken() {
-        return token;
+    public String getActivationToken() {
+        return activationToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setActivationToken(String activationToken) {
+        this.activationToken = activationToken;
+    }
+
+    public String getResetPassToken() {
+        return resetPassToken;
+    }
+
+    public void setResetPassToken(String resetPassToken) {
+        this.resetPassToken = resetPassToken;
     }
 
     public List<ShoppingCart> getShoppingCart() {
